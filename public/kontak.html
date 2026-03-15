@@ -48,43 +48,38 @@
         <article>
           <h3>Formulir Pesan</h3>
 
-          <form id="contactForm">
+          <form>
             <div>
               <label>Nama Lengkap</label><br />
-              <input type="text" id="nama" name="nama" />
-              <small class="error" id="errorNama"></small>
+              <input type="text" name="nama" />
             </div>
 
             <br />
 
             <div>
               <label>Email</label><br />
-              <input type="email" id="email" name="email" />
-              <small class="error" id="errorEmail"></small>
+              <input type="email" name="email" />
             </div>
 
             <br />
 
             <div>
               <label>Nomor Telepon</label><br />
-              <input type="text" id="telepon" name="telepon" />
-              <small class="error" id="errorTelepon"></small>
+              <input type="text" name="telepon" />
             </div>
 
             <br />
 
             <div>
               <label>Subjek Pesan</label><br />
-              <input type="text" id="subjek" name="subjek" />
-              <small class="error" id="errorSubjek"></small>
+              <input type="text" name="subjek" />
             </div>
 
             <br />
 
             <div>
               <label>Isi Pesan</label><br />
-              <textarea id="pesan" rows="5"></textarea>
-              <small class="error" id="errorPesan"></small>
+              <textarea rows="5"></textarea>
             </div>
 
             <br />
@@ -176,91 +171,5 @@
         </p>
       </div>
     </footer>
-    <script>
-      document
-        .getElementById("contactForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-
-          let nama = document.getElementById("nama").value.trim();
-          let email = document.getElementById("email").value.trim();
-          let telepon = document.getElementById("telepon").value.trim();
-          let subjek = document.getElementById("subjek").value.trim();
-          let pesan = document.getElementById("pesan").value.trim();
-
-          let valid = true;
-
-          // regex
-          let regexNama = /^[A-Za-z' ]+$/;
-          let regexTelepon = /^[0-9]+$/;
-          let regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-          // reset error
-          document
-            .querySelectorAll(".error")
-            .forEach((el) => (el.innerText = ""));
-
-          // validasi nama
-          if (nama === "") {
-            document.getElementById("errorNama").innerText =
-              "Nama tidak boleh kosong";
-            valid = false;
-          } else if (!regexNama.test(nama)) {
-            document.getElementById("errorNama").innerText =
-              "Nama hanya boleh huruf dan tanda petik";
-            valid = false;
-          }
-
-          // validasi email
-          if (email === "") {
-            document.getElementById("errorEmail").innerText =
-              "Email tidak boleh kosong";
-            valid = false;
-          } else if (!regexEmail.test(email)) {
-            document.getElementById("errorEmail").innerText =
-              "Email tidak valid";
-            valid = false;
-          }
-
-          // validasi telepon
-          if (telepon === "") {
-            document.getElementById("errorTelepon").innerText =
-              "Nomor telepon tidak boleh kosong";
-            valid = false;
-          } else if (!regexTelepon.test(telepon)) {
-            document.getElementById("errorTelepon").innerText =
-              "Nomor telepon hanya boleh angka";
-            valid = false;
-          }
-
-          // validasi subjek
-          if (subjek === "") {
-            document.getElementById("errorSubjek").innerText =
-              "Subjek tidak boleh kosong";
-            valid = false;
-          } else if (subjek.length < 8) {
-            document.getElementById("errorSubjek").innerText =
-              "Subjek minimal 8 karakter";
-            valid = false;
-          }
-
-          // validasi pesan
-          if (pesan === "") {
-            document.getElementById("errorPesan").innerText =
-              "Pesan tidak boleh kosong";
-            valid = false;
-          } else if (pesan.length < 8) {
-            document.getElementById("errorPesan").innerText =
-              "Isi pesan minimal 8 karakter";
-            valid = false;
-          }
-
-          // jika semua valid
-          if (valid) {
-            alert("Pesan berhasil dikirim!");
-            document.getElementById("contactForm").reset();
-          }
-        });
-    </script>
   </body>
 </html>
