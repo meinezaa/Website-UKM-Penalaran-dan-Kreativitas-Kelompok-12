@@ -1,18 +1,26 @@
 <!doctype html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Website UKM Penalaran</title>
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind / Custom CSS -->
- <link rel="stylesheet" href="../dist/output.css">
-  </head>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website UKM Penalaran</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Tailwind -->
+<link rel="stylesheet" href="../dist/output.css">
+
+</head>
+
+
+<body class="font-[Poppins] bg-gray-50">
+
+<!-- ================= NAVBAR ================= -->
 
 <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
 <div class="flex items-center justify-between px-6 py-0.5 text-white">
@@ -150,172 +158,321 @@ Log In
 </div>
 </header>
 
-    <!-- beranda -->
-    <section id="beranda">
-      <h2>UPN Mengajar</h2>
+<!-- ================= HERO ================= -->
 
-      <p>
-        Program Pengabdian Pendidikan oleh UKM Penalaran dan Kreativitas UPN
-        Veteran Jawa Timur.
-      </p>
+<section class="relative pt-36 pb-28 text-white text-center bg-cover bg-center"
+style="background-image: url('./foto/ukm.jpg');">
 
-      <p>
-        Program ini bertujuan memberikan pengalaman belajar yang interaktif dan
-        aplikatif kepada siswa melalui kegiatan pembelajaran dan praktik
-        langsung.
-      </p>
+<!-- Overlay -->
+<div class="absolute inset-0 bg-black/50"></div>
 
-      <button>Daftar Volunteer</button>
-      <button>Pelajari Program</button>
-    </section>
+<!-- Content -->
+<div class="relative max-w-5xl mx-auto px-6">
 
-    <!-- tentang proker upn mengajar -->
-    <section id="tentang">
-      <h2>Tentang UPN Mengajar</h2>
+<h1 class="text-5xl font-bold mb-6">
+UKM Penalaran & Kreativitas
+</h1>
 
-      <p>
-        UPN Mengajar merupakan program pengabdian masyarakat di bidang
-        pendidikan yang diselenggarakan oleh Bidang Pendidikan Sosial UKM
-        Penalaran dan Kreativitas UPN Veteran Jawa Timur.
-      </p>
+<p class="text-lg text-gray-200 max-w-2xl mx-auto">
+Unit kegiatan mahasiswa yang berfokus pada pengembangan
+riset, inovasi, dan kreativitas mahasiswa
+UPN "Veteran" Jawa Timur.
+</p>
 
-      <p>
-        Program ini mendukung tujuan pembangunan berkelanjutan khususnya SDGs 4
-        yaitu Quality Education dengan menghadirkan kegiatan pembelajaran yang
-        interaktif serta berbasis praktik.
-      </p>
+</div>
 
-      <p>
-        Melalui kegiatan ini mahasiswa dapat berkontribusi kepada masyarakat
-        sekaligus mengembangkan kemampuan komunikasi, kepemimpinan, serta
-        pengalaman mengajar secara langsung.
-      </p>
-    </section>
+</section>
 
-    <!-- kegiatan upn mengajar -->
 
-    <footer class="bg-[#8B1E1E] text-white pt-16">
+<!-- ================= VISI MISI ================= -->
 
-  <div class="max-w-7xl mx-auto px-6 md:px-20 grid md:grid-cols-3 gap-10 pb-10">
+<section class="py-20">
 
-    <!-- KIRI : LOGO + MENU -->
-    <div class="md:border-r md:border-red-300 md:pr-10">
+<div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-10">
 
-      <!-- logo kecil tapi zoom -->
-      <div class="w-24 h-24 overflow-hidden mb-5">
-        <img src="foto/logo.jpeg" class="w-full h-full object-cover scale-150">
-      </div>
+<div class="bg-white p-8 rounded-2xl shadow hover:shadow-xl transition">
+<h3 class="text-2xl font-bold text-[#8B1E1E] mb-4">Visi</h3>
 
-      <h4 class="font-semibold mb-3 text-lg">Menu</h4>
-      <ul class="space-y-2 text-sm">
-        <li><a href="#" class="hover:underline">Home</a></li>
-        <li><a href="#" class="hover:underline">Tentang</a></li>
-        <li><a href="#" class="hover:underline">Kegiatan</a></li>
-        <li><a href="#" class="hover:underline">Relawan</a></li>
-      </ul>
+<p>
+Menjadi wadah pengembangan mahasiswa yang unggul
+dalam bidang penalaran, penelitian, dan kreativitas
+untuk menciptakan inovasi yang berdampak bagi masyarakat.
+</p>
 
-    </div>
+</div>
 
-    <!-- TENGAH : SEND MESSAGE -->
-    <div class="text-center md:border-r md:border-red-300 md:px-10">
+<div class="bg-white p-8 rounded-2xl shadow hover:shadow-xl transition">
 
-      <h4 class="font-semibold mb-2 text-lg">Send Message</h4>
+<h3 class="text-2xl font-bold text-[#8B1E1E] mb-4">Misi</h3>
 
-      <!-- info pesan -->
-      <p class="text-xs text-gray-200 mb-4">
-        Pesan akan dikirim ke email UPN Mengajar
-      </p>
+<ul class="list-disc ml-5 space-y-2">
+<li>Mengembangkan budaya riset di kalangan mahasiswa</li>
+<li>Mendorong inovasi dan kreativitas mahasiswa</li>
+<li>Mengikuti kompetisi ilmiah tingkat nasional</li>
+<li>Membangun kolaborasi akademik</li>
+</ul>
 
-      <form action="mailto:upnmengajar.jt@gmail.com" method="post" enctype="text/plain" class="space-y-3">
+</div>
 
-        <input 
-        type="text"
-        name="nama"
-        placeholder="Nama"
-        class="w-full px-3 py-2 rounded text-black text-sm">
+</div>
 
-        <input 
-        type="email"
-        name="email"
-        placeholder="Email"
-        class="w-full px-3 py-2 rounded text-black text-sm">
+</section>
 
-        <textarea
-        name="pesan"
-        placeholder="Pesan"
-        rows="3"
-        class="w-full px-3 py-2 rounded text-black text-sm"></textarea>
 
-        <!-- tombol kiri -->
-        <div class="text-left">
-          <button 
-          type="submit"
-          class="bg-white text-[#8B1E1E] px-5 py-2 rounded text-sm font-semibold hover:bg-gray-200 transition">
-          Kirim
-          </button>
-        </div>
+<!-- ================= BIDANG ================= -->
 
-      </form>
+<section class="py-20 bg-white">
 
-    </div>
+<div class="max-w-6xl mx-auto px-6 text-center">
 
-    <!-- KANAN : KONTAK -->
-    <div class="md:pl-10">
+<h2 class="text-3xl font-bold text-[#8B1E1E] mb-12">
+Bidang dalam UKM
+</h2>
 
-      <h4 class="font-semibold mb-4 text-lg">Contact Us</h4>
+<div class="grid md:grid-cols-3 gap-8">
 
-      <div class="space-y-3 text-sm">
+<div class="bg-gray-100 p-8 rounded-2xl shadow hover:shadow-xl transition">
 
-        <div class="flex items-center gap-2">
-          <img src="foto/logo email.jpg" class="w-4 h-4">
-          <a href="mailto:upnmengajar.jt@gmail.com" class="hover:underline">
-            upnmengajar.jt@gmail.com
-          </a>
-        </div>
+<h3 class="font-bold text-xl mb-3">Penelitian</h3>
 
-        <div class="flex items-center gap-2">
-          <img src="foto/logo instagram.jpg" class="w-4 h-4">
-          <a href="https://instagram.com/upnmengajar.jt" class="hover:underline">
-            @upnmengajar.jt
-          </a>
-        </div>
+<p>
+Mengembangkan kemampuan riset dan karya ilmiah mahasiswa.
+</p>
 
-        <div class="flex items-center gap-2">
-          <img src="foto/logo wa.jpg" class="w-4 h-4">
-          <a href="https://wa.me/6289699808453" class="hover:underline">
-            089699808453 (Nabila)
-          </a>
-        </div>
+</div>
 
-      </div>
+<div class="bg-gray-100 p-8 rounded-2xl shadow hover:shadow-xl transition">
 
-      <!-- alamat sekre -->
-      <div class="mt-8 text-sm text-gray-200 leading-relaxed">
-        <p class="font-semibold mb-1">Sekretariat Kami Berada di:</p>
-        <p>
-          Universitas Pembangunan Nasional "Veteran" Jawa Timur
-          Jl. Raya Rungkut Madya, Gunung Anyar, Surabaya, Jawa Timur
-        </p>
-      </div>
+<h3 class="font-bold text-xl mb-3">Kreativitas</h3>
 
-    </div>
+<p>
+Mendorong inovasi dan ide kreatif dalam berbagai bidang.
+</p>
 
-  </div>
+</div>
 
-  <!-- CREDIT -->
-  <div class="bg-[#6e1515] px-6 md:px-20 py-4 flex flex-col md:flex-row justify-between text-sm text-gray-200">
+<div class="bg-gray-100 p-8 rounded-2xl shadow hover:shadow-xl transition">
 
-    <p>
-      © 2026 UPN Mengajar — UKM Penalaran & Kreativitas UPN "Veteran" Jawa Timur
-    </p>
+<h3 class="font-bold text-xl mb-3">Pengembangan SDM</h3>
 
-    <p>
-      Website by <span class="font-semibold">Vina • Naila • Inez Sistem informasi UPNVJT 2024</span>
-    </p>
+<p>
+Meningkatkan kualitas anggota melalui pelatihan dan mentoring.
+</p>
 
-  </div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= PENGURUS ================= -->
+
+<section class="py-20">
+
+<div class="max-w-6xl mx-auto px-6 text-center">
+
+<h2 class="text-3xl font-bold text-[#8B1E1E] mb-12">
+Pengurus Inti
+</h2>
+
+<div class="grid md:grid-cols-4 gap-8">
+
+<div class="bg-white rounded-2xl shadow p-6 hover:shadow-xl transition">
+
+<img src="./foto/martin.jpeg"
+class="rounded-full mx-auto mb-4">
+
+<h4 class="font-bold">Ketua</h4>
+
+<p class="text-sm text-gray-500">Nama Ketua</p>
+
+</div>
+
+
+<div class="bg-white rounded-2xl shadow p-6 hover:shadow-xl transition">
+
+<img src="./foto/Pharita ★.jpeg"
+class="rounded-full mx-auto mb-4">
+
+<h4 class="font-bold">Wakil Ketua</h4>
+
+<p class="text-sm text-gray-500">Nama Wakil</p>
+
+</div>
+
+
+<div class="bg-white rounded-2xl shadow p-6 hover:shadow-xl transition">
+
+<img src="./foto/download (10).jpeg"
+class="rounded-full mx-auto mb-4">
+
+<h4 class="font-bold">Sekretaris</h4>
+
+<p class="text-sm text-gray-500">Nama Sekretaris</p>
+
+</div>
+
+
+<div class="bg-white rounded-2xl shadow p-6 hover:shadow-xl transition">
+
+<img src="./foto/download (15).jpeg"
+class="rounded-full mx-auto mb-4">
+
+<h4 class="font-bold">Bendahara</h4>
+
+<p class="text-sm text-gray-500">Nama Bendahara</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= KEGIATAN ================= -->
+
+<section class="py-20 bg-white">
+
+<div class="max-w-6xl mx-auto px-6 text-center">
+
+<h2 class="text-3xl font-bold text-[#8B1E1E] mb-12">
+Highlight Kegiatan
+</h2>
+
+<div class="grid md:grid-cols-3 gap-8">
+
+<div class="rounded-2xl overflow-hidden shadow hover:shadow-xl transition">
+
+<img src="./foto/kegiatanukm1.JPG"
+class="hover:scale-105 transition duration-300">
+
+<div class="p-5">
+
+<h4 class="font-bold">Workshop PKM</h4>
+
+<p class="text-sm text-gray-600">
+Pelatihan penulisan proposal Program Kreativitas Mahasiswa.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="rounded-2xl overflow-hidden shadow hover:shadow-xl transition">
+
+<img src="./foto/kegiatanukm2.JPG"
+class="hover:scale-105 transition duration-300">
+
+<div class="p-5">
+
+<h4 class="font-bold">Seminar Nasional</h4>
+
+<p class="text-sm text-gray-600">
+Seminar inspiratif tentang inovasi mahasiswa.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="rounded-2xl overflow-hidden shadow hover:shadow-xl transition">
+
+<img src="./foto/kegiatanukm3.JPG"
+class="hover:scale-105 transition duration-300">
+
+<div class="p-5">
+
+<h4 class="font-bold">Kompetisi Karya Ilmiah</h4>
+
+<p class="text-sm text-gray-600">
+Ajang kompetisi karya ilmiah mahasiswa.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="bg-[#8B1E1E] text-white pt-16">
+
+<div class="max-w-7xl mx-auto px-6 md:px-20 grid md:grid-cols-3 gap-10 pb-10">
+
+<div>
+
+<img src="foto/logo.jpeg" class="w-24 mb-4">
+
+<h4 class="font-semibold mb-3 text-lg">Menu</h4>
+
+<ul class="space-y-2 text-sm">
+
+<li><a href="#">Home</a></li>
+<li><a href="#">Tentang</a></li>
+<li><a href="#">Kegiatan</a></li>
+<li><a href="#">Relawan</a></li>
+
+</ul>
+
+</div>
+
+<div>
+
+<h4 class="font-semibold mb-4 text-lg">Contact</h4>
+
+<p>Email : upnmengajar.jt@gmail.com</p>
+<p>Instagram : @upnmengajar.jt</p>
+<p>Whatsapp : 089699808453</p>
+
+</div>
+
+<div>
+
+<h4 class="font-semibold mb-3 text-lg">Alamat</h4>
+
+<p class="text-sm leading-relaxed">
+
+Universitas Pembangunan Nasional "Veteran" Jawa Timur  
+Jl. Raya Rungkut Madya, Surabaya
+
+</p>
+
+</div>
+
+</div>
+
+<div class="bg-[#6e1515] py-4 text-center text-sm">
+
+© 2026 UKM Penalaran & Kreativitas UPN "Veteran" Jawa Timur
+
+</div>
 
 </footer>
 
-  </body>
+ <script>
+const header = document.querySelector("header");
+
+window.addEventListener("scroll", function () {
+  if (window.scrollY > 50) {
+    header.classList.add("bg-red-900", "shadow-lg", "transition-all", "duration-300");
+  } else {
+    header.classList.remove("bg-red-900", "shadow-lg");
+  }
+});
+</script>
+
+</body>
 </html>
