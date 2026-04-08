@@ -10,160 +10,150 @@
     
     <link rel="stylesheet" href="../dist/output.css">
 </head>
-<body class="font-[Poppins] pt-28 bg-gray-50">
+<body class="font-[Poppins] bg-gray-50">
     
-    <header class="fixed top-0 left-0 w-full bg-red-500 text-white z-50 shadow-md" style="z-index: 9999;">
-        <div class="flex items-center justify-between px-6 py-0.5 text-white">
+ <header id="main-nav" class="fixed top-0 left-0 w-full bg-red-900 text-white z-[9999] shadow-md">
+    <div class="flex items-center justify-between px-6 py-0.5 text-white">
+        <div class="flex items-center">
+            <a href="beranda.html" class="overflow-hidden">
+                <img src="./foto/logo.jpeg" alt="Logo UPN Mengajar" class="w-16 scale-125">
+            </a>
+        </div>
 
-            <div class="flex items-center">
-                <a href="beranda.html" class="overflow-hidden">
-                    <img src="./foto/logo.jpeg" alt="Logo UPN Mengajar" class="w-16 scale-125">
+        <div class="flex items-center gap-12">
+            <nav>
+                <ul class="flex gap-12 font-poppins font-semibold">
+                    <li><a href="beranda.html" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Home</a></li>
+                    <li class="relative group">
+                        <a href="#" class="flex items-center gap-1 relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-full after:bg-white after:transition-all after:duration-300">
+                            Tentang
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </a>
+                        <ul class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out">
+                            <li><a href="ukm.html" class="block px-5 py-2 hover:bg-gray-100">UKM Penalaran dan Kreativitas</a></li>
+                            <li><a href="upnmengajar.html" class="block px-5 py-2 hover:bg-gray-100">Program Kerja UPN Mengajar</a></li>
+                            <li><a href="tim.html" class="block px-5 py-2 bg-red-5 hover:bg-red-100">Tim UPN Mengajar</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="kegiatan.html" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Kegiatan</a></li>
+                    <li><a href="relawan.html" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Relawan</a></li>
+                </ul>
+            </nav>
+            <div class="relative group">
+                <a href="#" class="hover:text-gray-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.879 17.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
                 </a>
             </div>
-
-            <div class="flex items-center gap-12">
-
-                <nav>
-                    <ul class="flex gap-12 font-poppins font-semibold">
-
-                        <li>
-                            <a href="beranda.html"
-                                class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
-                                Home
-                            </a>
-                        </li>
-
-                        <li class="relative group">
-                            <a href="#"
-                                class="flex items-center gap-1 relative 
-                                after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-full 
-                                after:bg-white after:transition-all after:duration-300">
-                                Tentang
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                </svg>
-                            </a>
-
-                            <ul class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md
-                                opacity-0 invisible -translate-y-2
-                                group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
-                                transition-all duration-300 ease-out">
-                                <li>
-                                    <a href="ukm.html" class="block px-5 py-2 hover:bg-gray-100">
-                                        UKM Penalaran dan Kreativitas
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="upnmengajar.html" class="block px-5 py-2 hover:bg-gray-100">
-                                        Program Kerja UPN Mengajar
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="tim.html" class="block px-5 py-2 bg-red-50 text-red-600 font-bold hover:bg-red-100">
-                                        Tim UPN Mengajar
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li>
-                            <a href="kegiatan.html"
-                                class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
-                                Kegiatan
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="relawan.html"
-                                class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
-                                Relawan
-                            </a>
-                        </li>
-
-                    </ul>
-                </nav>
-
-                <div class="relative group">
-                    <a href="#" class="hover:text-gray-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.879 17.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                    </a>
-                    <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-black/50 text-white text-xs px-3 py-2 opacity-0 group-hover:opacity-100 transition duration-200 whitespace-nowrap">
-                        Log In
-                    </div>
-                </div>
-            </div>
         </div>
-    </header>
+    </div>
+</header>
 
-    <section class="py-16 px-6 text-center">
+<div class="h-24"></div>
+    <section class="px-6 text-center">
         <div class="max-w-5xl mx-auto">
-            <h1 class="text-center text-3xl font-bold">TIM UPN MENGAJAR</h1>
+            <h1 class="text-center text-3xl font-bold mt-4">TIM UPN MENGAJAR</h1>
         
-            <p class="text-gray-600 mb-12">Program UPN Mengajar dikelola oleh Bidang Pendidikan Sosial (Diksos) UKM Penalaran dan Kreativitas UPN Veteran Jawa Timur. 
+            <p class="text-gray-600 mb-8 mt-4">Program UPN Mengajar dikelola oleh Bidang Pendidikan Sosial (Diksos) UKM Penalaran dan Kreativitas UPN Veteran Jawa Timur. 
             Bidang ini berperan dalam merancang dan mengoordinasikan kegiatan bersama relawan mahasiswa yang terlibat dalam program UPN Mengajar.</p>
 
-            <div class="py-10 pt-20">
-                <img src="foto/Foto lengkap.jpg" alt="all diksos" class="mx-auto mt-10 rounded-lg shadow-lg">
-                   
+            <div class="py-5">
+                <div class="mt-8 overflow-hidden rounded-2xl shadow-2xl shadow-gray-200">
+                    <img src="foto/Foto lengkap.jpg" alt="all diksos" 
+                    class="mx-auto w-full h-auto object-cover object-center transform transition-transform duration-700 ease-out hover:scale-105">
+                </div>
             </div>
             
-            <section class="pt-20">
-                <h2 class="mt-20 text-2xl font-semibold mb-10">BPH BIDANG DIKSOS</h2>
+           <section class="pt-16">
+               <h2 class="mt-16 text-2xl font-semibold mb-10 uppercase">BPH BIDANG DIKSOS</h2>
                 <div class="grid md:grid-cols-3 gap-8 mb-16">
-                    <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition">
-                        <img src="foto/Ketua Bidang.jpeg" class="rounded-lg mb-4">
-                        <h3 class="font-semibold">Raihan Putra Pradana</h3>
-                        <p class="text-sm text-gray-500">Ketua Bidang</p>
+                    <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
+                        <div class="overflow-hidden rounded-lg mb-4">
+                        <img src="foto/Ketua Bidang.jpeg" 
+                        class="w-full h-auto transform transition-transform duration-500 ease-out hover:scale-110">
+                        </div>
+                            <div class="text-center">
+                            <h3 class="font-bold text-gray-800">Raihan Putra Pradana</h3>
+                            <p class="text-sm text-gray-500">Ketua Bidang</p>
+                            </div>
                     </div>
                     
-                    <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition">
-                        <img src="foto/Wakil Ketua Bidang.jpg" class="rounded-lg mb-4">
-                        <h3 class="font-semibold">Andre Luhut Jairus</h3>
-                        <p class="text-sm text-gray-500">Wakil Ketua</p>
+                    <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
+                        <div class="overflow-hidden rounded-lg mb-4">
+                            <img src="foto/Wakil Ketua Bidang.jpg" 
+                            class="w-full h-auto transform transition-transform duration-500 ease-out hover:scale-110">
+                         </div>
+                             <div class="text-center">
+                                <h3 class="font-bold text-gray-800">Andre Luhut Jairus</h3>
+                                <p class="text-sm text-gray-500">Wakil Ketua</p>
+                            </div>
+                        </div>
+    
+                    <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
+                         <div class="overflow-hidden rounded-lg mb-4">
+                         <img src="foto/Sekretaris Bidang.jpg" 
+                         class="w-full h-auto transform transition-transform duration-500 ease-out hover:scale-110">
+                        </div>
+                            <div class="text-center">
+                                <h3 class="font-bold text-gray-800">Nabila Devi Salma</h3>
+                                <p class="text-sm text-gray-500">Sekretaris</p>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition">
-                        <img src="foto/Sekretaris Bidang.jpg" class="rounded-lg mb-4">
-                        <h3 class="font-semibold">Nabila Devi Salma</h3>
-                        <p class="text-sm text-gray-500">Sekretaris</p>
                     </div>
-                </div>
             </section>
 
-            <section>
-                <h2 class="text-2xl font-semibold mb-8">STAF AHLI</h2>
+           <section class="mb-16">
+                <h2 class="text-2xl font-semibold mb-8 text-center md:text-left">STAF AHLI</h2>
                 <div class="grid md:grid-cols-4 gap-8">
-                    <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition">
-                        <img src="foto/Staff Ahli Medsos Diksos.jpg" class="rounded-lg mb-3">
-                        <h3 class="text-sm font-semibold">Fitri Aulia Taulani</h3>
-                        <p class="text-xs text-gray-500">Medsos Diksos</p>
-                    </div>
-
-                    <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition">
-                        <img src="foto/Staff Ahli Bina Desa.jpg" class="rounded-lg mb-3">
-                        <h3 class="text-sm font-semibold">Muhammad Alvin</h3>
-                        <p class="text-xs text-gray-500">Bina Desa</p>
-                    </div>
-
-                    <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition">
-                        <img src="foto/Staff Ahli UPN Mengajar.jpg" class="rounded-lg mb-3">
-                        <h3 class="text-sm font-semibold">Margaretha Deana</h3>
-                        <p class="text-xs text-gray-500">UPN Mengajar</p>
-                    </div>
-
-                    <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition">
-                        <img src="foto/Staff Ahlii Nalar Peduli.jpg" class="rounded-lg mb-3">
-                        <h3 class="text-sm font-semibold">Nayla Sabrina</h3>
-                        <p class="text-xs text-gray-500">Nalar Peduli</p>
-                    </div>
-                </div>
-            </section>
+                    <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
+                    <div class="overflow-hidden rounded-lg mb-3">
+                <img src="foto/Staff Ahli Medsos Diksos.jpg" 
+                class="w-full h-auto transform transition-transform duration-500 ease-out hover:scale-110">
+            </div>
+            <div class="text-center">
+                <h3 class="text-sm font-semibold text-gray-800">Fitri Aulia Taulani</h3>
+                <p class="text-xs text-gray-500">Medsos Diksos</p>
+            </div>
         </div>
-    </section>
+
+        <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
+            <div class="overflow-hidden rounded-lg mb-3">
+                <img src="foto/Staff Ahli Bina Desa.jpg" 
+                class="w-full h-auto transform transition-transform duration-500 ease-out hover:scale-110">
+            </div>
+            <div class="text-center">
+                <h3 class="text-sm font-semibold text-gray-800">Muhammad Alvin</h3>
+                <p class="text-xs text-gray-500">Bina Desa</p>
+            </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
+            <div class="overflow-hidden rounded-lg mb-3">
+                <img src="foto/Staff Ahli UPN Mengajar.jpg" 
+                class="w-full h-auto transform transition-transform duration-500 ease-out hover:scale-110">
+            </div>
+            <div class="text-center">
+                <h3 class="text-sm font-semibold text-gray-800">Margaretha Deana</h3>
+                <p class="text-xs text-gray-500">UPN Mengajar</p>
+            </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
+            <div class="overflow-hidden rounded-lg mb-3">
+                <img src="foto/Staff Ahlii Nalar Peduli.jpg" 
+                class="w-full h-auto transform transition-transform duration-500 ease-out hover:scale-110">
+            </div>
+            <div class="text-center">
+                <h3 class="text-sm font-semibold text-gray-800">Nayla Sabrina</h3>
+                <p class="text-xs text-gray-500">Nalar Peduli</p>
+            </div>
+        </div>
+        
+    </div> </section>
 
     <footer class="bg-[#8B1E1E] text-white pt-16">
         <div class="max-w-7xl mx-auto px-6 md:px-20 grid md:grid-cols-3 gap-10 pb-10">
@@ -225,5 +215,22 @@
             <p>Website by <span class="font-semibold">Vina • Naila • Inez Sistem informasi UPNVJT 2024</span></p>
         </div>
     </footer>
-</body>
+
+    <script>
+    const nav = document.getElementById("main-nav");
+
+function ubahNav() {
+    if (window.scrollY > 50) {
+        nav.classList.add("bg-red-900", "shadow-lg");
+        nav.classList.remove("bg-red-500");
+    } else {
+        nav.classList.add("bg-red-900"); // tetap ada warna!
+        nav.classList.remove("shadow-lg");
+    }
+}
+
+window.addEventListener("scroll", ubahNav);
+window.addEventListener("DOMContentLoaded", ubahNav);
+</script>
+    </body>
 </html>
