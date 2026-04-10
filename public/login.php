@@ -2,19 +2,50 @@
 session_start();
 include 'koneksi.php'; // Memanggil jembatan database
 
-// 1. Cek: Kalau user SUDAH login, jangan biarkan dia masuk ke halaman login lagi
+// === 1. CEK COOKIE (TIKET VIP / REMEMBER ME) ===
+// Cek apakah ada cookie tersimpan, dan pastikan kita tidak menyimpan password di dalamnya!
+if (isset($_COOKIE['id_user']) && isset($_COOKIE['user_key'])) {
+    $cookie_id = $_COOKIE['id_user'];
+    $cookie_key = $_COOKIE['user_key'];
+
+    // Ambil data user berdasarkan ID dari cookie
+    $ambil_data = mysqli_query($koneksi, "SELECT * FROM users WHERE id_user = '$cookie_id'");
+    
+    if (mysqli_num_rows($ambil_data) === 1) {
+        $data_cookie = mysqli_fetch_assoc($ambil_data);
+        
+        // Verifikasi keamanan: apakah hash email di database cocok dengan key di cookie?
+        if ($cookie_key === hash('sha256', $data_cookie['email'])) {
+            // Jika asli, langsung berikan Session
+            $_SESSION['id_user'] = $data_cookie['id_user'];
+            $_SESSION['role'] = $data_cookie['role'];
+            $_SESSION['nama_lengkap'] = $data_cookie['nama_lengkap'];
+        }
+    }
+}
+// ===============================================
+
+// 2. Cek Session: Kalau user SUDAH login, jangan biarkan dia masuk ke halaman login lagi
 if (isset($_SESSION['id_user'])) {
     if ($_SESSION['role'] == 'admin') {
         header("Location: dashboard_admin.php");
     } else {
-        header("Location: beranda.php");
+        // Cek dulu ke database, apakah user ini SUDAH pernah ngisi form atau belum?
+        $id_user_login = $_SESSION['id_user'];
+        $cek_riwayat = mysqli_query($koneksi, "SELECT * FROM pendaftaran_relawan WHERE id_user = '$id_user_login'");
+        
+        if (mysqli_num_rows($cek_riwayat) > 0) {
+            header("Location: status_pendaftaran.php");
+        } else {
+            header("Location: formulir.php");
+        }
     }
     exit();
 }
 
 $error_pesan = ""; // Variabel untuk menyimpan pesan jika password/email salah
 
-// 2. Logika PHP: Jika tombol "Masuk" ditekan
+// 3. Logika PHP: Jika tombol "Masuk" ditekan
 if (isset($_POST['login'])) {
     $email = mysqli_real_escape_string($koneksi, $_POST['email']);
     $password = $_POST['password'];
@@ -25,30 +56,35 @@ if (isset($_POST['login'])) {
     if (mysqli_num_rows($cek_email) === 1) {
         $data_user = mysqli_fetch_assoc($cek_email);
         
-        // Cek apakah password yang diketik cocok dengan password rahasia di database
-        if (password_verify($password, $data_user['password'])) {
+        // Cek apakah password yang diketik cocok dengan password di database
+       if (password_verify($password, $data_user['password'])) {
+            
             // Jika cocok, buatkan Session (Kartu Akses)
             $_SESSION['id_user'] = $data_user['id_user'];
             $_SESSION['role'] = $data_user['role'];
             $_SESSION['nama_lengkap'] = $data_user['nama_lengkap'];
+
+            // === 4. PEMBUATAN COOKIE (JIKA CHECKBOX DICENTANG) ===
+            if (isset($_POST['remember'])) {
+                // Buat cookie yang berlaku selama 30 hari (86400 detik * 30 hari)
+                // Kita HANYA menyimpan ID dan Hash dari Email (Sangat aman untuk UTS)
+                setcookie('id_user', $data_user['id_user'], time() + (86400 * 30), "/");
+                setcookie('user_key', hash('sha256', $data_user['email']), time() + (86400 * 30), "/");
+            }
+            // =====================================================
 
             // Lempar ke halaman sesuai jabatannya
             if ($data_user['role'] == 'admin') {
                 header("Location: dashboard_admin.php");
             } else {
                 // LOGIKA KHUSUS RELAWAN (USER)
-                // Cek dulu ke database, apakah user ini SUDAH pernah ngisi form atau belum?
                 $id_user_login = $data_user['id_user'];
                 $cek_riwayat = mysqli_query($koneksi, "SELECT * FROM pendaftaran_relawan WHERE id_user = '$id_user_login'");
                 
                 if (mysqli_num_rows($cek_riwayat) > 0) {
-                    // Kalau datanya ADA (berarti dia sudah pernah mendaftar)
-                    // Arahkan ke halaman status/pengumuman
                     header("Location: status_pendaftaran.php");
                 } else {
-                    // Kalau datanya KOSONG (berarti dia user baru yang mau daftar)
-                    // Arahkan langsung ke formulir
-                    header("Location: form_pendaftaran.php");
+                    header("Location: formulir.php");
                 }
             }
             exit();
@@ -92,11 +128,16 @@ if (isset($_POST['login'])) {
                        placeholder="contoh@gmail.com">
             </div>
 
-            <div class="mb-6">
+            <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Kata Sandi</label>
                 <input type="password" name="password" id="password" required 
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8B0000] focus:border-transparent transition" 
                        placeholder="Masukkan password Anda">
+            </div>
+
+            <div class="mb-6 flex items-center">
+                <input type="checkbox" name="remember" id="remember" class="w-4 h-4 text-[#8B0000] bg-gray-100 border-gray-300 rounded focus:ring-[#8B0000]">
+                <label for="remember" class="ml-2 text-sm font-medium text-gray-700">Ingat Saya</label>
             </div>
 
             <button type="submit" name="login" 
@@ -106,7 +147,7 @@ if (isset($_POST['login'])) {
         </form>
 
         <p class="text-center text-sm text-gray-600 mt-8">
-            Belum punya akun relawan? <br>
+            Belum punya akun? <br>
             <a href="register.php" class="text-[#8B0000] hover:underline font-bold">Daftar sekarang di sini</a>
         </p>
 
