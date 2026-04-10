@@ -1,3 +1,23 @@
+<?php 
+include 'koneksi.php'; 
+
+// Fungsi untuk mengambil ID dan Nama dari database berdasarkan kategori
+function getDataKegiatan($koneksi, $nama) {
+    $query = mysqli_query($koneksi, "SELECT id_kegiatan, nama_kegiatan FROM kegiatan WHERE nama_kegiatan LIKE '%$nama%' LIMIT 1");
+    $result = mysqli_fetch_assoc($query);
+    
+    // Kalau database masih kosong, kasih ID default supaya tidak error saat diklik
+    if (!$result) {
+        return ['id_kegiatan' => '0', 'nama_kegiatan' => 'Program ' . $nama];
+    }
+    return $result;
+}
+
+$sd = getDataKegiatan($koneksi, 'Sekolah Dasar');
+$slb = getDataKegiatan($koneksi, 'SLB');
+$yayasan = getDataKegiatan($koneksi, 'Yayasan');
+?>
+
 <!doctype html>
 <html lang="id">
   <head>
@@ -5,7 +25,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Relawan - UPN Mengajar</title>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,14 +32,12 @@
       rel="stylesheet"
     />
 
-    <!-- Tailwind / Custom CSS -->
     <link rel="stylesheet" href="../dist/output.css" />
   </head>
 
   <body class="bg-gray-50 font-poppins">
     <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
       <div class="flex items-center justify-between px-6 py-0.5 text-white">
-        <!-- Logo -->
         <div class="flex items-center">
           <a href="beranda.html" class="overflow-hidden">
             <img
@@ -31,9 +48,7 @@
           </a>
         </div>
 
-        <!-- Right Side -->
         <div class="flex items-center gap-12">
-          <!-- Navigation -->
           <nav>
             <ul class="flex gap-12 font-poppins font-semibold">
               <li>
@@ -68,7 +83,6 @@
                   </svg>
                 </a>
 
-                <!-- Dropdown -->
                 <ul
                   class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
                 >
@@ -121,7 +135,6 @@
             </ul>
           </nav>
 
-          <!-- Login Icon + Tooltip -->
           <div class="relative group">
             <a href="#" class="hover:text-gray-300">
               <svg
@@ -151,11 +164,9 @@
     </header>
 
     <main class="pt-[140px] md:pt-[160px]">
-      <!-- HERO + BACKGROUND -->
       <section
         class="relative overflow-hidden bg-gradient-to-br from-white via-[#fff4f4] to-[#ffe1e1]"
       >
-        <!-- dekor blur -->
         <div class="absolute inset-0 -z-10">
           <div
             class="absolute top-[-100px] left-[-80px] w-[320px] h-[320px] bg-red-200/40 rounded-full blur-3xl"
@@ -168,14 +179,12 @@
           ></div>
         </div>
 
-        <!-- pattern halus -->
         <div class="absolute inset-0 -z-10 opacity-[0.05]">
           <div
             class="w-full h-full bg-[radial-gradient(#8B1E1E_1px,transparent_1px)] [background-size:26px_26px]"
           ></div>
         </div>
 
-        <!-- hero text -->
         <section class="px-6 md:px-20 pb-10 bg-transparent">
           <div class="max-w-4xl">
             <span
@@ -200,12 +209,10 @@
           </div>
         </section>
 
-        <!-- card wrapper -->
         <section class="px-6 md:px-20 pb-20 bg-transparent">
           <div class="grid gap-10">
-            <!-- ================= CARD 1 ================= -->
             <div
-              class="bg-white/90 backdrop-blur-md rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 md:p-10 grid md:grid-cols-2 gap-10 items-start"
+              class="bg-white/90 backdrop-blur-md rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 md:p-10 grid md:grid-cols-2 gap-10 items-stretch"
             >
               <div class="w-full h-72 md:h-[420px] overflow-hidden rounded-2xl">
                 <img
@@ -215,79 +222,81 @@
                 />
               </div>
 
-              <div class="space-y-6 max-w-2xl pt-1">
-                <h2 class="text-3xl font-bold text-[#8B1E1E]">Sekolah Dasar</h2>
-
-                <p
-                  class="text-gray-600 leading-relaxed text-sm md:text-base text-justify"
-                >
-                  Program Sekolah Dasar dalam UPN Mengajar mengajak relawan
-                  untuk berkontribusi langsung dalam meningkatkan kualitas
-                  pendidikan dasar di Indonesia. Fokus utama kegiatan ini adalah
-                  penguatan literasi dan numerasi siswa melalui pendekatan
-                  belajar yang menyenangkan.
-                </p>
-
-                <div
-                  class="flex flex-col md:flex-row md:gap-20 gap-6 text-sm mt-2"
-                >
-                  <ul class="text-gray-600 space-y-2 flex-1">
-                    <li class="flex items-start gap-2 italic">
-                      <span class="text-red-700">•</span> Mengajar membaca &
-                      menulis
-                    </li>
-                    <li class="flex items-start gap-2 italic">
-                      <span class="text-red-700">•</span> Matematika dasar
-                    </li>
-                    <li class="flex items-start gap-2 italic">
-                      <span class="text-red-700">•</span> Kegiatan kreatif
-                    </li>
-                  </ul>
-
-                  <div
-                    class="text-gray-700 space-y-2 flex-1 border-l-0 md:border-l md:pl-8 border-gray-100"
-                  >
-                    <p>
-                      <span
-                        class="text-red-700 font-bold uppercase text-[10px] tracking-widest block"
-                      >
-                        Metode
-                      </span>
-                      <span class="text-gray-600">Interaktif</span>
+              <div class="flex flex-col justify-between max-w-2xl pt-1">
+                <div class="space-y-6">
+                    <h2 class="text-3xl font-bold text-[#8B1E1E]">
+                    Sekolah Dasar
+                    </h2>
+                    <p
+                    class="text-gray-600 leading-relaxed text-sm md:text-base text-justify"
+                    >
+                    Program Sekolah Dasar dalam UPN Mengajar mengajak relawan
+                    untuk berkontribusi langsung dalam meningkatkan kualitas
+                    pendidikan dasar di Indonesia. Fokus utama kegiatan ini adalah
+                    penguatan literasi dan numerasi siswa melalui pendekatan
+                    belajar yang menyenangkan.
                     </p>
-                    <p>
-                      <span
-                        class="text-red-700 font-bold uppercase text-[10px] tracking-widest block mt-3"
-                      >
-                        Durasi
-                      </span>
-                      <span class="text-gray-600">4 Jam</span>
-                    </p>
-                    <p>
-                      <span
-                        class="text-red-700 font-bold uppercase text-[10px] tracking-widest block mt-3"
-                      >
-                        Kebutuhan
-                      </span>
-                      <span class="text-gray-600">3–5 Relawan</span>
-                    </p>
-                  </div>
+
+                    <div
+                    class="flex flex-col md:flex-row md:gap-20 gap-6 text-sm mt-2"
+                    >
+                    <ul class="text-gray-600 space-y-2 flex-1">
+                        <li class="flex items-start gap-2 italic">
+                        <span class="text-red-700">•</span> Mengajar membaca &
+                        menulis
+                        </li>
+                        <li class="flex items-start gap-2 italic">
+                        <span class="text-red-700">•</span> Matematika dasar
+                        </li>
+                        <li class="flex items-start gap-2 italic">
+                        <span class="text-red-700">•</span> Kegiatan kreatif
+                        </li>
+                    </ul>
+
+                    <div
+                        class="text-gray-700 space-y-2 flex-1 border-l-0 md:border-l md:pl-8 border-gray-100"
+                    >
+                        <p>
+                        <span
+                            class="text-red-700 font-bold uppercase text-[10px] tracking-widest block"
+                        >
+                            Metode
+                        </span>
+                        <span class="text-gray-600">Interaktif</span>
+                        </p>
+                        <p>
+                        <span
+                            class="text-red-700 font-bold uppercase text-[10px] tracking-widest block mt-3"
+                        >
+                            Durasi
+                        </span>
+                        <span class="text-gray-600">4 Jam</span>
+                        </p>
+                        <p>
+                        <span
+                            class="text-red-700 font-bold uppercase text-[10px] tracking-widest block mt-3"
+                        >
+                            Kebutuhan
+                        </span>
+                        <span class="text-gray-600">3–5 Relawan</span>
+                        </p>
+                    </div>
+                    </div>
                 </div>
 
                 <div class="pt-6">
                   <a
-                    href="relawan_sd.html"
+                    href="pendaftaran.php?id=<?= $sd['id_kegiatan']; ?>"
                     class="inline-block bg-[#8B1E1E] text-white px-10 py-3 rounded-full hover:bg-red-900 transition-all shadow-md hover:shadow-lg active:scale-95 font-bold text-center"
                   >
-                    Pilih Program Ini
+                    Pilih Program
                   </a>
                 </div>
               </div>
             </div>
 
-            <!-- ================= CARD 2 ================= -->
             <div
-              class="bg-white/90 backdrop-blur-md rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 md:p-10 grid md:grid-cols-2 gap-10 items-start"
+              class="bg-white/90 backdrop-blur-md rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 md:p-10 grid md:grid-cols-2 gap-10 items-stretch"
             >
               <div class="w-full h-72 md:h-[420px] overflow-hidden rounded-2xl">
                 <img
@@ -297,78 +306,79 @@
                 />
               </div>
 
-              <div class="space-y-6 max-w-2xl pt-1">
-                <h2 class="text-3xl font-bold text-[#8B1E1E]">
-                  Sekolah Luar Biasa
-                </h2>
+              <div class="flex flex-col justify-between max-w-2xl pt-1">
+                <div class="space-y-6">
+                    <h2 class="text-3xl font-bold text-[#8B1E1E]">
+                    Sekolah Luar Biasa
+                    </h2>
 
-                <p
-                  class="text-gray-600 leading-relaxed text-sm md:text-base text-justify"
-                >
-                  Program ini berfokus pada pendampingan siswa berkebutuhan
-                  khusus dengan pendekatan inklusif, empatik, dan adaptif untuk
-                  memastikan setiap anak mendapatkan hak pendidikan yang setara.
-                </p>
+                    <p
+                    class="text-gray-600 leading-relaxed text-sm md:text-base text-justify"
+                    >
+                    Program ini berfokus pada pendampingan siswa berkebutuhan
+                    khusus dengan pendekatan inklusif, empatik, dan adaptif untuk
+                    memastikan setiap anak mendapatkan hak pendidikan yang setara.
+                    </p>
 
-                <div
-                  class="flex flex-col md:flex-row md:gap-20 gap-6 text-sm mt-2"
-                >
-                  <ul class="text-gray-600 space-y-2 flex-1">
-                    <li class="flex items-start gap-2 italic">
-                      <span class="text-red-700">•</span> Pendampingan khusus
-                    </li>
-                    <li class="flex items-start gap-2 italic">
-                      <span class="text-red-700">•</span> Metode adaptif
-                    </li>
-                    <li class="flex items-start gap-2 italic">
-                      <span class="text-red-700">•</span> Komunikasi & empati
-                    </li>
-                  </ul>
+                    <div
+                    class="flex flex-col md:flex-row md:gap-20 gap-6 text-sm mt-2"
+                    >
+                    <ul class="text-gray-600 space-y-2 flex-1">
+                        <li class="flex items-start gap-2 italic">
+                        <span class="text-red-700">•</span> Pendampingan khusus
+                        </li>
+                        <li class="flex items-start gap-2 italic">
+                        <span class="text-red-700">•</span> Metode adaptif
+                        </li>
+                        <li class="flex items-start gap-2 italic">
+                        <span class="text-red-700">•</span> Komunikasi & empati
+                        </li>
+                    </ul>
 
-                  <div
-                    class="text-gray-700 space-y-2 flex-1 border-l-0 md:border-l md:pl-8 border-gray-100"
-                  >
-                    <p>
-                      <span
-                        class="text-red-700 font-bold uppercase text-[10px] tracking-widest block"
-                      >
-                        Metode
-                      </span>
-                      <span class="text-gray-600">Inklusif & Adaptif</span>
-                    </p>
-                    <p>
-                      <span
-                        class="text-red-700 font-bold uppercase text-[10px] tracking-widest block mt-3"
-                      >
-                        Durasi
-                      </span>
-                      <span class="text-gray-600">4 Jam</span>
-                    </p>
-                    <p>
-                      <span
-                        class="text-red-700 font-bold uppercase text-[10px] tracking-widest block mt-3"
-                      >
-                        Kebutuhan
-                      </span>
-                      <span class="text-gray-600">2–3 Relawan</span>
-                    </p>
-                  </div>
+                    <div
+                        class="text-gray-700 space-y-2 flex-1 border-l-0 md:border-l md:pl-8 border-gray-100"
+                    >
+                        <p>
+                        <span
+                            class="text-red-700 font-bold uppercase text-[10px] tracking-widest block"
+                        >
+                            Metode
+                        </span>
+                        <span class="text-gray-600">Inklusif & Adaptif</span>
+                        </p>
+                        <p>
+                        <span
+                            class="text-red-700 font-bold uppercase text-[10px] tracking-widest block mt-3"
+                        >
+                            Durasi
+                        </span>
+                        <span class="text-gray-600">4 Jam</span>
+                        </p>
+                        <p>
+                        <span
+                            class="text-red-700 font-bold uppercase text-[10px] tracking-widest block mt-3"
+                        >
+                            Kebutuhan
+                        </span>
+                        <span class="text-gray-600">2–3 Relawan</span>
+                        </p>
+                    </div>
+                    </div>
                 </div>
 
                 <div class="pt-6">
                   <a
-                    href="relawan_slb.html"
+                    href="pendaftaran.php?id=<?= $slb['id_kegiatan']; ?>"
                     class="inline-block bg-[#8B1E1E] text-white px-10 py-3 rounded-full hover:bg-red-900 transition-all shadow-md hover:shadow-lg active:scale-95 font-bold text-center"
                   >
-                    Pilih Program Ini
+                    Pilih Program
                   </a>
                 </div>
               </div>
             </div>
 
-            <!-- ================= CARD 3 ================= -->
             <div
-              class="bg-white/90 backdrop-blur-md rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 md:p-10 grid md:grid-cols-2 gap-10 items-start"
+              class="bg-white/90 backdrop-blur-md rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 md:p-10 grid md:grid-cols-2 gap-10 items-stretch"
             >
               <div class="w-full h-72 md:h-[420px] overflow-hidden rounded-2xl">
                 <img
@@ -378,69 +388,71 @@
                 />
               </div>
 
-              <div class="space-y-6 max-w-2xl pt-1">
-                <h2 class="text-3xl font-bold text-[#8B1E1E]">
-                  Yayasan & Komunitas
-                </h2>
+              <div class="flex flex-col justify-between max-w-2xl pt-1">
+                <div class="space-y-6">
+                    <h2 class="text-3xl font-bold text-[#8B1E1E]">
+                    Yayasan & Komunitas
+                    </h2>
 
-                <p
-                  class="text-gray-600 leading-relaxed text-sm md:text-base text-justify"
-                >
-                  Program ini memberikan pengalaman mengajar dalam lingkungan
-                  komunitas dengan pendekatan santai namun tetap bermakna.
-                </p>
+                    <p
+                    class="text-gray-600 leading-relaxed text-sm md:text-base text-justify"
+                    >
+                    Program ini memberikan pengalaman mengajar dalam lingkungan
+                    komunitas dengan pendekatan santai namun tetap bermakna.
+                    </p>
 
-                <div
-                  class="flex flex-col md:flex-row md:gap-20 gap-6 text-sm mt-2"
-                >
-                  <ul class="text-gray-600 space-y-2 flex-1">
-                    <li class="flex items-start gap-2 italic">
-                      <span class="text-red-700">•</span> Edukasi informal
-                    </li>
-                    <li class="flex items-start gap-2 italic">
-                      <span class="text-red-700">•</span> Aktivitas kreatif
-                    </li>
-                    <li class="flex items-start gap-2 italic">
-                      <span class="text-red-700">•</span> Motivasi anak
-                    </li>
-                  </ul>
+                    <div
+                    class="flex flex-col md:flex-row md:gap-20 gap-6 text-sm mt-2"
+                    >
+                    <ul class="text-gray-600 space-y-2 flex-1">
+                        <li class="flex items-start gap-2 italic">
+                        <span class="text-red-700">•</span> Edukasi informal
+                        </li>
+                        <li class="flex items-start gap-2 italic">
+                        <span class="text-red-700">•</span> Aktivitas kreatif
+                        </li>
+                        <li class="flex items-start gap-2 italic">
+                        <span class="text-red-700">•</span> Motivasi anak
+                        </li>
+                    </ul>
 
-                  <div
-                    class="text-gray-700 space-y-2 flex-1 border-l-0 md:border-l md:pl-8 border-gray-100"
-                  >
-                    <p>
-                      <span
-                        class="text-red-700 font-bold uppercase text-[10px] tracking-widest block"
-                      >
-                        Metode
-                      </span>
-                      <span class="text-gray-600">Santai & Bermakna</span>
-                    </p>
-                    <p>
-                      <span
-                        class="text-red-700 font-bold uppercase text-[10px] tracking-widest block mt-3"
-                      >
-                        Durasi
-                      </span>
-                      <span class="text-gray-600">4 Jam</span>
-                    </p>
-                    <p>
-                      <span
-                        class="text-red-700 font-bold uppercase text-[10px] tracking-widest block mt-3"
-                      >
-                        Kebutuhan
-                      </span>
-                      <span class="text-gray-600">3–4 Relawan</span>
-                    </p>
-                  </div>
+                    <div
+                        class="text-gray-700 space-y-2 flex-1 border-l-0 md:border-l md:pl-8 border-gray-100"
+                    >
+                        <p>
+                        <span
+                            class="text-red-700 font-bold uppercase text-[10px] tracking-widest block"
+                        >
+                            Metode
+                        </span>
+                        <span class="text-gray-600">Santai & Bermakna</span>
+                        </p>
+                        <p>
+                        <span
+                            class="text-red-700 font-bold uppercase text-[10px] tracking-widest block mt-3"
+                        >
+                            Durasi
+                        </span>
+                        <span class="text-gray-600">4 Jam</span>
+                        </p>
+                        <p>
+                        <span
+                            class="text-red-700 font-bold uppercase text-[10px] tracking-widest block mt-3"
+                        >
+                            Kebutuhan
+                        </span>
+                        <span class="text-gray-600">3–4 Relawan</span>
+                        </p>
+                    </div>
+                    </div>
                 </div>
 
                 <div class="pt-6">
                   <a
-                    href="relawan_yayaysan.html"
+                    href="pendaftaran.php?id=<?= $yayasan['id_kegiatan']; ?>"
                     class="inline-block bg-[#8B1E1E] text-white px-10 py-3 rounded-full hover:bg-red-900 transition-all shadow-md hover:shadow-lg active:scale-95 font-bold text-center"
                   >
-                    Pilih Program Ini
+                    Pilih Program
                   </a>
                 </div>
               </div>

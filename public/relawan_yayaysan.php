@@ -1,3 +1,16 @@
+<?php
+include "koneksi.php";
+
+// Mengambil data dari database yang lokasi atau judulnya mengandung kata 'Yayasan' atau 'Al-Kahfi'
+$query = mysqli_query($koneksi, "SELECT * FROM relawan WHERE nama_lokasi LIKE '%Yayasan%' OR judul_kegiatan LIKE '%Yayasan%' OR nama_lokasi LIKE '%Al-Kahfi%' LIMIT 1");
+$data  = mysqli_fetch_assoc($query);
+
+// Jika data tidak ditemukan di database sebagai fallback
+if (!$data) {
+    // Baris ini opsional, bisa diganti dengan pesan error atau redirect
+    // die("Data relawan Yayasan tidak ditemukan.");
+}
+?>
 <!doctype html>
 <html lang="id">
   <head>
@@ -16,7 +29,6 @@
   </head>
 
   <body class="bg-[#f5f5f7] font-poppins text-gray-800">
-    <!-- HEADER -->
     <header class="fixed top-0 left-0 w-full z-50 bg-[#8B1E1E] shadow-md">
       <div class="flex items-center justify-between px-6 py-2 text-white">
         <div class="flex items-center">
@@ -136,7 +148,6 @@
       </div>
     </header>
 
-    <!-- MAIN CONTENT -->
     <main
       class="pb-16 mx-auto"
       style="
@@ -146,14 +157,12 @@
         padding-right: 40px;
       "
     >
-      <!-- HERO / DETAIL ATAS -->
       <section
         class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 items-stretch mb-10"
       >
-        <!-- FOTO -->
         <div class="h-full">
           <div
-            class="bg-white rounded-[24px] border border-gray-200 overflow-hidden shadow-sm h-full"
+            class="bg-white rounded-[24px] border border-gray-200 overflow-hidden shadow-sm h-full flex"
           >
             <img
               src="./foto/yayasan.jpg"
@@ -163,180 +172,184 @@
           </div>
         </div>
 
-        <!-- CARD EVENT -->
-        <aside class="lg:sticky lg:top-24 self-start h-fit">
-  <div
-    class="bg-white rounded-[24px] border border-gray-200 shadow-sm p-6 flex flex-col h-full"
-  >
-    <div class="mb-4">
-      <span
-        class="inline-block text-xs font-medium text-white px-4 py-1.5 rounded-xl bg-gradient-to-r from-orange-500 to-purple-600 mb-4"
-      >
-        Event
-      </span>
+        <aside class="lg:sticky lg:top-24 self-start h-full">
+          <div
+            class="bg-white rounded-[24px] border border-gray-200 shadow-sm p-6 flex flex-col h-full"
+          >
+            <div class="mb-4">
+              <span
+                class="inline-block text-xs font-medium text-white px-4 py-1.5 rounded-xl bg-gradient-to-r from-orange-500 to-purple-600 mb-4"
+              >
+                Event
+              </span>
 
-      <h2
-        class="text-[24px] md:text-[30px] font-bold leading-snug text-gray-900"
-      >
-        Relawan Penggerak: Yayasan & Komunitas
-      </h2>
-    </div>
+              <h2
+                class="text-[24px] md:text-[30px] font-bold leading-snug text-gray-900"
+              >
+                <?php echo isset($data['judul_kegiatan']) ? $data['judul_kegiatan'] : 'Relawan Penggerak: Yayasan & Komunitas'; ?>
+              </h2>
+            </div>
 
-    <div class="flex flex-wrap gap-2 mb-5">
-      <span
-        class="text-xs px-3 py-1 rounded-full border border-red-200 text-red-500 bg-red-50"
-      >
-        Sosial
-      </span>
-      <span
-        class="text-xs px-3 py-1 rounded-full border border-red-200 text-red-500 bg-red-50"
-      >
-        Pengembangan Anak
-      </span>
-    </div>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span
+                class="text-xs px-3 py-1 rounded-full border border-red-200 text-red-500 bg-red-50"
+              >
+                Sosial
+              </span>
+              <span
+                class="text-xs px-3 py-1 rounded-full border border-red-200 text-red-500 bg-red-50"
+              >
+                Pengembangan Anak
+              </span>
+            </div>
 
-    <div
-      class="rounded-2xl border border-gray-200 overflow-hidden flex-1 flex flex-col"
-    >
-      <div class="p-5 space-y-6 flex-1">
-        <div class="flex gap-3">
-          <div class="text-red-500 text-xl">📅</div>
-          <div>
-            <p class="text-gray-500 text-sm mb-1">Jadwal Event</p>
-            <p class="text-gray-900 font-medium">31 Mei 2026</p>
-            <p class="text-gray-900">Pukul 08.00 – 12.00 WIB</p>
-            <a
-              href="#"
-              class="inline-block mt-3 text-red-500 text-sm hover:underline"
+            <div
+              class="rounded-2xl border border-gray-200 overflow-hidden flex-1 flex flex-col"
             >
-              Tambahkan ke Kalender Google
+              <div class="p-5 space-y-6 flex-1">
+                <div class="flex gap-3">
+                  <div class="text-red-500 text-xl">📅</div>
+                  <div>
+                    <p class="text-gray-500 text-sm mb-1">Jadwal Event</p>
+                    <p class="text-gray-900 font-medium">
+                        <?php echo isset($data['tanggal']) ? $data['tanggal'] : '31 Mei 2026'; ?>
+                    </p>
+                    <p class="text-gray-900">
+                        <?php echo isset($data['jam']) ? $data['jam'] : 'Pukul 08.00 – 12.00 WIB'; ?>
+                    </p>
+                    <a
+                      href="#"
+                      class="inline-block mt-3 text-red-500 text-sm hover:underline"
+                    >
+                      Tambahkan ke Kalender Google
+                    </a>
+                  </div>
+                </div>
+
+                <div class="flex gap-3">
+                  <div class="text-red-500 text-xl">📍</div>
+                  <div>
+                    <p class="text-gray-500 text-sm mb-1">Lokasi</p>
+                    <p class="text-gray-900 leading-8 font-medium">
+                      <?php echo isset($data['nama_lokasi']) ? $data['nama_lokasi'] : 'Yayasan Al-Kahfi'; ?>
+                    </p>
+                    <p class="text-gray-900 leading-8">
+                      <?php echo isset($data['alamat_lengkap']) ? $data['alamat_lengkap'] : 'Jl. Rungkut Harapan Blk. C No.41, Kali Rungkut, Kec. Rungkut, Surabaya, Jawa Timur 60293'; ?>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-gray-100 px-5 py-4 text-sm text-gray-800 border-t border-gray-200"
+              >
+                <span class="font-medium">Batas Registrasi:</span> <?php echo isset($data['tanggal']) ? $data['tanggal'] : '31 Mei 2026'; ?>
+              </div>
+            </div>
+
+            <a
+              href="daftar.html"
+              class="block w-full text-center bg-[#EB1D2D] text-white font-semibold py-3.5 rounded-xl transition mt-5 active:bg-red-800"
+            >
+              Daftar Sekarang
             </a>
           </div>
-        </div>
+        </aside>
+      </section>
 
-        <div class="flex gap-3">
-          <div class="text-red-500 text-xl">📍</div>
-          <div>
-            <p class="text-gray-500 text-sm mb-1">Lokasi</p>
-            <p class="text-gray-900 leading-8 font-medium">
-              Yayasan Al-Kahfi
-            </p>
-            <p class="text-gray-900 leading-8">
-              Jl. Rungkut Harapan Blk. C No.41, Kali Rungkut, Kec. Rungkut, Surabaya, Jawa Timur 60293
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="bg-gray-100 px-5 py-4 text-sm text-gray-800 border-t border-gray-200"
-      >
-        <span class="font-medium">Batas Registrasi:</span> 31 Mei 2026
-      </div>
-    </div>
-
-    <a
-      href="daftar.html"
-      class="block w-full text-center bg-[#EB1D2D] text-white font-semibold py-3.5 rounded-xl transition mt-5 active:bg-red-800"
-    >
-      Daftar Sekarang
-    </a>
-  </div>
-</aside>
-
-      <!-- CONTENT BAWAH -->
       <section
-  class="mt-6 lg:mt-8 grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-6"
->
+        class="mt-6 lg:mt-8 grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-6"
+      >
         <div class="space-y-6">
-          <!-- DESKRIPSI -->
           <div class="bg-white rounded-2xl border border-gray-200 p-6 md:p-7">
             <h3 class="text-2xl font-semibold text-gray-900 mb-5">Deskripsi</h3>
 
             <div class="space-y-5 text-gray-700 leading-8">
               <p>
-  Program Yayasan & Komunitas memberikan kesempatan bagi relawan untuk
-  berkontribusi dalam kegiatan pendidikan non-formal di lingkungan masyarakat.
-</p>
+                <?php 
+                    if(isset($data['deskripsi'])) {
+                        echo $data['deskripsi'];
+                    } else {
+                        echo "Program Yayasan & Komunitas memberikan kesempatan bagi relawan untuk berkontribusi dalam kegiatan pendidikan non-formal di lingkungan masyarakat.";
+                    }
+                ?>
+              </p>
 
-<p>
-  Kegiatan di Yayasan Al-Kaafi berfokus pada pengembangan karakter,
-  kreativitas, serta semangat belajar anak melalui pendekatan yang santai,
-  interaktif, dan menyenangkan.
-</p>
+              <p>
+                Kegiatan di Yayasan Al-Kaafi berfokus pada pengembangan karakter,
+                kreativitas, serta semangat belajar anak melalui pendekatan yang santai,
+                interaktif, dan menyenangkan.
+              </p>
 
-<p>
-  Relawan akan berperan sebagai fasilitator yang membantu menciptakan
-  pengalaman belajar yang bermakna dan relevan dengan kebutuhan anak.
-</p>
+              <p>
+                Relawan akan berperan sebagai fasilitator yang membantu menciptakan
+                pengalaman belajar yang bermakna dan relevan dengan kebutuhan anak.
+              </p>
             </div>
           </div>
 
-          <!-- DETAIL AKTIVITAS -->
-<div class="bg-white rounded-2xl border border-gray-200 p-6 md:p-7">
-  <h3 class="text-2xl font-semibold text-gray-900 mb-5">
-    Detail Aktivitas
-  </h3>
+          <div class="bg-white rounded-2xl border border-gray-200 p-6 md:p-7">
+            <h3 class="text-2xl font-semibold text-gray-900 mb-5">
+              Detail Aktivitas
+            </h3>
 
-  <ul class="space-y-3 text-gray-700">
-  <li class="flex gap-3">
-    <span class="text-gray-400">•</span>
-    <span>Mengajar dalam suasana belajar non-formal</span>
-  </li>
-  <li class="flex gap-3">
-    <span class="text-gray-400">•</span>
-    <span>Menyusun kegiatan edukatif dan kreatif</span>
-  </li>
-  <li class="flex gap-3">
-    <span class="text-gray-400">•</span>
-    <span>Membangun interaksi yang positif dengan anak-anak</span>
-  </li>
-  <li class="flex gap-3">
-    <span class="text-gray-400">•</span>
-    <span>Berkoordinasi dengan tim relawan</span>
-  </li>
-</ul>
-</div>
+            <ul class="space-y-3 text-gray-700">
+              <li class="flex gap-3">
+                <span class="text-gray-400">•</span>
+                <span>Mengajar dalam suasana belajar non-formal</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="text-gray-400">•</span>
+                <span>Menyusun kegiatan edukatif dan kreatif</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="text-gray-400">•</span>
+                <span>Membangun interaksi yang positif dengan anak-anak</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="text-gray-400">•</span>
+                <span>Berkoordinasi dengan tim relawan</span>
+              </li>
+            </ul>
+          </div>
 
-<!-- PEKERJAAN -->
-<div class="grid grid-cols-1 gap-6 mt-4">
+          <div class="grid grid-cols-1 gap-6 mt-4">
+            <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
+              <h4 class="font-semibold text-lg text-gray-900">
+                Divisi Pengajar
+              </h4>
+              <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
+                <span>👤 Relawan dibutuhkan: 10 orang</span>
+                <span>🕒 Total jam Kerja: 4 jam</span>
+              </div>
+            </div>
 
-  <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
-    <h4 class="font-semibold text-lg text-gray-900">
-      Divisi Pengajar
-    </h4>
-    <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-      <span>👤 Relawan dibutuhkan: 10 orang</span>
-      <span>🕒 Total jam Kerja: 4 jam</span>
-    </div>
-  </div>
+            <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
+              <h4 class="font-semibold text-lg text-gray-900">
+                Divisi Kreatif & Media
+              </h4>
+              <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
+                <span>👤 Relawan dibutuhkan: 2 orang</span>
+                <span>🕒 Total jam Kerja: 4 jam</span>
+              </div>
+            </div>
 
-  <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
-    <h4 class="font-semibold text-lg text-gray-900">
-      Divisi Kreatif & Media
-    </h4>
-    <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-      <span>👤 Relawan dibutuhkan: 2 orang</span>
-      <span>🕒 Total jam Kerja: 4 jam</span>
-    </div>
-  </div>
-
-  <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
-    <h4 class="font-semibold text-lg text-gray-900">
-      Divisi Dokumentasi
-    </h4>
-    <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-      <span>👤 Relawan dibutuhkan: 2 orang</span>
-      <span>🕒 Total jam Kerja: 4 jam</span>
-    </div>
-  </div>
-</div>
+            <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
+              <h4 class="font-semibold text-lg text-gray-900">
+                Divisi Dokumentasi
+              </h4>
+              <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
+                <span>👤 Relawan dibutuhkan: 2 orang</span>
+                <span>🕒 Total jam Kerja: 4 jam</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div class="hidden lg:block"></div>
       </section>
     </main>
 
-    <!-- FOOTER -->
     <footer class="bg-[#8B1E1E] text-white pt-16">
       <div
         class="max-w-7xl mx-auto px-6 md:px-20 grid md:grid-cols-3 gap-10 pb-10"

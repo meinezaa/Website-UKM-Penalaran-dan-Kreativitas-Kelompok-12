@@ -1,9 +1,21 @@
+<?php
+include "koneksi.php";
+
+// Mengambil data dari database yang lokasi atau judulnya mengandung kata 'SLB'
+$query = mysqli_query($koneksi, "SELECT * FROM relawan WHERE nama_lokasi LIKE '%SLB%' OR judul_kegiatan LIKE '%SLB%' LIMIT 1");
+$data  = mysqli_fetch_assoc($query);
+
+// Jika data tidak ditemukan di database
+if (!$data) {
+    die("Data relawan SLB tidak ditemukan di database. Pastikan query INSERT SQL sudah dijalankan.");
+}
+?>
 <!doctype html>
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Detail Relawan SD - UPN Mengajar</title>
+    <title>Detail Relawan SLB - UPN Mengajar</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,7 +28,6 @@
   </head>
 
   <body class="bg-[#f5f5f7] font-poppins text-gray-800">
-    <!-- HEADER -->
     <header class="fixed top-0 left-0 w-full z-50 bg-[#8B1E1E] shadow-md">
       <div class="flex items-center justify-between px-6 py-2 text-white">
         <div class="flex items-center">
@@ -136,7 +147,6 @@
       </div>
     </header>
 
-    <!-- MAIN CONTENT -->
     <main
       class="pb-16 mx-auto"
       style="
@@ -146,235 +156,200 @@
         padding-right: 40px;
       "
     >
-      <!-- HERO / DETAIL ATAS -->
       <section
         class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 items-stretch mb-10"
       >
-        <!-- FOTO -->
         <div class="h-full">
           <div
             class="bg-white rounded-[24px] border border-gray-200 overflow-hidden shadow-sm h-full"
           >
             <img
-              src="./foto/sd.jpg"
-              alt="Relawan SD"
+              src="./foto/slb.jpg"
+              alt="Relawan SLB"
               class="w-full h-full object-cover"
             />
           </div>
         </div>
 
-        <!-- CARD EVENT -->
         <aside class="lg:sticky lg:top-24 self-start h-fit">
-  <div
-    class="bg-white rounded-[24px] border border-gray-200 shadow-sm p-6 flex flex-col h-full"
-  >
-    <div class="mb-4">
-      <span
-        class="inline-block text-xs font-medium text-white px-4 py-1.5 rounded-xl bg-gradient-to-r from-orange-500 to-purple-600 mb-4"
-      >
-        Event
-      </span>
+          <div
+            class="bg-white rounded-[24px] border border-gray-200 shadow-sm p-6 flex flex-col h-full"
+          >
+            <div class="mb-4">
+              <span
+                class="inline-block text-xs font-medium text-white px-4 py-1.5 rounded-xl bg-gradient-to-r from-orange-500 to-purple-600 mb-4"
+              >
+                Event
+              </span>
 
-      <h2
-        class="text-[24px] md:text-[30px] font-bold leading-snug text-gray-900"
-      >
-        Relawan Penggerak: SD Medokan Ayu 1
-      </h2>
-    </div>
+              <h2
+                class="text-[24px] md:text-[30px] font-bold leading-snug text-gray-900"
+              >
+                <?php echo $data['judul_kegiatan']; ?>
+              </h2>
+            </div>
 
-    <div class="flex flex-wrap gap-2 mb-5">
-      <span
-        class="text-xs px-3 py-1 rounded-full border border-red-200 text-red-500 bg-red-50"
-      >
-        Pendidikan
-      </span>
-      <span
-        class="text-xs px-3 py-1 rounded-full border border-red-200 text-red-500 bg-red-50"
-      >
-        Pengembangan Anak
-      </span>
-    </div>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span
+                class="text-xs px-3 py-1 rounded-full border border-red-200 text-red-500 bg-red-50"
+              >
+                Pendidikan Inklusif
+              </span>
+              <span
+                class="text-xs px-3 py-1 rounded-full border border-red-200 text-red-500 bg-red-50"
+              >
+                Pendampingan
+              </span>
+            </div>
 
-    <div
-      class="rounded-2xl border border-gray-200 overflow-hidden flex-1 flex flex-col"
-    >
-      <div class="p-5 space-y-6 flex-1">
-        <div class="flex gap-3">
-          <div class="text-red-500 text-xl">📅</div>
-          <div>
-            <p class="text-gray-500 text-sm mb-1">Jadwal Event</p>
-            <p class="text-gray-900 font-medium">31 Mei 2026</p>
-            <p class="text-gray-900">Pukul 08.00 - 12.00 WIB</p>
-            <a
-              href="#"
-              class="inline-block mt-3 text-red-500 text-sm hover:underline"
+            <div
+              class="rounded-2xl border border-gray-200 overflow-hidden flex-1 flex flex-col"
             >
-              Tambahkan ke Kalender Google
+              <div class="p-5 space-y-6 flex-1">
+                <div class="flex gap-3">
+                  <div class="text-red-500 text-xl">📅</div>
+                  <div>
+                    <p class="text-gray-500 text-sm mb-1">Jadwal Event</p>
+                    <p class="text-gray-900 font-medium">
+                      <?php echo $data['tanggal']; ?>
+                    </p>
+                    <p class="text-gray-900"><?php echo $data['jam']; ?></p>
+                    <a
+                      href="#"
+                      class="inline-block mt-3 text-red-500 text-sm hover:underline"
+                    >
+                      Tambahkan ke Kalender Google
+                    </a>
+                  </div>
+                </div>
+
+                <div class="flex gap-3">
+                  <div class="text-red-500 text-xl">📍</div>
+                  <div>
+                    <p class="text-gray-500 text-sm mb-1">Lokasi</p>
+                    <p class="text-gray-900 leading-8 font-medium">
+                      <?php echo $data['nama_lokasi']; ?>
+                    </p>
+                    <p class="text-gray-900 leading-8">
+                      <?php echo $data['alamat_lengkap']; ?>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-gray-100 px-5 py-4 text-sm text-gray-800 border-t border-gray-200"
+              >
+                <span class="font-medium">Batas Registrasi:</span> <?php echo
+                $data['tanggal']; ?>
+              </div>
+            </div>
+
+            <a
+              href="daftar.html"
+              class="block w-full text-center bg-[#EB1D2D] text-white font-semibold py-3.5 rounded-xl transition mt-5 active:bg-red-800"
+            >
+              Daftar Sekarang
             </a>
           </div>
-        </div>
+        </aside>
 
-        <div class="flex gap-3">
-          <div class="text-red-500 text-xl">📍</div>
-          <div>
-            <p class="text-gray-500 text-sm mb-1">Lokasi</p>
-            <p class="text-gray-900 leading-8 font-medium">
-              SD Medokan Ayu 1
-            </p>
-            <p class="text-gray-900 leading-8">
-              Jl. Raya Medokan Sawah No.7, Medokan Ayu, Kec. Rungkut, Surabaya, Jawa Timur 60295
-            </p>
-          </div>
-        </div>
-      </div>
+        <section
+          class="mt-6 lg:mt-8 grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-6"
+        >
+          <div class="space-y-6">
+            <div class="bg-white rounded-2xl border border-gray-200 p-6 md:p-7">
+              <h3 class="text-2xl font-semibold text-gray-900 mb-5">
+                Deskripsi
+              </h3>
 
-      <div
-        class="bg-gray-100 px-5 py-4 text-sm text-gray-800 border-t border-gray-200"
-      >
-        <span class="font-medium">Batas Registrasi:</span> 31 Mei 2026
-      </div>
-    </div>
+              <div class="space-y-5 text-gray-700 leading-8">
+                <p><?php echo $data['deskripsi']; ?></p>
 
-    <a
-      href="daftar.html"
-      class="block w-full text-center bg-[#EB1D2D] text-white font-semibold py-3.5 rounded-xl transition mt-5 active:bg-red-800"
-    >
-      Daftar Sekarang
-    </a>
-  </div>
-</aside>
+                <p>
+                  Kegiatan di SLB YPAC Surabaya bertujuan untuk mendukung
+                  perkembangan kemampuan akademik maupun sosial siswa melalui
+                  interaksi yang hangat, sabar, dan penuh perhatian.
+                </p>
 
-      <!-- CONTENT BAWAH -->
-      <section
-  class="mt-6 lg:mt-8 grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-6"
->
-        <div class="space-y-6">
-          <!-- DESKRIPSI -->
-          <div class="bg-white rounded-2xl border border-gray-200 p-6 md:p-7">
-            <h3 class="text-2xl font-semibold text-gray-900 mb-5">Deskripsi</h3>
-
-            <div class="space-y-5 text-gray-700 leading-8">
-              <p>
-                UPN Mengajar merupakan program pengabdian di bidang pendidikan
-                yang memberikan kesempatan bagi mahasiswa untuk berkontribusi
-                secara langsung dalam meningkatkan kualitas pembelajaran di
-                sekolah dasar.
-              </p>
-
-              <p>
-                Kegiatan di SD Medokan Ayu 1 berfokus pada pendampingan proses
-                belajar mengajar, penguatan literasi dan numerasi, serta
-                menciptakan suasana belajar yang interaktif dan menyenangkan
-                bagi siswa.
-              </p>
-
-              <p>
-                Melalui program ini, relawan tidak hanya berbagi ilmu, tetapi
-                juga belajar membangun komunikasi, kepemimpinan, serta kepekaan
-                sosial terhadap dunia pendidikan di lingkungan sekitar.
-              </p>
-
-              <button
-                class="text-gray-900 font-medium hover:text-red-500 transition"
-              >
-                Baca selengkapnya
-              </button>
+                <p>
+                  Relawan diharapkan mampu menjadi fasilitator belajar sekaligus
+                  teman yang memberikan dukungan positif bagi setiap siswa.
+                </p>
+              </div>
             </div>
-          </div>
 
-          <!-- DETAIL AKTIVITAS -->
-          <div class="bg-white rounded-2xl border border-gray-200 p-6 md:p-7">
-            <h3 class="text-2xl font-semibold text-gray-900 mb-5">
-              Detail Aktivitas
-            </h3>
-            <ul class="space-y-3 text-gray-700">
-              <li class="flex gap-3">
-                <span class="text-gray-400">•</span>
-                <span>Mendampingi kegiatan belajar mengajar di kelas</span>
-              </li>
-              <li class="flex gap-3">
-                <span class="text-gray-400">•</span>
-                <span>Membantu penguatan literasi dan numerasi siswa</span>
-              </li>
-              <li class="flex gap-3">
-                <span class="text-gray-400">•</span>
-                <span>Menyusun aktivitas belajar kreatif dan interaktif</span>
-              </li>
-              <li class="flex gap-3">
-                <span class="text-gray-400">•</span>
-                <span>Berkoordinasi dengan guru dan tim relawan</span>
-              </li>
-            </ul>
-          </div>
+            <div class="bg-white rounded-2xl border border-gray-200 p-6 md:p-7">
+              <h3 class="text-2xl font-semibold text-gray-900 mb-5">
+                Detail Aktivitas
+              </h3>
 
-          <!-- PEKERJAAN -->
-          <div class="grid grid-cols-1 gap-6 mt-4">
-              <!-- Divisi Pengajar -->
-  <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
-    <h4 class="font-semibold text-lg text-gray-900">
-      Divisi Pengajar
-    </h4>
-    <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-      <span>👤 Relawan dibutuhkan: 6 orang</span>
-      <span>🕒 Total jam Kerja: 4 jam</span>
-    </div>
-  </div>
+              <ul class="space-y-3 text-gray-700">
+                <li class="flex gap-3">
+                  <span class="text-gray-400">•</span>
+                  <span
+                    >Mendampingi siswa berkebutuhan khusus secara personal</span
+                  >
+                </li>
+                <li class="flex gap-3">
+                  <span class="text-gray-400">•</span>
+                  <span>Membantu kegiatan belajar dengan metode adaptif</span>
+                </li>
+                <li class="flex gap-3">
+                  <span class="text-gray-400">•</span>
+                  <span>Membangun komunikasi dan interaksi sosial siswa</span>
+                </li>
+                <li class="flex gap-3">
+                  <span class="text-gray-400">•</span>
+                  <span>Berkoordinasi dengan guru pendamping</span>
+                </li>
+              </ul>
+            </div>
 
-  <!-- Divisi Kreatif -->
-  <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
-    <h4 class="font-semibold text-lg text-gray-900">
-      Divisi Kreatif & Media
-    </h4>
-    <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-      <span>👤 Relawan dibutuhkan: 2 orang</span>
-      <span>🕒 Total jam Kerja: 4 jam</span>
-    </div>
-  </div>
-
-  <!-- Divisi Dokumentasi -->
-  <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
-    <h4 class="font-semibold text-lg text-gray-900">
-      Divisi Dokumentasi
-    </h4>
-    <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-      <span>👤 Relawan dibutuhkan: 2 orang</span>
-      <span>🕒 Total jam Kerja: 4 jam</span>
-    </div>
-  </div>
-
-  <!-- Photographer -->
-  <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
-    <h4 class="font-semibold text-lg text-gray-900">
-      Photographer
-    </h4>
-    <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-      <span>👤 Relawan dibutuhkan: 1 orang</span>
-      <span>🕒 Total jam Kerja: 4 jam</span>
-    </div>
-  </div>
-
-</div>
+            <div class="grid grid-cols-1 gap-6 mt-4">
+              <div
+                class="bg-white rounded-2xl border border-gray-200 px-5 py-5"
+              >
+                <h4 class="font-semibold text-lg text-gray-900">
+                  Divisi Pendamping
+                </h4>
+                <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
+                  <span>👤 Relawan dibutuhkan: 8 orang</span>
+                  <span>🕒 Total jam Kerja: 4 jam</span>
+                </div>
+              </div>
 
               <div
                 class="bg-white rounded-2xl border border-gray-200 px-5 py-5"
               >
                 <h4 class="font-semibold text-lg text-gray-900">
-                  Videographer
+                  Divisi Kreatif & Media
                 </h4>
                 <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-                  <span>👤 Relawan dibutuhkan: 1 orang</span>
+                  <span>👤 Relawan dibutuhkan: 2 orang</span>
+                  <span>🕒 Total jam Kerja: 4 jam</span>
+                </div>
+              </div>
+
+              <div
+                class="bg-white rounded-2xl border border-gray-200 px-5 py-5"
+              >
+                <h4 class="font-semibold text-lg text-gray-900">
+                  Divisi Dokumentasi
+                </h4>
+                <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
+                  <span>👤 Relawan dibutuhkan: 2 orang</span>
                   <span>🕒 Total jam Kerja: 4 jam</span>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div class="hidden lg:block"></div>
+            <div class="hidden lg:block"></div>
+          </div>
+        </section>
       </section>
     </main>
 
-    <!-- FOOTER -->
     <footer class="bg-[#8B1E1E] text-white pt-16">
       <div
         class="max-w-7xl mx-auto px-6 md:px-20 grid md:grid-cols-3 gap-10 pb-10"
