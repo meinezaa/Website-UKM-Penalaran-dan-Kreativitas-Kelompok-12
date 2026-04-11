@@ -1,21 +1,20 @@
 <?php 
 include 'koneksi.php'; 
 
-// Fungsi untuk mengambil ID dan Nama dari database berdasarkan kategori
-function getDataKegiatan($koneksi, $nama) {
-    $query = mysqli_query($koneksi, "SELECT id_kegiatan, nama_kegiatan FROM kegiatan WHERE nama_kegiatan LIKE '%$nama%' LIMIT 1");
+function getDataKegiatan($koneksi, $kategori, $fallbackNama) {
+    $kategori = mysqli_real_escape_string($koneksi, $kategori);
+    $query = mysqli_query($koneksi, "SELECT id_kegiatan, nama_kegiatan FROM kegiatan WHERE kategori = '$kategori' ORDER BY id_kegiatan DESC LIMIT 1");
     $result = mysqli_fetch_assoc($query);
     
-    // Kalau database masih kosong, kasih ID default supaya tidak error saat diklik
     if (!$result) {
-        return ['id_kegiatan' => '0', 'nama_kegiatan' => 'Program ' . $nama];
+        return ['id_kegiatan' => '0', 'nama_kegiatan' => $fallbackNama];
     }
     return $result;
 }
 
-$sd = getDataKegiatan($koneksi, 'Sekolah Dasar');
-$slb = getDataKegiatan($koneksi, 'SLB');
-$yayasan = getDataKegiatan($koneksi, 'Yayasan');
+$sd = getDataKegiatan($koneksi, 'sd', 'Program Sekolah Dasar');
+$slb = getDataKegiatan($koneksi, 'slb', 'Program Sekolah Luar Biasa');
+$yayasan = getDataKegiatan($koneksi, 'yayasan', 'Program Yayasan & Komunitas');
 ?>
 
 <!doctype html>
@@ -126,7 +125,7 @@ $yayasan = getDataKegiatan($koneksi, 'Yayasan');
 
               <li>
                 <a
-                  href="relawan.html"
+                  href="relawan.php"
                   class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
                 >
                   Relawan
@@ -286,7 +285,7 @@ $yayasan = getDataKegiatan($koneksi, 'Yayasan');
 
                 <div class="pt-6">
                   <a
-                    href="pendaftaran.php?id=<?= $sd['id_kegiatan']; ?>"
+                    href="relawan_sd.php?id=<?= $sd['id_kegiatan']; ?>"
                     class="inline-block bg-[#8B1E1E] text-white px-10 py-3 rounded-full hover:bg-red-900 transition-all shadow-md hover:shadow-lg active:scale-95 font-bold text-center"
                   >
                     Pilih Program
@@ -368,7 +367,7 @@ $yayasan = getDataKegiatan($koneksi, 'Yayasan');
 
                 <div class="pt-6">
                   <a
-                    href="pendaftaran.php?id=<?= $slb['id_kegiatan']; ?>"
+                    href="relawan_slb.php?id=<?= $slb['id_kegiatan']; ?>"
                     class="inline-block bg-[#8B1E1E] text-white px-10 py-3 rounded-full hover:bg-red-900 transition-all shadow-md hover:shadow-lg active:scale-95 font-bold text-center"
                   >
                     Pilih Program
@@ -449,7 +448,7 @@ $yayasan = getDataKegiatan($koneksi, 'Yayasan');
 
                 <div class="pt-6">
                   <a
-                    href="pendaftaran.php?id=<?= $yayasan['id_kegiatan']; ?>"
+                    href="relawan_yayasan.php?id=<?= $yayasan['id_kegiatan']; ?>"
                     class="inline-block bg-[#8B1E1E] text-white px-10 py-3 rounded-full hover:bg-red-900 transition-all shadow-md hover:shadow-lg active:scale-95 font-bold text-center"
                   >
                     Pilih Program

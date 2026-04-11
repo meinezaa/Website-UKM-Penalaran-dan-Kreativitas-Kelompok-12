@@ -1,13 +1,20 @@
 <?php
 include "koneksi.php"; 
 
-// Ambil data spesifik SD Medokan Ayu 1 dari database
-$query = mysqli_query($koneksi, "SELECT * FROM relawan WHERE nama_lokasi = 'SD Medokan Ayu 1' LIMIT 1");
-$data  = mysqli_fetch_assoc($query);
+// 1. Cek apakah ada ID di URL
+if (isset($_GET['id'])) {
+    $id = mysqli_real_escape_string($koneksi, $_GET['id']);
+    $query = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE id_kegiatan = '$id' AND kategori = 'sd'");
+} else {
+    // 2. Kalau tidak ada ID, ambil data SD terbaru
+    $query = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori = 'sd' ORDER BY id_kegiatan DESC LIMIT 1");
+}
 
-// Jika data tidak ditemukan di database, variabel ini mencegah halaman blank/error
+$data = mysqli_fetch_assoc($query);
+
+// Pengecekan jika tabel masih benar-benar kosong
 if (!$data) {
-    die("Data kegiatan tidak ditemukan di database. Pastikan tabel 'relawan' sudah terisi.");
+    die("Data kegiatan SD belum tersedia. Silahkan tambah kegiatan dulu di admin.");
 }
 ?>
 
@@ -112,7 +119,7 @@ if (!$data) {
               </li>
               <li>
                 <a
-                  href="relawan.html"
+                  href="relawan.php"
                   class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
                 >
                   Relawan
@@ -186,7 +193,7 @@ if (!$data) {
               <h2
                 class="text-[24px] md:text-[30px] font-bold leading-snug text-gray-900"
               >
-                <?php echo $data['judul_kegiatan']; ?>
+                <?php echo $data['nama_kegiatan']; ?>
               </h2>
             </div>
 
@@ -194,12 +201,12 @@ if (!$data) {
               <span
                 class="text-xs px-3 py-1 rounded-full border border-red-200 text-red-500 bg-red-50"
               >
-                Pendidikan
+                <?php echo $data['kategori']; ?>
               </span>
               <span
                 class="text-xs px-3 py-1 rounded-full border border-red-200 text-red-500 bg-red-50"
               >
-                Pengembangan Anak
+                <?php echo $data['status_kegiatan']; ?>
               </span>
             </div>
 
@@ -211,8 +218,8 @@ if (!$data) {
                   <div class="text-red-500 text-xl">📅</div>
                   <div>
                     <p class="text-gray-500 text-sm mb-1">Jadwal Event</p>
-                    <p class="text-gray-900 font-medium"><?php echo $data['tanggal']; ?></p>
-                    <p class="text-gray-900"><?php echo $data['jam']; ?></p>
+                    <p class="text-gray-900 font-medium"><?php echo date('d F Y', strtotime($data['tanggal_pelaksanaan'])); ?></p>
+                    <p class="text-gray-900"><?php echo $data['jam_kegiatan']; ?></p>
                     <a
                       href="#"
                       class="inline-block mt-3 text-red-500 text-sm hover:underline"
@@ -227,7 +234,7 @@ if (!$data) {
                   <div>
                     <p class="text-gray-500 text-sm mb-1">Lokasi</p>
                     <p class="text-gray-900 leading-8 font-medium">
-                      <?php echo $data['nama_lokasi']; ?>
+                      <?php echo $data['lokasi']; ?>
                     </p>
                     <p class="text-gray-900 leading-8">
                       <?php echo $data['alamat_lengkap']; ?>
@@ -239,12 +246,12 @@ if (!$data) {
               <div
                 class="bg-gray-100 px-5 py-4 text-sm text-gray-800 border-t border-gray-200"
               >
-                <span class="font-medium">Batas Registrasi:</span> <?php echo $data['tanggal']; ?>
+                <span class="font-medium">Batas Registrasi:</span> <?php echo date('d M Y', strtotime($data['batas_registrasi'])); ?>
               </div>
             </div>
 
             <a
-              href="daftar.html"
+              href="formulir.php?id=<?php echo $data['id_kegiatan']; ?>"
               class="block w-full text-center bg-[#EB1D2D] text-white font-semibold py-3.5 rounded-xl transition mt-5 active:bg-red-800"
             >
               Daftar Sekarang
@@ -261,7 +268,7 @@ if (!$data) {
 
               <div class="space-y-5 text-gray-700 leading-8">
                 <p>
-                  <?php echo $data['deskripsi']; ?>
+                  <?php echo nl2br($data['deskripsi_detail']); ?>
                 </p>
 
                 <button
@@ -276,76 +283,39 @@ if (!$data) {
               <h3 class="text-2xl font-semibold text-gray-900 mb-5">
                 Detail Aktivitas
               </h3>
-              <ul class="space-y-3 text-gray-700">
-                <li class="flex gap-3">
-                  <span class="text-gray-400">•</span>
-                  <span>Mendampingi kegiatan belajar mengajar di kelas</span>
-                </li>
-                <li class="flex gap-3">
-                  <span class="text-gray-400">•</span>
-                  <span>Membantu penguatan literasi dan numerasi siswa</span>
-                </li>
-                <li class="flex gap-3">
-                  <span class="text-gray-400">•</span>
-                  <span>Menyusun aktivitas belajar kreatif dan interaktif</span>
-                </li>
-                <li class="flex gap-3">
-                  <span class="text-gray-400">•</span>
-                  <span>Berkoordinasi dengan guru dan tim relawan</span>
-                </li>
-              </ul>
+              <div class="text-gray-700 leading-8">
+                <?php echo nl2br($data['detail_aktivitas']); ?>
+              </div>
             </div>
 
             <div class="grid grid-cols-1 gap-6 mt-4">
-              <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
-                <h4 class="font-semibold text-lg text-gray-900">
-                  Divisi Pengajar
-                </h4>
-                <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-                  <span>👤 Relawan dibutuhkan: 6 orang</span>
-                  <span>🕒 Total jam Kerja: 4 jam</span>
+              <?php 
+              $divisi_list = [
+                  'sekretaris' => 'Sekretaris',
+                  'bendahara' => 'Bendahara',
+                  'acara' => 'Acara',
+                  'humas' => 'Humas',
+                  'perkap' => 'Perkap',
+                  'pendamping' => 'Pendamping Kelompok',
+                  'pdd' => 'PDD',
+                  'sponsorship' => 'Sponsorship'
+              ];
+              foreach ($divisi_list as $key => $label) {
+                  if ($data['kuota_' . $key] > 0) {
+              ?>
+                <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
+                  <h4 class="font-semibold text-lg text-gray-900">
+                    Divisi <?php echo $label; ?>
+                  </h4>
+                  <p class="text-sm text-gray-600 mt-1">
+                    <?php echo $data['jobdesc_' . $key]; ?>
+                  </p>
+                  <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
+                    <span>👤 Relawan dibutuhkan: <?php echo $data['kuota_' . $key]; ?> orang</span>
+                    <span>🕒 Total jam Kerja: 4 jam</span>
+                  </div>
                 </div>
-              </div>
-
-              <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
-                <h4 class="font-semibold text-lg text-gray-900">
-                  Divisi Kreatif & Media
-                </h4>
-                <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-                  <span>👤 Relawan dibutuhkan: 2 orang</span>
-                  <span>🕒 Total jam Kerja: 4 jam</span>
-                </div>
-              </div>
-
-              <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
-                <h4 class="font-semibold text-lg text-gray-900">
-                  Divisi Dokumentasi
-                </h4>
-                <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-                  <span>👤 Relawan dibutuhkan: 2 orang</span>
-                  <span>🕒 Total jam Kerja: 4 jam</span>
-                </div>
-              </div>
-
-              <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
-                <h4 class="font-semibold text-lg text-gray-900">
-                  Photographer
-                </h4>
-                <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-                  <span>👤 Relawan dibutuhkan: 1 orang</span>
-                  <span>🕒 Total jam Kerja: 4 jam</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
-              <h4 class="font-semibold text-lg text-gray-900">
-                Videographer
-              </h4>
-              <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-                <span>👤 Relawan dibutuhkan: 1 orang</span>
-                <span>🕒 Total jam Kerja: 4 jam</span>
-              </div>
+              <?php } } ?>
             </div>
           </div>
         </section>

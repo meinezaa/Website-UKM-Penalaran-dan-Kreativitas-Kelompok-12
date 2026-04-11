@@ -1,15 +1,23 @@
 <?php
-include "koneksi.php";
+include "koneksi.php"; 
 
-// Mengambil data dari database yang lokasi atau judulnya mengandung kata 'SLB'
-$query = mysqli_query($koneksi, "SELECT * FROM relawan WHERE nama_lokasi LIKE '%SLB%' OR judul_kegiatan LIKE '%SLB%' LIMIT 1");
-$data  = mysqli_fetch_assoc($query);
+// 1. Cek apakah ada ID di URL
+if (isset($_GET['id'])) {
+    $id = mysqli_real_escape_string($koneksi, $_GET['id']);
+    $query = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE id_kegiatan = '$id' AND kategori = 'slb'");
+} else {
+    // 2. Kalau tidak ada ID, ambil data SLB terbaru
+    $query = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori = 'slb' ORDER BY id_kegiatan DESC LIMIT 1");
+}
 
-// Jika data tidak ditemukan di database
+$data = mysqli_fetch_assoc($query);
+
+// Pengecekan jika tabel masih benar-benar kosong
 if (!$data) {
-    die("Data relawan SLB tidak ditemukan di database. Pastikan query INSERT SQL sudah dijalankan.");
+    die("Data kegiatan SLB belum tersedia. Silahkan tambah kegiatan dulu di admin.");
 }
 ?>
+
 <!doctype html>
 <html lang="id">
   <head>
@@ -111,7 +119,7 @@ if (!$data) {
               </li>
               <li>
                 <a
-                  href="relawan.html"
+                  href="relawan.php"
                   class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
                 >
                   Relawan
@@ -185,7 +193,7 @@ if (!$data) {
               <h2
                 class="text-[24px] md:text-[30px] font-bold leading-snug text-gray-900"
               >
-                <?php echo $data['judul_kegiatan']; ?>
+                <?php echo $data['nama_kegiatan']; ?>
               </h2>
             </div>
 
@@ -193,12 +201,12 @@ if (!$data) {
               <span
                 class="text-xs px-3 py-1 rounded-full border border-red-200 text-red-500 bg-red-50"
               >
-                Pendidikan Inklusif
+                <?php echo $data['kategori']; ?>
               </span>
               <span
                 class="text-xs px-3 py-1 rounded-full border border-red-200 text-red-500 bg-red-50"
               >
-                Pendampingan
+                <?php echo $data['status_kegiatan']; ?>
               </span>
             </div>
 
@@ -210,10 +218,8 @@ if (!$data) {
                   <div class="text-red-500 text-xl">📅</div>
                   <div>
                     <p class="text-gray-500 text-sm mb-1">Jadwal Event</p>
-                    <p class="text-gray-900 font-medium">
-                      <?php echo $data['tanggal']; ?>
-                    </p>
-                    <p class="text-gray-900"><?php echo $data['jam']; ?></p>
+                    <p class="text-gray-900 font-medium"><?php echo date('d F Y', strtotime($data['tanggal_pelaksanaan'])); ?></p>
+                    <p class="text-gray-900"><?php echo $data['jam_kegiatan']; ?></p>
                     <a
                       href="#"
                       class="inline-block mt-3 text-red-500 text-sm hover:underline"
@@ -228,7 +234,7 @@ if (!$data) {
                   <div>
                     <p class="text-gray-500 text-sm mb-1">Lokasi</p>
                     <p class="text-gray-900 leading-8 font-medium">
-                      <?php echo $data['nama_lokasi']; ?>
+                      <?php echo $data['lokasi']; ?>
                     </p>
                     <p class="text-gray-900 leading-8">
                       <?php echo $data['alamat_lengkap']; ?>
@@ -240,13 +246,12 @@ if (!$data) {
               <div
                 class="bg-gray-100 px-5 py-4 text-sm text-gray-800 border-t border-gray-200"
               >
-                <span class="font-medium">Batas Registrasi:</span> <?php echo
-                $data['tanggal']; ?>
+                <span class="font-medium">Batas Registrasi:</span> <?php echo date('d M Y', strtotime($data['batas_registrasi'])); ?>
               </div>
             </div>
 
             <a
-              href="daftar.html"
+              href="formulir.php?id=<?php echo $data['id_kegiatan']; ?>"
               class="block w-full text-center bg-[#EB1D2D] text-white font-semibold py-3.5 rounded-xl transition mt-5 active:bg-red-800"
             >
               Daftar Sekarang
@@ -259,23 +264,18 @@ if (!$data) {
         >
           <div class="space-y-6">
             <div class="bg-white rounded-2xl border border-gray-200 p-6 md:p-7">
-              <h3 class="text-2xl font-semibold text-gray-900 mb-5">
-                Deskripsi
-              </h3>
+              <h3 class="text-2xl font-semibold text-gray-900 mb-5">Deskripsi</h3>
 
               <div class="space-y-5 text-gray-700 leading-8">
-                <p><?php echo $data['deskripsi']; ?></p>
-
                 <p>
-                  Kegiatan di SLB YPAC Surabaya bertujuan untuk mendukung
-                  perkembangan kemampuan akademik maupun sosial siswa melalui
-                  interaksi yang hangat, sabar, dan penuh perhatian.
+                  <?php echo nl2br($data['deskripsi_detail']); ?>
                 </p>
 
-                <p>
-                  Relawan diharapkan mampu menjadi fasilitator belajar sekaligus
-                  teman yang memberikan dukungan positif bagi setiap siswa.
-                </p>
+                <button
+                  class="text-gray-900 font-medium hover:text-red-500 transition"
+                >
+                  Baca selengkapnya
+                </button>
               </div>
             </div>
 
@@ -283,83 +283,52 @@ if (!$data) {
               <h3 class="text-2xl font-semibold text-gray-900 mb-5">
                 Detail Aktivitas
               </h3>
-
-              <ul class="space-y-3 text-gray-700">
-                <li class="flex gap-3">
-                  <span class="text-gray-400">•</span>
-                  <span
-                    >Mendampingi siswa berkebutuhan khusus secara personal</span
-                  >
-                </li>
-                <li class="flex gap-3">
-                  <span class="text-gray-400">•</span>
-                  <span>Membantu kegiatan belajar dengan metode adaptif</span>
-                </li>
-                <li class="flex gap-3">
-                  <span class="text-gray-400">•</span>
-                  <span>Membangun komunikasi dan interaksi sosial siswa</span>
-                </li>
-                <li class="flex gap-3">
-                  <span class="text-gray-400">•</span>
-                  <span>Berkoordinasi dengan guru pendamping</span>
-                </li>
-              </ul>
+              <div class="text-gray-700 leading-8">
+                <?php echo nl2br($data['detail_aktivitas']); ?>
+              </div>
             </div>
 
             <div class="grid grid-cols-1 gap-6 mt-4">
-              <div
-                class="bg-white rounded-2xl border border-gray-200 px-5 py-5"
-              >
-                <h4 class="font-semibold text-lg text-gray-900">
-                  Divisi Pendamping
-                </h4>
-                <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-                  <span>👤 Relawan dibutuhkan: 8 orang</span>
-                  <span>🕒 Total jam Kerja: 4 jam</span>
+              <?php 
+              $divisi_list = [
+                  'sekretaris' => 'Sekretaris',
+                  'bendahara' => 'Bendahara',
+                  'acara' => 'Acara',
+                  'humas' => 'Humas',
+                  'perkap' => 'Perkap',
+                  'pendamping' => 'Pendamping Kelompok',
+                  'pdd' => 'PDD',
+                  'sponsorship' => 'Sponsorship'
+              ];
+              foreach ($divisi_list as $key => $label) {
+                  if ($data['kuota_' . $key] > 0) {
+              ?>
+                <div class="bg-white rounded-2xl border border-gray-200 px-5 py-5">
+                  <h4 class="font-semibold text-lg text-gray-900">
+                    Divisi <?php echo $label; ?>
+                  </h4>
+                  <p class="text-sm text-gray-600 mt-1">
+                    <?php echo $data['jobdesc_' . $key]; ?>
+                  </p>
+                  <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
+                    <span>👤 Relawan dibutuhkan: <?php echo $data['kuota_' . $key]; ?> orang</span>
+                    <span>🕒 Total jam Kerja: 4 jam</span>
+                  </div>
                 </div>
-              </div>
-
-              <div
-                class="bg-white rounded-2xl border border-gray-200 px-5 py-5"
-              >
-                <h4 class="font-semibold text-lg text-gray-900">
-                  Divisi Kreatif & Media
-                </h4>
-                <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-                  <span>👤 Relawan dibutuhkan: 2 orang</span>
-                  <span>🕒 Total jam Kerja: 4 jam</span>
-                </div>
-              </div>
-
-              <div
-                class="bg-white rounded-2xl border border-gray-200 px-5 py-5"
-              >
-                <h4 class="font-semibold text-lg text-gray-900">
-                  Divisi Dokumentasi
-                </h4>
-                <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-                  <span>👤 Relawan dibutuhkan: 2 orang</span>
-                  <span>🕒 Total jam Kerja: 4 jam</span>
-                </div>
-              </div>
+              <?php } } ?>
             </div>
-
-            <div class="hidden lg:block"></div>
           </div>
         </section>
+
+        <div class="hidden lg:block"></div>
       </section>
     </main>
 
     <footer class="bg-[#8B1E1E] text-white pt-16">
-      <div
-        class="max-w-7xl mx-auto px-6 md:px-20 grid md:grid-cols-3 gap-10 pb-10"
-      >
+      <div class="max-w-7xl mx-auto px-6 md:px-20 grid md:grid-cols-3 gap-10 pb-10">
         <div class="md:border-r md:border-red-300 md:pr-10">
           <div class="w-24 h-24 overflow-hidden mb-5">
-            <img
-              src="foto/logo.jpeg"
-              class="w-full h-full object-cover scale-150"
-            />
+            <img src="foto/logo.jpeg" class="w-full h-full object-cover scale-150" />
           </div>
           <h4 class="font-semibold mb-3 text-lg">Menu</h4>
           <ul class="space-y-2 text-sm">
@@ -372,40 +341,12 @@ if (!$data) {
 
         <div class="text-center md:border-r md:border-red-300 md:px-10">
           <h4 class="font-semibold mb-2 text-lg">Send Message</h4>
-          <p class="text-xs text-gray-200 mb-4">
-            Pesan akan dikirim ke email UPN Mengajar
-          </p>
-          <form
-            action="mailto:upnmengajar.jt@gmail.com"
-            method="post"
-            enctype="text/plain"
-            class="space-y-3"
-          >
-            <input
-              type="text"
-              name="nama"
-              placeholder="Nama"
-              class="w-full px-3 py-2 rounded text-black text-sm"
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              class="w-full px-3 py-2 rounded text-black text-sm"
-            />
-            <textarea
-              name="pesan"
-              placeholder="Pesan"
-              rows="3"
-              class="w-full px-3 py-2 rounded text-black text-sm"
-            ></textarea>
+          <form action="mailto:upnmengajar.jt@gmail.com" method="post" enctype="text/plain" class="space-y-3">
+            <input type="text" name="nama" placeholder="Nama" class="w-full px-3 py-2 rounded text-black text-sm" />
+            <input type="email" name="email" placeholder="Email" class="w-full px-3 py-2 rounded text-black text-sm" />
+            <textarea name="pesan" placeholder="Pesan" rows="3" class="w-full px-3 py-2 rounded text-black text-sm"></textarea>
             <div class="text-left">
-              <button
-                type="submit"
-                class="bg-white text-[#8B1E1E] px-5 py-2 rounded text-sm font-semibold hover:bg-gray-200 transition"
-              >
-                Kirim
-              </button>
+              <button type="submit" class="bg-white text-[#8B1E1E] px-5 py-2 rounded text-sm font-semibold hover:bg-gray-200 transition">Kirim</button>
             </div>
           </form>
         </div>
@@ -415,63 +356,31 @@ if (!$data) {
           <div class="space-y-3 text-sm">
             <div class="flex items-center gap-2">
               <img src="./foto/Untitled design (17).png" class="w-5 h-6" />
-              <a href="mailto:upnmengajar.jt@gmail.com" class="hover:underline">
-                upnmengajar.jt@gmail.com
-              </a>
+              <a href="mailto:upnmengajar.jt@gmail.com" class="hover:underline">upnmengajar.jt@gmail.com</a>
             </div>
             <div class="flex items-center gap-2">
               <img src="foto/instagram.png" class="w-5 h-6" />
-              <a
-                href="https://instagram.com/upnmengajar.jt"
-                class="hover:underline"
-              >
-                @upnmengajar.jt
-              </a>
+              <a href="https://instagram.com/upnmengajar.jt" class="hover:underline">@upnmengajar.jt</a>
             </div>
             <div class="flex items-center gap-2">
               <img src="foto/whatsapp.png" class="w-5 h-6" />
-              <a href="https://wa.me/6289699808453" class="hover:underline">
-                089699808453 (Nabila)
-              </a>
+              <a href="https://wa.me/6289699808453" class="hover:underline">089699808453 (Nabila)</a>
             </div>
-          </div>
-          <div class="mt-8 text-sm text-gray-200 leading-relaxed">
-            <p class="font-semibold mb-1">Sekretariat Kami Berada di:</p>
-            <p>
-              Universitas Pembangunan Nasional "Veteran" Jawa Timur Jl. Raya
-              Rungkut Madya, Gunung Anyar, Surabaya, Jawa Timur
-            </p>
           </div>
         </div>
       </div>
 
-      <div
-        class="bg-[#6e1515] px-6 md:px-20 py-4 flex flex-col md:flex-row justify-between text-sm text-gray-200"
-      >
-        <p>
-          © 2026 UPN Mengajar — UKM Penalaran & Kreativitas UPN "Veteran" Jawa
-          Timur
-        </p>
-        <p>
-          Website by
-          <span class="font-semibold">
-            Vina • Naila • Inez Sistem informasi UPNVJT 2024
-          </span>
-        </p>
+      <div class="bg-[#6e1515] px-6 md:px-20 py-4 flex flex-col md:flex-row justify-between text-sm text-gray-200">
+        <p>© 2026 UPN Mengajar — UKM Penalaran & Kreativitas UPN "Veteran" Jawa Timur</p>
+        <p>Website by <span class="font-semibold">Vina • Naila • Inez Sistem informasi UPNVJT 2024</span></p>
       </div>
     </footer>
 
     <script>
       const header = document.querySelector("header");
-
       window.addEventListener("scroll", function () {
         if (window.scrollY > 50) {
-          header.classList.add(
-            "bg-red-900",
-            "shadow-lg",
-            "transition-all",
-            "duration-300",
-          );
+          header.classList.add("bg-red-900", "shadow-lg", "transition-all", "duration-300");
         } else {
           header.classList.remove("bg-red-900", "shadow-lg");
         }
