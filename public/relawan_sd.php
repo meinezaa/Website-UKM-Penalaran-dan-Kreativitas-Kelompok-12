@@ -158,17 +158,17 @@ if (!$data) {
       </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-6 py-12 mt-32">
+    <main class="max-w-7xl mx-auto px-6 pb-12 pt-32">
       
       <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 items-start">
         
         <div class="space-y-6">
           
           <div class="bg-white rounded-[20px] overflow-hidden shadow-sm border border-gray-100 aspect-video md:h-[450px]">
-            <?php 
-                $foto = $data['foto_kegiatan'] ?? 'sd.jpg'; 
-            ?>
-            <img src="./foto/<?php echo htmlspecialchars($foto); ?>" alt="Kegiatan SD" class="w-full h-full object-cover" />
+          <?php 
+          $foto = $data['foto_kegiatan'] ?? 'sd.jpg'; 
+          ?>
+          <img src="./foto/<?php echo htmlspecialchars($foto); ?>" alt="Kegiatan SD" class="w-full h-full object-cover" />
           </div>
 
           <div class="bg-white rounded-[20px] border border-gray-100 shadow-sm p-6 md:p-8">
