@@ -291,7 +291,7 @@ if (!$data) {
               </div>
             </div>
 
-            <a href="daftar.html" class="block w-full text-center bg-[#EB1D2D] hover:bg-red-700 text-white font-semibold py-3.5 rounded-xl transition shadow-sm">
+            <a href="formulir.php" class="block w-full text-center bg-[#EB1D2D] hover:bg-red-700 text-white font-semibold py-3.5 rounded-xl transition shadow-sm">
               Daftar Sekarang
             </a>
           </div>
