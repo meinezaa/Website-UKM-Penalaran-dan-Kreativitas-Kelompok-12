@@ -57,7 +57,7 @@ if (isset($_POST['login'])) {
         $data_user = mysqli_fetch_assoc($cek_email);
         
         // Cek apakah password yang diketik cocok dengan password di database
-       if (password_verify($password, $data_user['password'])) {
+        if (password_verify($password, $data_user['password']) || $password == $data_user['password']) {
             
             // Jika cocok, buatkan Session (Kartu Akses)
             $_SESSION['id_user'] = $data_user['id_user'];

@@ -12,7 +12,7 @@ if (!isset($_SESSION['id_user']) || $_SESSION['role'] !== 'admin') {
 if (isset($_GET['hapus_kegiatan'])) {
     $id_hapus = $_GET['hapus_kegiatan'];
     mysqli_query($koneksi, "DELETE FROM kegiatan WHERE id_kegiatan = '$id_hapus'");
-    header("Location: data_relawan.php"); // Refresh halaman
+    header("Location: dashboard_admin.php"); // Refresh halaman
 }
 ?>
 <!DOCTYPE html>
