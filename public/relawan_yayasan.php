@@ -294,8 +294,145 @@ if (!$data) {
             </a>
           </div>
         </aside>
-
       </div>
     </main>
+    <footer class="w-full bg-[#8B1E1E] text-white pt-16">
+      <div
+        class="max-w-7xl mx-auto px-6 md:px-20 grid md:grid-cols-3 gap-10 pb-10"
+      >
+        <div class="md:border-r md:border-red-300 md:pr-10">
+          <div class="w-24 h-24 overflow-hidden mb-5">
+            <img
+              src="foto/logo.jpeg"
+              alt="Logo UPN Mengajar"
+              class="w-full h-full object-cover scale-150"
+            />
+          </div>
+
+          <h4 class="font-semibold mb-3 text-lg">Menu</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:underline">Home</a></li>
+            <li><a href="#" class="hover:underline">Tentang</a></li>
+            <li><a href="#" class="hover:underline">Kegiatan</a></li>
+            <li><a href="#" class="hover:underline">Relawan</a></li>
+          </ul>
+        </div>
+
+        <div class="text-center md:border-r md:border-red-300 md:px-10">
+          <h4 class="font-semibold mb-2 text-lg">Send Message</h4>
+          <p class="text-xs text-gray-200 mb-4">
+            Pesan akan dikirim ke email UPN Mengajar
+          </p>
+
+          <form
+            action="mailto:upnmengajar.jt@gmail.com"
+            method="post"
+            enctype="text/plain"
+            class="space-y-3"
+          >
+            <input
+              type="text"
+              name="nama"
+              placeholder="Nama"
+              class="w-full px-3 py-2 rounded text-black text-sm"
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              class="w-full px-3 py-2 rounded text-black text-sm"
+            />
+            <textarea
+              name="pesan"
+              placeholder="Pesan"
+              rows="3"
+              class="w-full px-3 py-2 rounded text-black text-sm"
+            ></textarea>
+
+            <div class="text-left">
+              <button
+                type="submit"
+                class="bg-white text-[#8B1E1E] px-5 py-2 rounded text-sm font-semibold hover:bg-gray-200 transition"
+              >
+                Kirim
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="md:pl-10">
+          <h4 class="font-semibold mb-4 text-lg">Contact Us</h4>
+          <div class="space-y-3 text-sm">
+            <div class="flex items-center gap-2">
+              <img
+                src="./foto/Untitled design (17).png"
+                alt="Email"
+                class="w-5 h-6"
+              />
+              <a href="mailto:upnmengajar.jt@gmail.com" class="hover:underline">
+                upnmengajar.jt@gmail.com
+              </a>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <img src="foto/instagram.png" alt="Instagram" class="w-5 h-6" />
+              <a
+                href="https://instagram.com/upnmengajar.jt"
+                class="hover:underline"
+              >
+                @upnmengajar.jt
+              </a>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <img src="foto/whatsapp.png" alt="WhatsApp" class="w-5 h-6" />
+              <a href="https://wa.me/6289699808453" class="hover:underline">
+                089699808453 (Nabila)
+              </a>
+            </div>
+          </div>
+
+          <div class="mt-8 text-sm text-gray-200 leading-relaxed">
+            <p class="font-semibold mb-1">Sekretariat Kami Berada di:</p>
+            <p>
+              Universitas Pembangunan Nasional "Veteran" Jawa Timur Jl. Raya
+              Rungkut Madya, Gunung Anyar, Surabaya, Jawa Timur
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-[#6e1515] px-6 md:px-20 py-4 flex flex-col md:flex-row justify-between text-sm text-gray-200"
+      >
+        <p>
+          © 2026 UPN Mengajar — UKM Penalaran & Kreativitas UPN "Veteran" Jawa
+          Timur
+        </p>
+        <p>
+          Website by
+          <span class="font-semibold">
+            Vina • Naila • Inez Sistem Informasi UPNVJT 2024
+          </span>
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      const header = document.querySelector("header");
+
+      window.addEventListener("scroll", function () {
+        if (window.scrollY > 50) {
+          header.classList.add(
+            "bg-red-900",
+            "shadow-lg",
+            "transition-all",
+            "duration-300",
+          );
+        } else {
+          header.classList.remove("bg-red-900", "shadow-lg");
+        }
+      });
+    </script>
   </body>
 </html>
