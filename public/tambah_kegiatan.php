@@ -2,7 +2,7 @@
 session_start();
 require_once 'koneksi.php';
 
-// Satpam Halaman
+// Satpam Halaman - Pastikan Admin sudah login
 if (!isset($_SESSION['id_user']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php");
     exit();
@@ -31,41 +31,49 @@ if (isset($_POST['simpan'])) {
     $folder    = "foto/";
 
     if ($foto_name != "") {
-        // Buat nama file unik: 20240520_namafoto.jpg
-        $foto_baru = date('YmdHis') . "_" . $foto_name;
+        $foto_baru = date('YmdHis') . "_" . str_replace(' ', '_', $foto_name);
+        // Cek apakah folder foto ada, jika tidak buat otomatis
+        if (!is_dir($folder)) {
+            mkdir($folder, 0777, true);
+        }
         move_uploaded_file($foto_tmp, $folder . $foto_baru);
     } else {
-        $foto_baru = "default.jpg"; // Foto cadangan jika tidak upload
+        $foto_baru = "default.jpg"; 
     }
 
     // 4. MULAI TRANSAKSI SQL
     mysqli_begin_transaction($koneksi);
 
     try {
-        // QUERY 1: Simpan ke tabel kegiatan (Termasuk Kolom Foto)
+        // QUERY 1: Simpan ke tabel kegiatan (Sesuaikan urutan kolom dengan ERD)
         $query_kegiatan = "INSERT INTO kegiatan (
-            id_user, foto_kegiatan, nama_kegiatan, kategori, tanggal_pelaksanaan, jam_kegiatan, 
-            batas_registrasi, lokasi, alamat_lengkap, detail_aktivitas, 
-            deskripsi_detail, status_kegiatan
+            id_user, nama_kegiatan, foto_kegiatan, tanggal_pelaksanaan, jam_kegiatan, 
+            batas_registrasi, lokasi, alamat_lengkap, kategori, deskripsi_detail, 
+            status_kegiatan, detail_aktivitas
         ) VALUES (
-            '$id_admin', '$foto_baru', '$nama', '$kategori', '$tgl', '$jam', 
-            '$batas_reg', '$lokasi', '$alamat_lengkap', '$detail_aktivitas', 
-            '$deskripsi', '$status'
+            '$id_admin', '$nama', '$foto_baru', '$tgl', '$jam', 
+            '$batas_reg', '$lokasi', '$alamat_lengkap', '$kategori', '$deskripsi', 
+            '$status', '$detail_aktivitas'
         )";
 
         if (!mysqli_query($koneksi, $query_kegiatan)) {
-            throw new Exception(mysqli_error($koneksi));
+            throw new Exception("Gagal simpan kegiatan: " . mysqli_error($koneksi));
         }
 
         // Ambil ID kegiatan yang baru saja di-insert
         $id_kegiatan_baru = mysqli_insert_id($koneksi);
 
-        // 5. QUERY 2: Simpan ke tabel divisi_kegiatan (Hanya jika kuota > 0)
+        // 5. QUERY 2: Simpan ke tabel divisi_kegiatan (Sesuaikan ENUM di Database)
+        // Kunci: Nama di sebelah kanan harus SAMA PERSIS dengan ENUM di database kamu.
         $divisi_list = [
-            'sekretaris' => 'Sekretaris', 'bendahara' => 'Bendahara', 
-            'acara' => 'Acara', 'humas' => 'Humas', 
-            'perkap' => 'Perkap', 'pendamping' => 'Pendamping Kelompok', 
-            'pdd' => 'PDD', 'sponsorship' => 'Sponsorship'
+            'sekretaris' => 'Sekretaris', 
+            'bendahara'  => 'Bendahara', 
+            'acara'      => 'Acara', 
+            'humas'      => 'Humas', 
+            'perkap'     => 'Perkap', 
+            'pendamping' => 'Pendamping', // Sesuaikan jika di ENUM database hanya 'Pendamping'
+            'pdd'        => 'PDD', 
+            'sponsorship'=> 'Sponsorship'
         ];
 
         foreach ($divisi_list as $key => $label) {
@@ -77,7 +85,7 @@ if (isset($_POST['simpan'])) {
                                  VALUES ('$id_kegiatan_baru', '$label', '$kuota', '$jobdesc')";
                 
                 if (!mysqli_query($koneksi, $query_divisi)) {
-                    throw new Exception(mysqli_error($koneksi));
+                    throw new Exception("Gagal simpan divisi $label: " . mysqli_error($koneksi));
                 }
             }
         }
@@ -87,7 +95,11 @@ if (isset($_POST['simpan'])) {
 
     } catch (Exception $e) {
         mysqli_rollback($koneksi);
-        echo "Error: " . $e->getMessage();
+        echo "<div style='color:red; background:#fff; p-4; border:1px solid red;'>";
+        echo "<strong>Terjadi Kesalahan:</strong> " . $e->getMessage();
+        echo "<br><a href='tambah_kegiatan.php'>Kembali ke Form</a>";
+        echo "</div>";
+        exit();
     }
 }
 ?>
@@ -117,14 +129,13 @@ if (isset($_POST['simpan'])) {
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="md:col-span-2">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Kegiatan</label>
-                        <input type="text" name="nama_kegiatan" required placeholder="Contoh: Relawan Penggerak SD Medokan"
+                        <input type="text" name="nama_kegiatan" required placeholder="Contoh: Relawan SDN Medokan Sawah 1"
                                class="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:ring-2 focus:ring-red-500 outline-none">
                     </div>
                     <div class="md:col-span-2">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Foto Utama Kegiatan</label>
                         <input type="file" name="foto_kegiatan" accept="image/*" required
                                class="w-full border border-gray-300 px-4 py-2 rounded-lg bg-gray-50">
-                        <p class="text-xs text-gray-500 mt-1">*Disarankan rasio 16:9 (Contoh: 1280x720 px)</p>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Kategori Program</label>
@@ -149,24 +160,24 @@ if (isset($_POST['simpan'])) {
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Pelaksanaan</label>
-                        <input type="date" name="tanggal_pelaksanaan" required class="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:ring-2 focus:ring-red-500">
+                        <input type="date" name="tanggal_pelaksanaan" required class="w-full border border-gray-300 px-4 py-2.5 rounded-lg">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Jam Kegiatan</label>
-                        <input type="text" name="jam_kegiatan" required placeholder="08.00 - 12.00 WIB" class="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:ring-2 focus:ring-red-500">
+                        <input type="text" name="jam_kegiatan" required placeholder="08.00 - 11.00" class="w-full border border-gray-300 px-4 py-2.5 rounded-lg">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Batas Registrasi</label>
-                        <input type="date" name="batas_registrasi" required class="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:ring-2 focus:ring-red-500">
+                        <input type="date" name="batas_registrasi" required class="w-full border border-gray-300 px-4 py-2.5 rounded-lg">
                     </div>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lokasi (Gedung/Sekolah)</label>
-                    <input type="text" name="lokasi" required placeholder="Contoh: SD Medokan Ayu 1" class="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:ring-2 focus:ring-red-500">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lokasi</label>
+                    <input type="text" name="lokasi" required placeholder="Contoh: SDN Medokan Sawah 1" class="w-full border border-gray-300 px-4 py-2.5 rounded-lg">
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Alamat Lengkap</label>
-                    <textarea name="alamat_lengkap" rows="2" required placeholder="Jl. Raya Medokan Sawah No.7, Kec. Rungkut..." class="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:ring-2 focus:ring-red-500"></textarea>
+                    <textarea name="alamat_lengkap" rows="2" required placeholder="Jl. Raya Medokan Sawah..." class="w-full border border-gray-300 px-4 py-2.5 rounded-lg"></textarea>
                 </div>
             </div>
 
@@ -174,12 +185,12 @@ if (isset($_POST['simpan'])) {
                 <h3 class="text-lg font-bold text-red-700 border-b-2 border-red-100 mb-4">3. Deskripsi & Aktivitas</h3>
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Detail Aktivitas (Poin-poin)</label>
-                        <textarea name="detail_aktivitas" rows="3" required placeholder="Mendampingi belajar, Membantu literasi..." class="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:ring-2 focus:ring-red-500"></textarea>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Detail Aktivitas</label>
+                        <textarea name="detail_aktivitas" rows="3" required placeholder="Poin-poin aktivitas..." class="w-full border border-gray-300 px-4 py-2.5 rounded-lg"></textarea>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Deskripsi Lengkap</label>
-                        <textarea name="deskripsi_detail" rows="4" required placeholder="Latar belakang kegiatan secara detail..." class="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:ring-2 focus:ring-red-500"></textarea>
+                        <textarea name="deskripsi_detail" rows="4" required placeholder="Latar belakang kegiatan..." class="w-full border border-gray-300 px-4 py-2.5 rounded-lg"></textarea>
                     </div>
                 </div>
             </div>
@@ -191,7 +202,7 @@ if (isset($_POST['simpan'])) {
                     $divisis = [
                         'sekretaris' => 'Sekretaris', 'bendahara' => 'Bendahara', 
                         'acara' => 'Acara', 'humas' => 'Humas', 
-                        'perkap' => 'Perkap', 'pendamping' => 'Pendamping Kelompok', 
+                        'perkap' => 'Perkap', 'pendamping' => 'Pendamping', 
                         'pdd' => 'PDD', 'sponsorship' => 'Sponsorship'
                     ];
                     foreach($divisis as $key => $label): 
@@ -201,11 +212,11 @@ if (isset($_POST['simpan'])) {
                         <div class="space-y-3">
                             <div>
                                 <label class="block text-xs font-semibold text-gray-600 uppercase">Kuota Orang</label>
-                                <input type="number" name="kuota_<?= $key ?>" placeholder="0" min="0" class="w-full border border-gray-300 px-3 py-1.5 rounded-lg focus:ring-2 focus:ring-red-500 outline-none">
+                                <input type="number" name="kuota_<?= $key ?>" value="0" min="0" class="w-full border border-gray-300 px-3 py-1.5 rounded-lg">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-gray-600 uppercase">Job Description</label>
-                                <textarea name="jobdesc_<?= $key ?>" rows="2" placeholder="Tugas divisi..." class="w-full border border-gray-300 px-3 py-1.5 rounded-lg focus:ring-2 focus:ring-red-500 text-sm outline-none"></textarea>
+                                <textarea name="jobdesc_<?= $key ?>" rows="2" placeholder="Tugas divisi..." class="w-full border border-gray-300 px-3 py-1.5 rounded-lg text-sm"></textarea>
                             </div>
                         </div>
                     </div>

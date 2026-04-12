@@ -1,15 +1,15 @@
 <?php
 include "koneksi.php"; 
 
-// 1. Ambil data kegiatan terbaru (Asumsi kategori di form disave sebagai 'Sekolah Dasar' atau 'sd')
-$query_kegiatan = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori IN ('Sekolah Dasar', 'sd') ORDER BY id_kegiatan DESC LIMIT 1");
+// 1. Ambil data kegiatan terbaru (Asumsi kategori di form disave sebagai 'Yayasan' atau 'sd')
+$query_kegiatan = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori IN ('Yayasan', 'yayasan') ORDER BY id_kegiatan DESC LIMIT 1");
 
 if (!$query_kegiatan) {
     die("Query Error (Kegiatan): " . mysqli_error($koneksi));
 }
 
 $data = mysqli_fetch_assoc($query_kegiatan);
-
+  
 // Jika tabel kosong, siapkan array kosong agar tidak error
 if (!$data) {
     $data = []; 

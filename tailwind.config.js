@@ -2,10 +2,9 @@
 module.exports = {
   content: [
     "./public/**/*.{html,js,php}", 
-    "./src/**/*.{html,js,php}",    
-    "./*.php"                      
+    "./public/**/*.{html,php,js}",    
+    "./*.{html,php}"                      
   ],
-  content: ["./public/**/*.{html,js,php}", "./src/**/*.{html,js,php}", "./*.php"],
   theme: {
     extend: {
       fontFamily: {
