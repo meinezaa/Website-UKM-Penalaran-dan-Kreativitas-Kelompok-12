@@ -1,20 +1,19 @@
 <?php
 include "koneksi.php"; 
 
-// 1. Cek apakah ada ID di URL
-if (isset($_GET['id'])) {
-    $id = mysqli_real_escape_string($koneksi, $_GET['id']);
-    $query = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE id_kegiatan = '$id' AND kategori = 'sd'");
-} else {
-    // 2. Kalau tidak ada ID, ambil data SD terbaru
-    $query = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori = 'sd' ORDER BY id_kegiatan DESC LIMIT 1");
+// 1. Ganti nama tabel jadi 'kegiatan' dan cari berdasarkan kategori 'sd'
+$query = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori = 'sd' LIMIT 1");
+
+// 2. Tambahkan pengecekan ini agar kalau ada salah ketik query, errornya jelas
+if (!$query) {
+    die("Query Error: " . mysqli_error($koneksi));
 }
 
 $data = mysqli_fetch_assoc($query);
 
-// Pengecekan jika tabel masih benar-benar kosong
+// 3. Pengecekan jika tabel masih kosong
 if (!$data) {
-    die("Data kegiatan SD belum tersedia. Silahkan tambah kegiatan dulu di admin.");
+    die("Data kegiatan SD tidak ditemukan di database. Pastikan tabel 'kegiatan' sudah diisi minimal 1 data dengan kategori 'sd'.");
 }
 ?>
 
