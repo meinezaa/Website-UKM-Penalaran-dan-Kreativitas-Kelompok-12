@@ -2,16 +2,18 @@
 include "koneksi.php"; 
 $page = 'relawan';
 
-// 1. Ambil data kegiatan terbaru (Asumsi kategori di form disave sebagai 'Yayasan' atau 'sd')
-$query_kegiatan = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori IN ('Yayasan', 'yayasan') ORDER BY id_kegiatan DESC LIMIT 1");
-
-if (!$query_kegiatan) {
-    die("Query Error (Kegiatan): " . mysqli_error($koneksi));
+// 1. Cek apakah ada ID di URL
+if (isset($_GET['id'])) {
+    $id = mysqli_real_escape_string($koneksi, $_GET['id']);
+    $query_kegiatan = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori IN ('Yayasan', 'yayasan') ORDER BY id_kegiatan DESC LIMIT 1");
+} else {
+    // 2. Kalau tidak ada ID, ambil data Yayasan terbaru
+    $query = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori = 'yayasan' ORDER BY id_kegiatan DESC LIMIT 1");
 }
 
 $data = mysqli_fetch_assoc($query_kegiatan);
-  
-// Jika tabel kosong, siapkan array kosong agar tidak error
+
+// Pengecekan jika tabel masih benar-benar kosong
 if (!$data) {
     $data = []; 
     $id_kegiatan = 0;

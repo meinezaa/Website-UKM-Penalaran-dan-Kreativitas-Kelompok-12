@@ -2,84 +2,63 @@
 session_start();
 include 'koneksi.php';
 
-// 1. KEAMANAN: Pastikan yang mengakses file ini HANYA orang yang sudah login
+// Pastikan user sudah login
 if (!isset($_SESSION['id_user'])) {
     header("Location: login.php");
     exit();
 }
 
-// 2. JIKA TOMBOL KIRIM DITEKAN
 if (isset($_POST['daftar_relawan'])) {
-    
-    // Ambil ID User dari Session (kartu identitas saat dia login)
     $id_user = $_SESSION['id_user'];
     
-    // Ambil data teks dari form (gunakan real_escape_string untuk mencegah hacker/SQL Injection)
-    $asal_prodi = mysqli_real_escape_string($koneksi, $_POST['asal_prodi']);
-    $pilihan_divisi = mysqli_real_escape_string($koneksi, $_POST['pilihan_divisi']);
-    $alasan = mysqli_real_escape_string($koneksi, $_POST['alasan']);
+    // Tangkap data dari form
+    $no_hp     = mysqli_real_escape_string($koneksi, $_POST['no_hp']);
+    $umur      = mysqli_real_escape_string($koneksi, $_POST['umur']);
+    $jk        = mysqli_real_escape_string($koneksi, $_POST['jenis_kelamin']);
+    $prodi     = mysqli_real_escape_string($koneksi, $_POST['asal_prodi']);
+    $divisi1   = mysqli_real_escape_string($koneksi, $_POST['pilihan_divisi_1']);
+    $divisi2   = mysqli_real_escape_string($koneksi, $_POST['pilihan_divisi_2']);
+    $porto     = mysqli_real_escape_string($koneksi, $_POST['portofolio']);
+    $deskripsi = mysqli_real_escape_string($koneksi, $_POST['deskripsi']);
+    $metode    = mysqli_real_escape_string($koneksi, $_POST['metode_pembayaran']);
+
+    // ID Kegiatan yang kita tuju
+    $id_kegiatan = 1; 
+
+    // VALIDASI: Cek apakah id_kegiatan benar-benar ada di tabel kegiatan?
+    $cek_kegiatan = mysqli_query($koneksi, "SELECT id_kegiatan FROM kegiatan WHERE id_kegiatan = '$id_kegiatan'");
+    if (mysqli_num_rows($cek_kegiatan) == 0) {
+        die("Error: Data di tabel 'kegiatan' masih kosong! Masukkan minimal satu data kegiatan dengan ID $id_kegiatan di phpMyAdmin terlebih dahulu.");
+    }
+
+    // Proses Upload Bukti Pembayaran
+    $target_dir = "uploads/";
+    if (!is_dir($target_dir)) {
+        mkdir($target_dir, 0777, true);
+    }
     
-    // Cek apakah kotak persetujuan dicentang (Jika dicentang nilainya 1, jika tidak 0)
-    $persetujuan = isset($_POST['persetujuan']) ? 1 : 0;
+    $file_extension = pathinfo($_FILES['bukti_pembayaran']['name'], PATHINFO_EXTENSION);
+    $file_name = "BUKTI_" . time() . "_" . $id_user . "." . $file_extension;
+    $target_file = $target_dir . $file_name;
 
-    // 3. LOGIKA UPLOAD BUKTI PEMBAYARAN
-    $nama_file_asli = $_FILES['bukti_pembayaran']['name'];
-    $ukuran_file    = $_FILES['bukti_pembayaran']['size'];
-    $error_file     = $_FILES['bukti_pembayaran']['error'];
-    $tmp_name       = $_FILES['bukti_pembayaran']['tmp_name'];
-
-    // Cek apakah user benar-benar mengunggah file
-    if ($error_file === 4) {
-        echo "<script>alert('Pilih foto bukti pembayaran terlebih dahulu!'); window.history.back();</script>";
-        exit();
-    }
-
-    // Pastikan yang diunggah hanya gambar (jpg, jpeg, png)
-    $ekstensi_valid = ['jpg', 'jpeg', 'png'];
-    $ekstensi_file  = explode('.', $nama_file_asli);
-    $ekstensi_file  = strtolower(end($ekstensi_file));
-
-    if (!in_array($ekstensi_file, $ekstensi_valid)) {
-        echo "<script>alert('Yang Anda unggah bukan gambar! Hanya boleh JPG/PNG.'); window.history.back();</script>";
-        exit();
-    }
-
-    // Pastikan ukuran file tidak terlalu besar (Maksimal 2 MB = 2.000.000 byte)
-    if ($ukuran_file > 2000000) {
-        echo "<script>alert('Ukuran foto terlalu besar! Maksimal 2 MB.'); window.history.back();</script>";
-        exit();
-    }
-
-    // UBAH NAMA FILE: Agar tidak bentrok jika ada 2 orang upload file bernama "struk.jpg"
-    // Kita tambahkan angka acak dari waktu saat ini di depan nama filenya
-    $nama_file_baru = time() . '_' . $nama_file_asli;
-    
-    // Tentukan alamat folder tujuan
-    $folder_tujuan = 'uploads/' . $nama_file_baru;
-
-    // PINDAHKAN FILE dari tempat sementara ke folder 'uploads/'
-    if (move_uploaded_file($tmp_name, $folder_tujuan)) {
+    if (move_uploaded_file($_FILES['bukti_pembayaran']['tmp_name'], $target_file)) {
         
-        // 4. JIKA FOTO BERHASIL PINDAH, MASUKKAN DATA KE DATABASE
-        $query_insert = "INSERT INTO pendaftaran_relawan 
-                        (id_user, asal_prodi, pilihan_divisi_1, alasan, bukti_pembayaran, persetujuan) 
-                        VALUES 
-                        ('$id_user', '$asal_prodi', '$pilihan_divisi', '$alasan', '$nama_file_baru', '$persetujuan')";
-        
-        if (mysqli_query($koneksi, $query_insert)) {
-            // Jika berhasil masuk database, arahkan ke halaman Sukses/Status
-            header("Location: status_pendaftaran.php");
-            exit();
+        // Query Insert (Sesuaikan nama kolom dengan tabel pendaftaran_relawan kamu)
+        $sql = "INSERT INTO pendaftaran_relawan 
+                (id_user, id_kegiatan, no_hp, umur, jenis_kelamin, asal_prodi, pilihan_divisi_1, pilihan_divisi_2, portofolio, pengalaman_keahlian, metode_pembayaran, bukti_pembayaran) 
+                VALUES 
+                ('$id_user', '$id_kegiatan', '$no_hp', '$umur', '$jk', '$prodi', '$divisi1', '$divisi2', '$porto', '$deskripsi', '$metode', '$file_name')";
+
+        if (mysqli_query($koneksi, $sql)) {
+            echo "<script>alert('Pendaftaran Berhasil!'); window.location.href='status_pendaftaran.php';</script>";
         } else {
-            echo "Error Database: " . mysqli_error($koneksi);
+            // Jika gagal karena Foreign Key atau lainnya, akan tampil di sini
+            echo "Gagal menyimpan ke database: " . mysqli_error($koneksi);
         }
-
     } else {
-        echo "<script>alert('Gagal mengunggah foto. Pastikan folder uploads/ sudah ada!'); window.history.back();</script>";
+        echo "<script>alert('Gagal mengunggah file bukti pembayaran!'); window.history.back();</script>";
     }
 } else {
-    // Jika ada orang iseng mencoba buka file ini tanpa menekan tombol form
-    header("Location: form_pendaftaran.php");
-    exit();
+    header("Location: formulir.php");
 }
-?>
+?> 

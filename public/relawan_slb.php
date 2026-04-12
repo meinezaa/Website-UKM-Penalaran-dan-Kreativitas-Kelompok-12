@@ -2,8 +2,8 @@
 include "koneksi.php"; 
 $page = 'relawan';
 
-// 1. Ambil data kegiatan terbaru (Asumsi kategori di form disave sebagai 'Sekolah Luar Biasa' atau 'slb')
-$query_kegiatan = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori IN ('Sekolah Luar Biasa', 'slb') ORDER BY id_kegiatan DESC LIMIT 1");
+// 1. Ambil data kegiatan terbaru (Asumsi kategori di form disave sebagai 'Sekolah Dasar' atau 'sd')
+$query_kegiatan = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori IN ('SLB', 'slb') ORDER BY id_kegiatan DESC LIMIT 1");
 
 if (!$query_kegiatan) {
     die("Query Error (Kegiatan): " . mysqli_error($koneksi));
@@ -166,9 +166,9 @@ if (!$data) {
           
           <div class="bg-white rounded-[20px] overflow-hidden shadow-sm border border-gray-100 aspect-video md:h-[450px]">
             <?php 
-                $foto = $data['foto_kegiatan'] ?? 'sd.jpg'; 
+                $foto = $data['foto_kegiatan'] ?? 'slb.jpg';
             ?>
-            <img src="./foto/<?php echo htmlspecialchars($foto); ?>" alt="Kegiatan SD" class="w-full h-full object-cover" />
+            <img src="./foto/<?php echo htmlspecialchars($foto); ?>" alt="Kegiatan SLB" class="w-full h-full object-cover" />
           </div>
 
           <div class="bg-white rounded-[20px] border border-gray-100 shadow-sm p-6 md:p-8">

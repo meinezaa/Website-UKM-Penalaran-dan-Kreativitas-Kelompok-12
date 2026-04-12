@@ -1,89 +1,48 @@
 <?php
 session_start();
-require_once 'koneksi.php'; // Menggunakan require_once agar lebih aman
+require_once 'koneksi.php';
 
-// 1. CEK COOKIE (REMEMBER ME)
-if (!isset($_SESSION['id_user']) && isset($_COOKIE['id_user']) && isset($_COOKIE['user_key'])) {
-    $cookie_id = $_COOKIE['id_user'];
-    $cookie_key = $_COOKIE['user_key'];
-
-    $ambil_data = mysqli_query($koneksi, "SELECT * FROM users WHERE id_user = '$cookie_id'");
-    if ($ambil_data && mysqli_num_rows($ambil_data) === 1) {
-        $data_cookie = mysqli_fetch_assoc($ambil_data);
-        if ($cookie_key === hash('sha256', $data_cookie['email'])) {
-            $_SESSION['id_user'] = $data_cookie['id_user'];
-            $_SESSION['role'] = $data_cookie['role'];
-            $_SESSION['nama_lengkap'] = $data_cookie['nama_lengkap'];
-        }
-    }
-}
-
-// 2. CEK SESSION (JIKA SUDAH LOGIN, LEMPAR KE DASHBOARD)
+// Jika sudah login, lempar ke dashboard yang sesuai
 if (isset($_SESSION['id_user'])) {
     if ($_SESSION['role'] == 'admin') {
         header("Location: dashboard_admin.php");
     } else {
-        $id_user_login = $_SESSION['id_user'];
-        $cek_riwayat = mysqli_query($koneksi, "SELECT * FROM pendaftaran_relawan WHERE id_user = '$id_user_login'");
-        if ($cek_riwayat && mysqli_num_rows($cek_riwayat) > 0) {
-            header("Location: status_pendaftaran.php");
-        } else {
-            header("Location: formulir.php");
-        }
+        header("Location: formulir.php");
     }
     exit();
 }
 
-$error_pesan = "";
+$error = '';
 
-// 3. LOGIKA LOGIN
 if (isset($_POST['login'])) {
     $email = mysqli_real_escape_string($koneksi, $_POST['email']);
     $password = $_POST['password'];
 
-    $query = "SELECT * FROM users WHERE email = '$email'";
-    $cek_email = mysqli_query($koneksi, $query);
+    $query = mysqli_query($koneksi, "SELECT * FROM users WHERE email = '$email'");
+    $data = mysqli_fetch_assoc($query);
 
-    if (!$cek_email) {
-        die("Query Error: " . mysqli_error($koneksi));
-    }
+    if ($data) {
+        // PERHATIKAN: Ini menggunakan cek teks asli sesuai request sebelumnya
+        if ($password === $data['password']) {
+            $_SESSION['id_user'] = $data['id_user'];
+            $_SESSION['nama_lengkap'] = $data['nama_lengkap'];
+            $_SESSION['role'] = $data['role'];
 
-    if (mysqli_num_rows($cek_email) === 1) {
-        $data_user = mysqli_fetch_assoc($cek_email);
-        
-        // Verifikasi Password
-        if (password_verify($password, $data_user['password']) || $password == $data_user['password']) {
-            
-            // Set Session
-            $_SESSION['id_user'] = $data_user['id_user'];
-            $_SESSION['role'] = $data_user['role'];
-            $_SESSION['nama_lengkap'] = $data_user['nama_lengkap'];
-
-            // Set Cookie jika diingat
             if (isset($_POST['remember'])) {
-                setcookie('id_user', $data_user['id_user'], time() + (86400 * 30), "/");
-                setcookie('user_key', hash('sha256', $data_user['email']), time() + (86400 * 30), "/");
+                setcookie('user_login', $email, time() + (86400 * 30), "/");
             }
 
-            // Redirect sesuai role
-            if ($data_user['role'] == 'admin') {
+            if ($data['role'] == 'admin') {
                 header("Location: dashboard_admin.php");
             } else {
-                $id_user_login = $data_user['id_user'];
-                $cek_riwayat = mysqli_query($koneksi, "SELECT * FROM pendaftaran_relawan WHERE id_user = '$id_user_login'");
-                if ($cek_riwayat && mysqli_num_rows($cek_riwayat) > 0) {
-                    header("Location: status_pendaftaran.php");
-                } else {
-                    header("Location: formulir.php");
-                }
+                header("Location: formulir.php");
             }
             exit();
-
         } else {
-            $error_pesan = "Password yang Anda masukkan salah!";
+            $error = "Kata sandi salah!";
         }
     } else {
-        $error_pesan = "Email belum terdaftar!";
+        $error = "Email tidak terdaftar!";
     }
 }
 ?>

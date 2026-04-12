@@ -1,12 +1,15 @@
 <?php
-$host     = "localhost"; 
-$user     = "root";         
-$password = "password";            
-$db       = "upnmengajar";
+// Konfigurasi Database
+$host       = "localhost"; // Server database (biasanya localhost untuk XAMPP)
+$user       = "root";      // Username default XAMPP
+$password   = "";          // Password default XAMPP (kosongkan saja)
+$database   = "upnmengajar"; // Nama database kamu sesuai di phpMyAdmin
 
-$koneksi = mysqli_connect($host, $user, $password, $db);
+// Membuat koneksi ke database
+$koneksi = mysqli_connect($host, $user, $password, $database);
+
 // Mengecek apakah koneksi berhasil atau gagal
 if (!$koneksi) {
-    die("Koneksi database gagal: " . mysqli_connect_error());
+    die("Koneksi ke database gagal: " . mysqli_connect_error());
 }
 ?>
