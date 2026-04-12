@@ -160,7 +160,7 @@ if (!$data) {
       </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-6 py-12 mt-32">
+    <main class="max-w-7xl mx-auto px-6 pb-12 pt-32">
       
       <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 items-start">
         
