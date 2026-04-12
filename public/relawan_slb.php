@@ -1,5 +1,6 @@
 <?php
 include "koneksi.php"; 
+$page = 'relawan';
 
 // 1. Ambil data kegiatan terbaru (Asumsi kategori di form disave sebagai 'Sekolah Luar Biasa' atau 'slb')
 $query_kegiatan = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori IN ('Sekolah Luar Biasa', 'slb') ORDER BY id_kegiatan DESC LIMIT 1");
@@ -37,11 +38,11 @@ if (!$data) {
     </style>
   </head>
 
-  <body class="text-gray-800">
+    <body class="text-gray-800">
     <header class="fixed top-0 left-0 w-full z-50 bg-[#8B1E1E] shadow-md">
       <div class="flex items-center justify-between px-6 py-2 text-white">
         <div class="flex items-center">
-          <a href="beranda.html" class="overflow-hidden">
+          <a href="relawan.php" class="overflow-hidden">
             <img
               src="./foto/logo.jpeg"
               alt="Logo UPN Mengajar"
@@ -55,7 +56,7 @@ if (!$data) {
             <ul class="flex gap-12 font-poppins font-semibold">
               <li>
                 <a
-                  href="beranda.html"
+                  href="beranda.php"
                   class="relative after:absolute after:right-0 after:-bottom-1 after:h-[1.5px] after:w-full after:bg-white"
                 >
                   Home
@@ -63,7 +64,7 @@ if (!$data) {
               </li>
               <li class="relative group">
                 <a
-                  href="tentang.html"
+                  href="tentang.php"
                   class="flex items-center gap-1 relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
                 >
                   Tentang
@@ -87,7 +88,7 @@ if (!$data) {
                 >
                   <li>
                     <a
-                      href="ukm.html"
+                      href="ukm.php"
                       class="block px-5 py-2 hover:bg-gray-100"
                     >
                       UKM Penalaran dan Kreativitas
@@ -95,7 +96,7 @@ if (!$data) {
                   </li>
                   <li>
                     <a
-                      href="upnmengajar.html"
+                      href="upnmengajar.php"
                       class="block px-5 py-2 hover:bg-gray-100"
                     >
                       Program Kerja UPN Mengajar
@@ -103,7 +104,7 @@ if (!$data) {
                   </li>
                   <li>
                     <a
-                      href="struktur.html"
+                      href="struktur.php"
                       class="block px-5 py-2 hover:bg-gray-100"
                     >
                       Tim UPN Mengajar
@@ -113,7 +114,7 @@ if (!$data) {
               </li>
               <li>
                 <a
-                  href="kegiatan.html"
+                  href="kegiatan.php"
                   class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
                 >
                   Kegiatan
@@ -156,7 +157,7 @@ if (!$data) {
         </div>
       </div>
     </header>
-
+    
     <main class="max-w-7xl mx-auto px-6 py-12 mt-32">
       
       <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 items-start">
