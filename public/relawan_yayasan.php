@@ -58,18 +58,18 @@ if (!$data) {
             <ul class="flex gap-12 font-poppins font-semibold">
               <li>
                 <a
-                  href="beranda.php"
-                  class="relative after:absolute after:right-0 after:-bottom-1 after:h-[1.5px] after:w-full after:bg-white"
-                >
-                  Home
-                </a>
+  href="beranda.php"
+  class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white <?php echo ($page == 'home') ? 'after:w-full' : 'after:w-0 after:transition-all after:duration-300 hover:after:w-full'; ?>"
+>
+  Home
+</a>
               </li>
               <li class="relative group">
                 <a
-                  href="tentang.php"
-                  class="flex items-center gap-1 relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
-                >
-                  Tentang
+  href="tentang.php"
+  class="flex items-center gap-1 relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white <?php echo ($page == 'tentang') ? 'after:w-full' : 'after:w-0 after:transition-all after:duration-300 hover:after:w-full'; ?>"
+>
+  Tentang
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
@@ -116,19 +116,19 @@ if (!$data) {
               </li>
               <li>
                 <a
-                  href="kegiatan.php"
-                  class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
-                >
-                  Kegiatan
-                </a>
+  href="kegiatan.php"
+  class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white <?php echo ($page == 'kegiatan') ? 'after:w-full' : 'after:w-0 after:transition-all after:duration-300 hover:after:w-full'; ?>"
+>
+  Kegiatan
+</a>
               </li>
               <li>
                 <a
-                  href="relawan.php"
-                  class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
-                >
-                  Relawan
-                </a>
+  href="relawan.php"
+  class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white <?php echo ($page == 'relawan') ? 'after:w-full' : 'after:w-0 after:transition-all after:duration-300 hover:after:w-full'; ?>"
+>
+  Relawan
+</a>
               </li>
             </ul>
           </nav>
@@ -159,7 +159,7 @@ if (!$data) {
         </div>
       </div>
     </header>
-
+    
     <main class="max-w-7xl mx-auto px-6 py-12 mt-32">
       
       <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 items-start">
