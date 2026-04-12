@@ -10,7 +10,7 @@ if (isset($_GET['id'])) {
     $query = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori = 'yayasan' ORDER BY id_kegiatan DESC LIMIT 1");
 }
 
-$data = mysqli_fetch_assoc($query);
+$data = mysqli_fetch_assoc($query_kegiatan);
 
 // Pengecekan jika tabel masih benar-benar kosong
 if (!$data) {
