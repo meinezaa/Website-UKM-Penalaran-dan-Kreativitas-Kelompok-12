@@ -4,15 +4,15 @@ include "koneksi.php";
 // 1. Cek apakah ada ID di URL
 if (isset($_GET['id'])) {
     $id = mysqli_real_escape_string($koneksi, $_GET['id']);
-    $query = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE id_kegiatan = '$id' AND kategori = 'yayasan'");
+    $query_kegiatan = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori IN ('Yayasan', 'yayasan') ORDER BY id_kegiatan DESC LIMIT 1");
 } else {
     // 2. Kalau tidak ada ID, ambil data Yayasan terbaru
     $query = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori = 'yayasan' ORDER BY id_kegiatan DESC LIMIT 1");
 }
 
 $data = mysqli_fetch_assoc($query);
-  
-// Jika tabel kosong, siapkan array kosong agar tidak error
+
+// Pengecekan jika tabel masih benar-benar kosong
 if (!$data) {
     $data = []; 
     $id_kegiatan = 0;

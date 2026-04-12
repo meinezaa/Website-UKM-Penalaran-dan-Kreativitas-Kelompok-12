@@ -1,13 +1,11 @@
 <?php
 include "koneksi.php"; 
 
-// 1. Cek apakah ada ID di URL
-if (isset($_GET['id'])) {
-    $id = mysqli_real_escape_string($koneksi, $_GET['id']);
-    $query = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE id_kegiatan = '$id' AND kategori = 'slb'");
-} else {
-    // 2. Kalau tidak ada ID, ambil data SLB terbaru
-    $query = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori = 'slb' ORDER BY id_kegiatan DESC LIMIT 1");
+// 1. Ambil data kegiatan terbaru (Asumsi kategori di form disave sebagai 'Sekolah Dasar' atau 'sd')
+$query_kegiatan = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori IN ('SLB', 'slb') ORDER BY id_kegiatan DESC LIMIT 1");
+
+if (!$query_kegiatan) {
+    die("Query Error (Kegiatan): " . mysqli_error($koneksi));
 }
 
 $data = mysqli_fetch_assoc($query);
@@ -159,27 +157,86 @@ if (!$data) {
       </div>
     </header>
 
-    <main
-      class="pb-16 mx-auto"
-      style="
-        padding-top: 150px;
-        max-width: 1400px;
-        padding-left: 40px;
-        padding-right: 40px;
-      "
-    >
-      <section
-        class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 items-stretch mb-10"
-      >
-        <div class="h-full">
-          <div
-            class="bg-white rounded-[24px] border border-gray-200 overflow-hidden shadow-sm h-full"
-          >
-            <img
-              src="./foto/slb.jpg"
-              alt="Relawan SLB"
-              class="w-full h-full object-cover"
-            />
+    <main class="max-w-7xl mx-auto px-6 py-12 mt-32">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 items-start">
+        
+        <div class="space-y-6">
+          
+          <div class="bg-white rounded-[20px] overflow-hidden shadow-sm border border-gray-100 aspect-video md:h-[450px]">
+            <?php 
+                $foto = $data['foto_kegiatan'] ?? 'slb.jpg';
+            ?>
+            <img src="./foto/<?php echo htmlspecialchars($foto); ?>" alt="Kegiatan SLB" class="w-full h-full object-cover" />
+          </div>
+
+          <div class="bg-white rounded-[20px] border border-gray-100 shadow-sm p-6 md:p-8">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Deskripsi</h3>
+            <p class="text-gray-600 leading-relaxed text-sm md:text-base whitespace-pre-line">
+              <?php 
+                // Cek nama kolom deskripsi (bisa 'deskripsi_lengkap' atau 'deskripsi' sesuai databasemu)
+                echo htmlspecialchars($data['deskripsi_detail'] ?? ($data['deskripsi'] ?? 'Belum ada deskripsi yang ditambahkan.')); 
+              ?>
+            </p>
+          </div>
+
+          <div class="bg-white rounded-[20px] border border-gray-100 shadow-sm p-6 md:p-8">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Detail Aktivitas</h3>
+            <ul class="space-y-3 text-gray-600 text-sm md:text-base">
+              <?php
+                // Memecah teks area dari database menjadi list HTML per baris
+                $aktivitas_raw = $data['detail_aktivitas'] ?? '';
+                $aktivitas_list = array_filter(array_map('trim', explode("\n", $aktivitas_raw)));
+
+                if (empty($aktivitas_list)) {
+                    echo "<li>Belum ada detail aktivitas.</li>";
+                } else {
+                    foreach ($aktivitas_list as $act) {
+                        echo '<li class="flex items-start gap-3"><span class="text-gray-400 mt-1">•</span> <span>' . htmlspecialchars($act) . '</span></li>';
+                    }
+                }
+              ?>
+            </ul>
+          </div>
+
+          <div class="space-y-4">
+              <h3 class="text-xl font-bold text-gray-900 mt-8 mb-2">Kebutuhan Relawan</h3>
+              
+              <?php
+              if ($id_kegiatan > 0) {
+                  // 2. Ambil data divisi berdasarkan id_kegiatan
+                  // Asumsi nama tabel: divisi_kegiatan
+                  // Asumsi kolom: nama_divisi, kuota, job_description
+                  $query_divisi = mysqli_query($koneksi, "SELECT * FROM divisi_kegiatan WHERE id_kegiatan = '$id_kegiatan'");
+                  
+                  if ($query_divisi && mysqli_num_rows($query_divisi) > 0) {
+                      while ($divisi = mysqli_fetch_assoc($query_divisi)) {
+                          // Hanya tampilkan jika kuota lebih dari 0
+                          if (isset($divisi['kuota']) && $divisi['kuota'] > 0) {
+                              ?>
+                              <div class="bg-white rounded-[20px] border border-gray-100 shadow-sm p-6">
+                                <h4 class="font-bold text-lg text-gray-900"><?php echo htmlspecialchars($divisi['nama_divisi']); ?></h4>
+                                
+                                <?php if (!empty($divisi['jobdesc'])): ?>
+                                    <p class="text-sm text-gray-600 mt-2 mb-3 leading-relaxed">
+                                        <?php echo nl2br(htmlspecialchars($divisi['jobdesc'])); ?>
+                                    </p>
+                                <?php endif; ?>
+
+                                <div class="flex flex-wrap gap-6 mt-3 text-sm text-gray-500 font-medium">
+                                  <span class="flex items-center gap-2 bg-red-50 text-red-600 px-3 py-1 rounded-md">
+                                      👤 Kuota: <?php echo htmlspecialchars($divisi['kuota']); ?> orang
+                                  </span>
+                                </div>
+                              </div>
+                              <?php
+                          }
+                      }
+                  } else {
+                      echo '<p class="text-sm text-gray-500 bg-white p-6 rounded-[20px] border border-gray-100 shadow-sm">Belum ada data kebutuhan divisi yang ditambahkan oleh admin.</p>';
+                  }
+              }
+              ?>
           </div>
 
         </div>
