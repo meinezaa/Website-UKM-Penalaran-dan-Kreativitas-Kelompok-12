@@ -93,19 +93,35 @@ $nama_otomatis  = $user_data['nama_lengkap'];
                     </select>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <select name="pilihan_divisi_1" required class="w-full px-5 py-3 bg-gray-50 border rounded-xl outline-none">
-                        <option value="">Divisi Utama</option>
+              <div class="grid grid-cols-2 gap-4">
+                    <div>
+                         <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Divisi Utama</label>
+                        <select name="pilihan_divisi_1" required class="w-full px-5 py-3 bg-gray-50 border rounded-xl outline-none">
+                        <option value="">Pilih Divisi Utama</option>
+                        <option value="Sekretaris">Sekretaris</option>
+                        <option value="Bendahara">Bendahara</option>
                         <option value="Acara">Acara</option>
+                        <option value="Perlengkapan">Perlengkapan</option>
+                        <option value="Sponsorship">Sponsorship</option>
                         <option value="PDD">PDD</option>
+                        <option value="Konsumsi">Konsumsi</option>
                         <option value="Humas">Humas</option>
-                    </select>
-                    <select name="pilihan_divisi_2" required class="w-full px-5 py-3 bg-gray-50 border rounded-xl outline-none">
-                        <option value="">Divisi Cadangan</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Divisi Cadangan</label>
+                        <select name="pilihan_divisi_2" required class="w-full px-5 py-3 bg-gray-50 border rounded-xl outline-none">
+                        <option value="">Pilih Divisi Cadangan</option>
+                        <option value="Sekretaris">Sekretaris</option>
+                        <option value="Bendahara">Bendahara</option>
                         <option value="Acara">Acara</option>
+                        <option value="Perlengkapan">Perlengkapan</option>
+                        <option value="Sponsorship">Sponsorship</option>
                         <option value="PDD">PDD</option>
+                        <option value="Konsumsi">Konsumsi</option>
                         <option value="Humas">Humas</option>
-                    </select>
+                        </select>
+                    </div>
                 </div>
 
                 <div>
