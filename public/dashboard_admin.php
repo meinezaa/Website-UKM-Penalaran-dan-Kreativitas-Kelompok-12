@@ -97,10 +97,12 @@ $count_baru = mysqli_fetch_assoc($res_baru)['total'] ?? 0;
     <header class="w-full sticky top-0 z-40 bg-white/80 backdrop-blur-md flex justify-between items-center px-8 py-4 border-b">
         <h1 class="font-headline font-bold text-2xl text-primary">Dashboard</h1>
         <div class="flex items-center gap-4">
-            <div class="w-10 h-10 rounded-full border-2 border-primary-container p-0.5">
-                <img src="https://ui-avatars.com/api/?name=<?= $_SESSION['nama_lengkap']; ?>&background=random" class="w-full h-full rounded-full" alt="profile">
-            </div>
-        </div>
+            <a href="beranda.php" class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-bold text-gray-700 transition-all">
+                <span class="material-symbols-outlined text-lg">home</span>
+                Lihat Beranda
+            </a>
+    
+    </div>
     </header>
 
     <div class="p-8 space-y-10">

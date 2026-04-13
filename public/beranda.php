@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!doctype html>
 <html lang="id">
   <head>
@@ -13,8 +17,9 @@
     <!-- Tailwind / Custom CSS -->
  <link rel="stylesheet" href="../dist/output.css">
   </head>
-
-<header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
+  
+<body>
+  <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
 <div class="flex items-center justify-between px-6 py-0.5 text-white">
 
 <!-- Logo -->
@@ -105,45 +110,52 @@ Kegiatan
 
 <!-- Relawan -->
 <li>
-<a href="relawan.html"
+<a href="relawan.php"
 class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
 Relawan
 </a>
 </li>
+
+<?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') : ?>
+<li>
+    <a href="dashboard_admin.php" 
+       class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+       Dashboard Admin
+    </a>
+</li>
+<?php endif; ?>
 
 </ul>
 </nav>
 
 <!-- Login Icon + Tooltip -->
 <div class="relative group">
+  <?php if (isset($_SESSION['id_user'])) : ?>
+    <a href="logout.php" class="hover:text-red-400 transition-all duration-300">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+      </svg>
+    </a>
+    <div class="absolute -bottom-12 left-1/2 -translate-x-1/2 
+                bg-black/80 backdrop-blur-sm text-white text-[11px] px-4 py-2 
+                opacity-0 group-hover:opacity-100 transition-all duration-300 
+                whitespace-nowrap rounded-lg shadow-2xl border border-white/10">
+      Keluar
+    </div>
 
-<a href="#" class="hover:text-gray-300">
-
-<svg xmlns="http://www.w3.org/2000/svg" 
-class="w-7 h-7" 
-fill="none" 
-viewBox="0 0 24 24" 
-stroke="currentColor">
-
-<path stroke-linecap="round" 
-stroke-linejoin="round" 
-stroke-width="2" 
-d="M5.121 17.804A9 9 0 1118.879 17.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-
-</svg>
-
-</a>
-
-<!-- Bubble -->
-<div class="absolute -bottom-10 left-1/2 -translate-x-1/2
-bg-black/50 text-white text-xs px-3 py-2
-opacity-0 group-hover:opacity-100
-transition duration-200 whitespace-nowrap">
-
-Log In
-
-</div>
-
+  <?php else : ?>
+    <a href="login.php" class="hover:text-gray-300 transition-all duration-300">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.879 17.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+      </svg>
+    </a>
+    <div class="absolute -bottom-12 left-1/2 -translate-x-1/2 
+                bg-black/80 backdrop-blur-sm text-white text-[11px] px-4 py-2 
+                opacity-0 group-hover:opacity-100 transition-all duration-300 
+                whitespace-nowrap rounded-lg shadow-2xl border border-white/10">
+      Masuk / Daftar
+    </div>
+  <?php endif; ?>
 </div>
 
 </div>
