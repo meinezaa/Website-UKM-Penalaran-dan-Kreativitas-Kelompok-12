@@ -83,7 +83,26 @@ if (isset($_POST['simpan'])) {
         }
 
         mysqli_commit($koneksi);
-        echo "<script>alert('Kegiatan berhasil ditambahkan!'); window.location='dashboard_admin.php';</script>";
+        
+        // Pop-Up Sukses
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Mantap!',
+                    text: 'Kegiatan berhasil ditambahkan.',
+                    showConfirmButton: false,
+                    timer: 2000
+                }).then(() => {
+                    window.location.href = 'dashboard_admin.php';
+                });
+            });
+        </script>";
+        exit();
+
+    } catch (Exception $e) {
+
 
     } catch (Exception $e) {
         mysqli_rollback($koneksi);
@@ -110,7 +129,7 @@ if (isset($_POST['simpan'])) {
             <p class="text-red-100 text-sm">Input data detail kegiatan dan kebutuhan relawan</p>
         </div>
 
-        <form action="" method="POST" enctype="multipart/form-data" class="p-8 space-y-8">
+        <form action="" method="POST" enctype="multipart/form-data" class="p-8 space-y-8" novalidate>
             
             <div>
                 <h3 class="text-lg font-bold text-red-700 border-b-2 border-red-100 mb-4">1. Informasi Dasar</h3>
@@ -219,48 +238,63 @@ if (isset($_POST['simpan'])) {
             </div>
         </form>
     </div>
-    
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.querySelector('form').addEventListener('submit', function(e) {
+            let adaYangKosong = false;
+
+            // 1. Ambil semua kotak isian yang punya atribut "required"
+            const inputWajib = document.querySelectorAll('input[required], select[required], textarea[required]');
             
-            // 1. Validasi Tanggal (Batas Registrasi vs Tanggal Pelaksanaan)
-            const tglPelaksanaan = document.querySelector('input[name="tanggal_pelaksanaan"]').value;
-            const batasReg = document.querySelector('input[name="batas_registrasi"]').value;
-
-            if (tglPelaksanaan && batasReg) {
-                if (batasReg > tglPelaksanaan) {
-                    e.preventDefault(); // Hentikan form agar tidak terkirim
-                    alert('Gagal: Tanggal Batas Registrasi tidak boleh melewati Tanggal Pelaksanaan!');
-                    return;
+            inputWajib.forEach(input => {
+                // Pengecekan khusus untuk foto/file
+                if (input.type === 'file') {
+                    if (input.files.length === 0) {
+                        adaYangKosong = true;
+                    }
+                } 
+                // Pengecekan untuk teks, angka, select, dan tanggal
+                else {
+                    if (input.value.trim() === '') {
+                        adaYangKosong = true;
+                    }
                 }
+            });
+
+            // Jika ada satu saja yang kosong, munculkan pop-up dan hentikan form
+            if (adaYangKosong) {
+                e.preventDefault(); // Ini yang menghentikan form "bocor" ke database
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Data Belum Lengkap!',
+                    text: 'Mohon lengkapi semua isian data dan foto sebelum menyimpan.',
+                    confirmButtonColor: '#b91c1c'
+                });
+                return; // Stop baca kode ke bawah
             }
 
-            // 2. Validasi File Size (Maksimal 2MB)
-            const fileInput = document.querySelector('input[name="foto_kegiatan"]');
-            if (fileInput.files.length > 0) {
-                const fileSize = fileInput.files[0].size / 1024 / 1024; // Konversi ke MB
-                if (fileSize > 2) {
-                    e.preventDefault();
-                    alert('Gagal: Ukuran foto terlalu besar! Maksimal 2MB.');
-                    return;
-                }
-            }
-
-            // 3. Validasi Kuota Divisi (Minimal ada 1 orang relawan yang dibutuhkan)
+            // 2. Validasi Kuota Divisi (Minimal ada 1 divisi yang butuh orang)
             let totalKuota = 0;
-            const kuotaInputs = document.querySelectorAll('input[type="number"]');
+            // Ambil semua input yang namanya berawalan "kuota_"
+            const kuotaInputs = document.querySelectorAll('input[name^="kuota_"]');
             
             kuotaInputs.forEach(input => {
-                totalKuota += Number(input.value);
+                totalKuota += Number(input.value) || 0; // Jika kosong, anggap 0
             });
 
             if (totalKuota === 0) {
                 e.preventDefault();
-                alert('Gagal: Anda belum memasukkan kebutuhan kuota relawan. Minimal isi 1 kuota di salah satu divisi!');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Kuota Kosong!',
+                    text: 'Silakan isi minimal 1 kuota relawan di salah satu divisi.',
+                    confirmButtonColor: '#b91c1c'
+                });
                 return;
             }
 
-            // Jika semua validasi lolos, form akan otomatis dikirim (submit)
+            // Jika semua aman, form otomatis terkirim dan memunculkan pop-up "Berhasil" dari PHP di atas!
         });
     </script>
 </body>

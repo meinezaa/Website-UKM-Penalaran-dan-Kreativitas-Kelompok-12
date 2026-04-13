@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 include "koneksi.php"; 
 $page = 'relawan';
 
@@ -39,124 +41,138 @@ if (!$data) {
   </head>
 
     <body class="text-gray-800">
-    <header class="fixed top-0 left-0 w-full z-50 bg-[#8B1E1E] shadow-md">
-      <div class="flex items-center justify-between px-6 py-2 text-white">
-        <div class="flex items-center">
-          <a href="relawan.php" class="overflow-hidden">
-            <img
-              src="./foto/logo.jpeg"
-              alt="Logo UPN Mengajar"
-              class="w-16 scale-125"
-            />
-          </a>
-        </div>
+    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
+<div class="flex items-center justify-between px-6 py-0.5 text-white">
 
-        <div class="flex items-center gap-12">
-          <nav>
-            <ul class="flex gap-12 font-poppins font-semibold">
-              <li>
-                <a
-  href="beranda.php"
-  class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white <?php echo ($page == 'home') ? 'after:w-full' : 'after:w-0 after:transition-all after:duration-300 hover:after:w-full'; ?>"
->
-  Home
+<div class="flex items-center">
+<a href="beranda.php" class="overflow-hidden">
+<img src="./foto/logo.jpeg" 
+alt="Logo UPN Mengajar" 
+class="w-16 scale-125">
 </a>
-              </li>
-              <li class="relative group">
-                <a
-  href="tentang.php"
-  class="flex items-center gap-1 relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white <?php echo ($page == 'tentang') ? 'after:w-full' : 'after:w-0 after:transition-all after:duration-300 hover:after:w-full'; ?>"
->
-  Tentang
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </a>
-                <ul
-                  class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
-                >
-                  <li>
-                    <a
-                      href="ukm.php"
-                      class="block px-5 py-2 hover:bg-gray-100"
-                    >
-                      UKM Penalaran dan Kreativitas
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="upnmengajar.php"
-                      class="block px-5 py-2 hover:bg-gray-100"
-                    >
-                      Program Kerja UPN Mengajar
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="struktur.php"
-                      class="block px-5 py-2 hover:bg-gray-100"
-                    >
-                      Tim UPN Mengajar
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a
-  href="kegiatan.php"
-  class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white <?php echo ($page == 'kegiatan') ? 'after:w-full' : 'after:w-0 after:transition-all after:duration-300 hover:after:w-full'; ?>"
->
-  Kegiatan
-</a>
-              </li>
-              <li>
-                <a
-  href="relawan.php"
-  class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white <?php echo ($page == 'relawan') ? 'after:w-full' : 'after:w-0 after:transition-all after:duration-300 hover:after:w-full'; ?>"
->
-  Relawan
-</a>
-              </li>
-            </ul>
-          </nav>
+</div>
 
-          <div class="relative group">
-            <a href="#" class="hover:text-gray-300">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-7 h-7"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M5.121 17.804A9 9 0 1118.879 17.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-            </a>
-            <div
-              class="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-black/50 text-white text-xs px-3 py-2 opacity-0 group-hover:opacity-100 transition duration-200 whitespace-nowrap"
-            >
-              Log In
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
+<div class="flex items-center gap-12">
+
+<nav>
+<ul class="flex gap-12 font-poppins font-semibold">
+
+<li>
+<a href="beranda.php"
+class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+Home
+</a>
+</li>
+
+<li class="relative group">
+
+<a href="tentang.html"
+class="flex items-center gap-1 relative 
+after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 
+after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+
+Tentang
+
+<svg xmlns="http://www.w3.org/2000/svg"
+class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
+fill="none"
+viewBox="0 0 24 24"
+stroke="currentColor">
+
+<path stroke-linecap="round"
+stroke-linejoin="round"
+stroke-width="2"
+d="M19 9l-7 7-7-7"/>
+
+</svg>
+
+</a>
+
+<ul class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md
+opacity-0 invisible -translate-y-2
+group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
+transition-all duration-300 ease-out">
+
+<li>
+<a href="ukm.html" class="block px-5 py-2 hover:bg-gray-100">
+UKM Penalaran dan Kreativitas
+</a>
+</li>
+
+<li>
+<a href="upnmengajar.html" class="block px-5 py-2 hover:bg-gray-100">
+Program Kerja UPN Mengajar
+</a>
+</li>
+
+<li>
+<a href="struktur.html" class="block px-5 py-2 hover:bg-gray-100">
+Tim UPN Mengajar
+</a>
+</li>
+
+</ul>
+
+</li>
+
+<li>
+<a href="kegiatan.html"
+class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+Kegiatan
+</a>
+</li>
+
+<li>
+<a href="relawan.php"
+class="relative after:absolute after:right-0 after:-bottom-1 after:h-[1.5px] after:w-full after:bg-white">
+Relawan
+</a>
+</li>
+
+<?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') : ?>
+<li>
+    <a href="dashboard_admin.php" 
+       class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+       Dashboard Admin
+    </a>
+</li>
+<?php endif; ?>
+
+</ul>
+</nav>
+
+<div class="relative group">
+  <?php if (isset($_SESSION['id_user'])) : ?>
+    <a href="logout.php" class="hover:text-red-400 transition-all duration-300">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+      </svg>
+    </a>
+    <div class="absolute -bottom-12 left-1/2 -translate-x-1/2 
+                bg-black/80 backdrop-blur-sm text-white text-[11px] px-4 py-2 
+                opacity-0 group-hover:opacity-100 transition-all duration-300 
+                whitespace-nowrap rounded-lg shadow-2xl border border-white/10">
+      Keluar
+    </div>
+
+  <?php else : ?>
+    <a href="login.php" class="hover:text-gray-300 transition-all duration-300">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.879 17.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+      </svg>
+    </a>
+    <div class="absolute -bottom-12 left-1/2 -translate-x-1/2 
+                bg-black/80 backdrop-blur-sm text-white text-[11px] px-4 py-2 
+                opacity-0 group-hover:opacity-100 transition-all duration-300 
+                whitespace-nowrap rounded-lg shadow-2xl border border-white/10">
+      Masuk / Daftar
+    </div>
+  <?php endif; ?>
+</div>
+
+</div>
+</div>
+</header>
 
    <main class="max-w-7xl mx-auto px-6 pb-12 pt-32">
       
