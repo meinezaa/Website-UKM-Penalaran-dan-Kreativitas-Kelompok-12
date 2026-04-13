@@ -49,7 +49,8 @@ $nama_otomatis  = $user_data['nama_lengkap'];
         </div>
 
         <form id="formRelawan" action="proses_pendaftaran.php" method="POST" enctype="multipart/form-data" class="p-10">
-            <div id="step-1" class="space-y-5">
+        <input type="hidden" name="id_kegiatan" value="<?php echo isset($_GET['id_kegiatan']) ? $_GET['id_kegiatan'] : ''; ?>">
+        <div id="step-1" class="space-y-5">
                 <div>
                     <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Nama Lengkap</label>
                     <input type="text" name="nama_lengkap" value="<?php echo $nama_otomatis; ?>" readonly class="w-full px-5 py-3 bg-gray-100 border rounded-xl outline-none text-gray-500 font-semibold cursor-not-allowed">

@@ -22,13 +22,18 @@ if (isset($_POST['daftar_relawan'])) {
     $deskripsi = mysqli_real_escape_string($koneksi, $_POST['deskripsi']);
     $metode    = mysqli_real_escape_string($koneksi, $_POST['metode_pembayaran']);
 
-    // ID Kegiatan yang kita tuju
-    $id_kegiatan = 1; 
+    // Tangkap ID Kegiatan dari input hidden di formulir
+    $id_kegiatan = mysqli_real_escape_string($koneksi, $_POST['id_kegiatan']); 
+
+    // PROTEKSI TAMBAHAN: Cegah error jika user langsung buka formulir.php tanpa lewat halaman detail
+    if (empty($id_kegiatan)) {
+        die("<script>alert('Error: Kegiatan belum dipilih! Silakan pilih kegiatan dari halaman Program.'); window.location.href='relawan_sd.php';</script>");
+    }
 
     // VALIDASI: Cek apakah id_kegiatan benar-benar ada di tabel kegiatan?
     $cek_kegiatan = mysqli_query($koneksi, "SELECT id_kegiatan FROM kegiatan WHERE id_kegiatan = '$id_kegiatan'");
     if (mysqli_num_rows($cek_kegiatan) == 0) {
-        die("Error: Data di tabel 'kegiatan' masih kosong! Masukkan minimal satu data kegiatan dengan ID $id_kegiatan di phpMyAdmin terlebih dahulu.");
+        die("Error: Data kegiatan dengan ID $id_kegiatan tidak ditemukan di database!");
     }
 
     // Proses Upload Bukti Pembayaran
@@ -52,7 +57,6 @@ if (isset($_POST['daftar_relawan'])) {
         if (mysqli_query($koneksi, $sql)) {
             echo "<script>alert('Pendaftaran Berhasil!'); window.location.href='status_pendaftaran.php';</script>";
         } else {
-            // Jika gagal karena Foreign Key atau lainnya, akan tampil di sini
             echo "Gagal menyimpan ke database: " . mysqli_error($koneksi);
         }
     } else {
@@ -61,4 +65,4 @@ if (isset($_POST['daftar_relawan'])) {
 } else {
     header("Location: formulir.php");
 }
-?> 
+?>

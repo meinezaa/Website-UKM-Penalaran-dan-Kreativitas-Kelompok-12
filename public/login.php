@@ -7,11 +7,7 @@ if (isset($_SESSION['id_user'])) {
     if ($_SESSION['role'] == 'admin') {
         header("Location: dashboard_admin.php");
     } else {
-<<<<<<< HEAD
-        header("Location: formulir.php");
-=======
         header("Location: beranda.php");
->>>>>>> ukm
     }
     exit();
 }
@@ -37,20 +33,12 @@ if (isset($_POST['login'])) {
             
             if ($data['role'] == 'admin') {
                 header("Location: dashboard_admin.php");
-<<<<<<< HEAD
-            } else {
-                header("Location: formulir.php");
-            }
-            exit();
-        } else {
-=======
                 } else {
                     // Jika user biasa, arahkan ke beranda.html
                     header("Location: beranda.php");
                     }
                     exit();
 } else {
->>>>>>> ukm
             $error = "Kata sandi salah!";
         }
     } else {
@@ -90,12 +78,8 @@ if (isset($_POST['login'])) {
 </head>
 <body class="bg-surface font-body text-on-surface min-h-screen relative flex items-center justify-center py-12 px-4">
 
-<<<<<<< HEAD
-    <a href="beranda.html" class="fixed top-6 left-6 z-50 hidden md:flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-100 rounded-full text-xs font-bold text-gray-500 hover:text-primary transition-all shadow-sm group">
-=======
     <!-- Tombol Kembali ke Beranda -->
-    <a href="index.php" class="fixed top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-full text-sm font-bold text-gray-700 hover:text-primary transition-all shadow-sm group">
->>>>>>> ukm
+    <a href="beranda.php" class="fixed top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-full text-sm font-bold text-gray-700 hover:text-primary transition-all shadow-sm group">
         <span class="material-symbols-outlined text-lg group-hover:-translate-x-1 transition-transform">arrow_back</span>
         Beranda
     </a>

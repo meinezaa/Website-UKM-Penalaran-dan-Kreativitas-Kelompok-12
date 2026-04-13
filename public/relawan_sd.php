@@ -289,9 +289,10 @@ if (!$data) {
               </div>
             </div>
 
-            <a href="formulir.php" class="block w-full text-center bg-[#EB1D2D] hover:bg-red-700 text-white font-semibold py-3.5 rounded-xl transition shadow-sm">
-              Daftar Sekarang
+            <a href="formulir.php?id_kegiatan=<?php echo $_GET['id']; ?>" class="bg-red-600 text-white px-6 py-3 rounded-lg font-bold">
+             Daftar Sekarang
             </a>
+            
           </div>
         </aside>
       </div>
