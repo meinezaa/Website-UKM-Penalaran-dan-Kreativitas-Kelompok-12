@@ -7,12 +7,11 @@ $_SESSION = [];
 session_unset();
 session_destroy();
 
-// 3. Hapus Cookies "Remember Me" (Jika sebelumnya ada)
-// Caranya adalah dengan memundurkan waktu expired Cookie ke masa lalu (minus 1 jam)
+// 3. Hapus Cookies "Remember Me"
 setcookie('id_user', '', time() - 3600, '/');
 setcookie('email', '', time() - 3600, '/');
 
-// 4. Tendang kembali user ke halaman Login
-header("Location: login.php");
+// 4. Arahkan kembali ke halaman Beranda
+header("Location: beranda.php");
 exit();
 ?>

@@ -172,7 +172,7 @@ $status = strtolower($data['status_seleksi']); // Mengambil status (pending/dite
         </div>
 
         <div>
-            <a href="dashboard_user.php" class="inline-block text-[10px] font-bold text-gray-400 hover:text-red-600 uppercase tracking-[0.2em] transition-all">Kembali ke Beranda</a>
+            <a href="beranda.html" class="inline-block text-[10px] font-bold text-gray-400 hover:text-red-600 uppercase tracking-[0.2em] transition-all">Kembali ke Beranda</a>
         </div>
     </div>
 >>>>>>> 8bcdb12b7636cec022ab4e8d96f0b7b0d0186066
