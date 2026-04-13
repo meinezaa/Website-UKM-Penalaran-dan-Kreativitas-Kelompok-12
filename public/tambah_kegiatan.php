@@ -219,6 +219,49 @@ if (isset($_POST['simpan'])) {
             </div>
         </form>
     </div>
+    
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            
+            // 1. Validasi Tanggal (Batas Registrasi vs Tanggal Pelaksanaan)
+            const tglPelaksanaan = document.querySelector('input[name="tanggal_pelaksanaan"]').value;
+            const batasReg = document.querySelector('input[name="batas_registrasi"]').value;
 
+            if (tglPelaksanaan && batasReg) {
+                if (batasReg > tglPelaksanaan) {
+                    e.preventDefault(); // Hentikan form agar tidak terkirim
+                    alert('Gagal: Tanggal Batas Registrasi tidak boleh melewati Tanggal Pelaksanaan!');
+                    return;
+                }
+            }
+
+            // 2. Validasi File Size (Maksimal 2MB)
+            const fileInput = document.querySelector('input[name="foto_kegiatan"]');
+            if (fileInput.files.length > 0) {
+                const fileSize = fileInput.files[0].size / 1024 / 1024; // Konversi ke MB
+                if (fileSize > 2) {
+                    e.preventDefault();
+                    alert('Gagal: Ukuran foto terlalu besar! Maksimal 2MB.');
+                    return;
+                }
+            }
+
+            // 3. Validasi Kuota Divisi (Minimal ada 1 orang relawan yang dibutuhkan)
+            let totalKuota = 0;
+            const kuotaInputs = document.querySelectorAll('input[type="number"]');
+            
+            kuotaInputs.forEach(input => {
+                totalKuota += Number(input.value);
+            });
+
+            if (totalKuota === 0) {
+                e.preventDefault();
+                alert('Gagal: Anda belum memasukkan kebutuhan kuota relawan. Minimal isi 1 kuota di salah satu divisi!');
+                return;
+            }
+
+            // Jika semua validasi lolos, form akan otomatis dikirim (submit)
+        });
+    </script>
 </body>
 </html>
