@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RelawanController;
+
 /*
 |--------------------------------------------------------------------------
 | 1. RUTE PUBLIK / PENGUNJUNG UMUM
@@ -18,14 +19,17 @@ Route::get('/', function () {
     return view('beranda');
 })->name('home');
 
-// TAMBAHAN: Jalur Akses Tampilan Halaman Tentang Kami publik
+// Jalur Akses Tampilan Halaman Tentang Kami publik
 Route::get('/tentang', function () {
     return view('tentang');
 })->name('tentang');
 
 // Jalur Akses Dropdown "Tentang" Lainnya
 Route::prefix('tentang')->group(function () {
-    Route::get('/ukm', function () { return view('admin.ukm'); })->name('tentang.ukm');
+    Route::get('/ukm', function () {
+        $kegiatan = DB::table('kegiatan')->orderBy('id_kegiatan', 'desc')->take(3)->get();
+        return view('ukm', compact('kegiatan'));
+    })->name('tentang.ukm');
     Route::get('/upn-mengajar', function () { return view('upnmengajar'); })->name('tentang.upnmengajar');
     Route::get('/struktur', function () { return view('tim'); })->name('tentang.struktur');
 });
@@ -47,8 +51,20 @@ Route::post('/kontak/kirim', function (Request $request) {
     return redirect()->route('kontak')->with('sukses', 'Terima kasih, pesan Anda telah berhasil dikirim!');
 })->name('kontak.kirim');
 
-//Bagian Relawan
+
+/*
+|--------------------------------------------------------------------------
+| Bagian Relawan (Menu Utama & Detail Deskripsi Program)
+|--------------------------------------------------------------------------
+*/
+// Halaman utama list program relawan
 Route::get('/relawan', [RelawanController::class, 'index'])->name('relawan.index');
+
+// Halaman formulir pendaftaran relawan masing-masing kategori
+Route::get('/relawan-sd', [RelawanController::class, 'relawanSd'])->name('relawan.sd');
+Route::get('/relawan-slb', [RelawanController::class, 'relawanSlb'])->name('relawan.slb');
+Route::get('/relawan-yayasan', [RelawanController::class, 'relawanYayasan'])->name('relawan.yayasan');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -79,7 +95,22 @@ Route::post('/logout', function () {
 
 /*
 |--------------------------------------------------------------------------
-| 3. GROUP ROUTE ADMIN (DIPROTEKSI MIDDLEWARE AUTH)
+| 3. RUTE KELOLA PENDAFTARAN RELAWAN (MIDDLEWARE AUTH)
+|--------------------------------------------------------------------------
+| Pengguna harus login terlebih dahulu agar sistem bisa mendata pendaftar & status seleksi secara aman
+*/
+Route::middleware(['auth'])->group(function () {
+    // Jalur aksi pemrosesan penyimpanan data formulir dari blade pendaftaran relawan
+    Route::post('/pendaftaran/simpan', [RelawanController::class, 'simpanPendaftaran'])->name('pendaftaran.simpan');
+
+    // Jalur akses melihat status kelolosan seleksi pendaftaran relawan terakhir pengguna
+    Route::get('/status-pendaftaran', [RelawanController::class, 'statusPendaftaran'])->name('pendaftaran.status');
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| 4. GROUP ROUTE ADMIN (DIPROTEKSI MIDDLEWARE AUTH)
 |--------------------------------------------------------------------------
 | Semua rute di dalam grup ini otomatis diawali dengan URL '/admin' (contoh: /admin/dashboard)
 */

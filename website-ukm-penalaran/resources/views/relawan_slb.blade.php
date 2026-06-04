@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Detail Relawan Yayasan - {{ $kegiatan->nama_kegiatan ?? 'Belum Ada Kegiatan' }}</title>
+    <title>Detail Relawan SLB - {{ $kegiatan->nama_kegiatan ?? 'Belum Ada Kegiatan' }}</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -85,8 +85,8 @@
         <div class="space-y-6">
           
           <div class="bg-white rounded-[20px] overflow-hidden shadow-sm border border-gray-100 aspect-video md:h-[450px]">
-            @php $foto = $kegiatan->foto_kegiatan ?? 'yayasan.jpg'; @endphp
-            <img src="{{ asset('foto/' . $foto) }}" alt="Kegiatan Yayasan" class="w-full h-full object-cover" />
+            @php $foto = $kegiatan->foto_kegiatan ?? 'slb.jpg'; @endphp
+            <img src="{{ asset('foto/' . $foto) }}" alt="Kegiatan SLB" class="w-full h-full object-cover" />
           </div>
 
           <div class="bg-white rounded-[20px] border border-gray-100 shadow-sm p-6 md:p-8">
@@ -136,7 +136,7 @@
 
           <div id="form-pendaftaran" class="bg-white rounded-[20px] border border-gray-100 shadow-md p-6 md:p-8 scroll-mt-28">
             <h3 class="text-2xl font-bold text-gray-900 mb-2">Formulir Pendaftaran Relawan</h3>
-            <p class="text-gray-500 text-sm mb-6">Silakan isi data diri Anda secara lengkap untuk mendaftar sebagai relawan Yayasan & Komunitas.</p>
+            <p class="text-gray-500 text-sm mb-6">Silakan isi data diri Anda secara lengkap untuk mendaftar sebagai relawan Sekolah Luar Biasa (SLB).</p>
 
             @if(session('sukses'))
               <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl mb-4">{{ session('sukses') }}</div>
@@ -145,7 +145,7 @@
             <form action="/pendaftaran/simpan" method="POST" class="space-y-5">
               @csrf
               <input type="hidden" name="id_kegiatan" value="{{ $kegiatan->id_kegiatan ?? 0 }}">
-              <input type="hidden" name="kategori" value="yayasan">
+              <input type="hidden" name="kategori" value="slb">
 
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>

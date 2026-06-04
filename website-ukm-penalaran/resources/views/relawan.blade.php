@@ -9,10 +9,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
 
+    <!-- Menggunakan Vite asset loader bawaan Laravel -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
+  </head>
 
   <body class="bg-gray-50 font-poppins">
+    <!-- HEADER / NAVBAR -->
     <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
       <div class="flex items-center justify-between px-6 py-0.5 text-white">
         <div class="flex items-center">
@@ -51,7 +53,6 @@
                 <a href="{{ route('relawan.index') }}" class="relative after:absolute after:right-0 after:-bottom-1 after:h-[1.5px] after:w-full after:bg-white">Relawan</a>
               </li>
 
-              {{-- Pengecekan admin menggunakan Gate atau properti role Laravel Auth --}}
               @auth
                 @if(auth()->user()->role === 'admin')
                   <li>
@@ -64,7 +65,6 @@
 
           <div class="relative group">
             @auth
-              {{-- Tombol Logout menggunakan standar form POST Laravel demi keamanan --}}
               <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="hover:text-red-400 transition-all duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -93,6 +93,7 @@
       </div>
     </header>
 
+    <!-- MAIN CONTENT -->
     <main class="pt-[140px] md:pt-[160px]">
       <section class="relative overflow-hidden bg-gradient-to-br from-white via-[#fff4f4] to-[#ffe1e1]">
         <div class="absolute inset-0 -z-10">
@@ -105,7 +106,17 @@
           <div class="w-full h-full bg-[radial-gradient(#8B1E1E_1px,transparent_1px)] [background-size:26px_26px]"></div>
         </div>
 
-        <section class="px-6 md:px-20 pb-10 bg-transparent">
+        <!-- Bagian Alert Notifikasi / Pesan Error dari Controller -->
+        @if(session('error'))
+          <div class="max-w-7xl mx-auto mt-4 px-6">
+            <div class="max-w-4xl px-4 py-3 bg-red-100 border border-red-400 text-red-700 rounded-lg relative shadow-sm flex items-center gap-2" role="alert">
+              <span class="font-medium">⚠️ {{ session('error') }}</span>
+            </div>
+          </div>
+        @endif
+
+        <!-- Jumbotron Title -->
+        <section class="px-6 md:px-20 pb-10 pt-6 bg-transparent">
           <div class="max-w-4xl">
             <span class="inline-block px-5 py-2 rounded-full bg-red-100 text-[#8B1E1E] text-sm font-semibold shadow-sm">
               Program Relawan
@@ -119,8 +130,11 @@
           </div>
         </section>
 
+        <!-- List Program Cards -->
         <section class="px-6 md:px-20 pb-20 bg-transparent">
           <div class="grid gap-10">
+            
+            <!-- 1. PROGRAM SEKOLAH DASAR (SD) -->
             <div class="bg-white/90 backdrop-blur-md rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 md:p-10 grid md:grid-cols-2 gap-10 items-stretch">
               <div class="w-full h-72 md:h-[420px] overflow-hidden rounded-2xl">
                 <img src="{{ asset('foto/sd.jpg') }}" alt="Program Sekolah Dasar" class="w-full h-full object-cover hover:scale-105 transition duration-500" />
@@ -128,6 +142,18 @@
               <div class="flex flex-col justify-between max-w-2xl pt-1">
                 <div class="space-y-6">
                   <h2 class="text-3xl font-bold text-[#8B1E1E]">Sekolah Dasar</h2>
+                  
+                  <!-- Status Ketersediaan Kegiatan -->
+                  @if($sd->id_kegiatan !== '0')
+                    <span class="inline-block text-xs bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold">
+                      🟢 Pendaftaran Dibuka: {{ $sd->nama_kegiatan }}
+                    </span>
+                  @else
+                    <span class="inline-block text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-semibold">
+                      🟡 Pendaftaran Belum Tersedia
+                    </span>
+                  @endif
+
                   <p class="text-gray-600 leading-relaxed text-sm md:text-base text-justify">
                     Program Sekolah Dasar dalam UPN Mengajar mengajak relawan untuk berkontribusi langsung dalam meningkatkan kualitas pendidikan dasar di Indonesia. Fokus utama kegiatan ini adalah penguatan literasi dan numerasi siswa melalui pendekatan belajar yang menyenangkan.
                   </p>
@@ -144,14 +170,23 @@
                     </div>
                   </div>
                 </div>
+                
+                <!-- Tombol Kondisional -->
                 <div class="pt-6">
-                  <a href="/relawan-sd?id={{ $sd->id_kegiatan }}" class="inline-block bg-[#8B1E1E] text-white px-10 py-3 rounded-full hover:bg-red-900 transition-all shadow-md hover:shadow-lg active:scale-95 font-bold text-center">
-                    Pilih Program
-                  </a>
+                  @if($sd->id_kegiatan !== '0')
+                    <a href="/relawan-sd?id={{ $sd->id_kegiatan }}" class="inline-block bg-[#8B1E1E] text-white px-10 py-3 rounded-full hover:bg-red-900 transition-all shadow-md hover:shadow-lg active:scale-95 font-bold text-center">
+                      Pilih Program
+                    </a>
+                  @else
+                    <button disabled class="inline-block bg-gray-200 text-gray-400 px-10 py-3 rounded-full font-bold text-center cursor-not-allowed shadow-none border border-gray-300">
+                      Belum Tersedia
+                    </button>
+                  @endif
                 </div>
               </div>
             </div>
 
+            <!-- 2. PROGRAM SEKOLAH LUAR BIASA (SLB) -->
             <div class="bg-white/90 backdrop-blur-md rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 md:p-10 grid md:grid-cols-2 gap-10 items-stretch">
               <div class="w-full h-72 md:h-[420px] overflow-hidden rounded-2xl">
                 <img src="{{ asset('foto/slb.jpg') }}" alt="Program Sekolah Luar Biasa" class="w-full h-full object-cover hover:scale-105 transition duration-500" />
@@ -159,8 +194,20 @@
               <div class="flex flex-col justify-between max-w-2xl pt-1">
                 <div class="space-y-6">
                   <h2 class="text-3xl font-bold text-[#8B1E1E]">Sekolah Luar Biasa</h2>
+                  
+                  <!-- Status Ketersediaan Kegiatan -->
+                  @if($slb->id_kegiatan !== '0')
+                    <span class="inline-block text-xs bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold">
+                      🟢 Pendaftaran Dibuka: {{ $slb->nama_kegiatan }}
+                    </span>
+                  @else
+                    <span class="inline-block text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-semibold">
+                      🟡 Pendaftaran Belum Tersedia
+                    </span>
+                  @endif
+
                   <p class="text-gray-600 leading-relaxed text-sm md:text-base text-justify">
-                    Program ini berfokus pada pendampingan siswa berkebutuhan khusus dengan pendekatan inklusif, empatik, dan adaptif untuk memastikan setiap child mendapatkan hak pendidikan yang setara.
+                    Program ini berfokus pada pendampingan siswa berkebutuhan khusus dengan pendekatan inklusif, empatik, dan adaptif untuk memastikan setiap anak mendapatkan hak pendidikan yang setara.
                   </p>
                   <div class="flex flex-col md:flex-row md:gap-20 gap-6 text-sm mt-2">
                     <ul class="text-gray-600 space-y-2 flex-1">
@@ -175,14 +222,23 @@
                     </div>
                   </div>
                 </div>
+                
+                <!-- Tombol Kondisional -->
                 <div class="pt-6">
-                  <a href="/relawan-slb?id={{ $slb->id_kegiatan }}" class="inline-block bg-[#8B1E1E] text-white px-10 py-3 rounded-full hover:bg-red-900 transition-all shadow-md hover:shadow-lg active:scale-95 font-bold text-center">
-                    Pilih Program
-                  </a>
+                  @if($slb->id_kegiatan !== '0')
+                    <a href="/relawan-slb?id={{ $slb->id_kegiatan }}" class="inline-block bg-[#8B1E1E] text-white px-10 py-3 rounded-full hover:bg-red-900 transition-all shadow-md hover:shadow-lg active:scale-95 font-bold text-center">
+                      Pilih Program
+                    </a>
+                  @else
+                    <button disabled class="inline-block bg-gray-200 text-gray-400 px-10 py-3 rounded-full font-bold text-center cursor-not-allowed shadow-none border border-gray-300">
+                      Belum Tersedia
+                    </button>
+                  @endif
                 </div>
               </div>
             </div>
 
+            <!-- 3. PROGRAM YAYASAN & KOMUNITAS -->
             <div class="bg-white/90 backdrop-blur-md rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 md:p-10 grid md:grid-cols-2 gap-10 items-stretch">
               <div class="w-full h-72 md:h-[420px] overflow-hidden rounded-2xl">
                 <img src="{{ asset('foto/yayasan.jpg') }}" alt="Program Yayasan dan Komunitas" class="w-full h-full object-cover hover:scale-105 transition duration-500" />
@@ -190,6 +246,18 @@
               <div class="flex flex-col justify-between max-w-2xl pt-1">
                 <div class="space-y-6">
                   <h2 class="text-3xl font-bold text-[#8B1E1E]">Yayasan & Komunitas</h2>
+                  
+                  <!-- Status Ketersediaan Kegiatan -->
+                  @if($yayasan->id_kegiatan !== '0')
+                    <span class="inline-block text-xs bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold">
+                      🟢 Pendaftaran Dibuka: {{ $yayasan->nama_kegiatan }}
+                    </span>
+                  @else
+                    <span class="inline-block text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-semibold">
+                      🟡 Pendaftaran Belum Tersedia
+                    </span>
+                  @endif
+
                   <p class="text-gray-600 leading-relaxed text-sm md:text-base text-justify">
                     Program ini memberikan pengalaman mengajar dalam lingkungan komunitas dengan pendekatan santai namun tetap bermakna.
                   </p>
@@ -206,18 +274,28 @@
                     </div>
                   </div>
                 </div>
+                
+                <!-- Tombol Kondisional -->
                 <div class="pt-6">
-                  <a href="/relawan-yayasan?id={{ $yayasan->id_kegiatan }}" class="inline-block bg-[#8B1E1E] text-white px-10 py-3 rounded-full hover:bg-red-900 transition-all shadow-md hover:shadow-lg active:scale-95 font-bold text-center">
-                    Pilih Program
-                  </a>
+                  @if($yayasan->id_kegiatan !== '0')
+                    <a href="/relawan-yayasan?id={{ $yayasan->id_kegiatan }}" class="inline-block bg-[#8B1E1E] text-white px-10 py-3 rounded-full hover:bg-red-900 transition-all shadow-md hover:shadow-lg active:scale-95 font-bold text-center">
+                      Pilih Program
+                    </a>
+                  @else
+                    <button disabled class="inline-block bg-gray-200 text-gray-400 px-10 py-3 rounded-full font-bold text-center cursor-not-allowed shadow-none border border-gray-300">
+                      Belum Tersedia
+                    </button>
+                  @endif
                 </div>
               </div>
             </div>
+
           </div>
         </section>
       </section>
     </main>
 
+    <!-- FOOTER -->
     <footer class="w-full bg-[#8B1E1E] text-white pt-16">
       <div class="max-w-7xl mx-auto px-6 md:px-20 grid md:grid-cols-3 gap-10 pb-10">
         <div class="md:border-r md:border-red-300 md:pr-10">
@@ -275,6 +353,7 @@
       </div>
     </footer>
 
+    <!-- NAVBAR SCRIPTS -->
     <script>
       const header = document.querySelector("header");
       window.addEventListener("scroll", function () {
