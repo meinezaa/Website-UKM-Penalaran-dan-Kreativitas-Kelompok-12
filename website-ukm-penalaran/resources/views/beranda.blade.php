@@ -38,7 +38,7 @@ Home
 
 <li class="relative group">
 
-<a href="{{ route('tentang') }}"
+<a href="{{ route('tentang.ukm') }}"
 class="flex items-center gap-1 relative 
 after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 
 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
@@ -66,19 +66,19 @@ group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
 transition-all duration-300 ease-out">
 
 <li>
-<a href="{{ route('ukm') }}" class="block px-5 py-2 hover:bg-gray-100">
+<a href="{{ route('tentang.ukm') }}" class="block px-5 py-2 hover:bg-gray-100">
 UKM Penalaran dan Kreativitas
 </a>
 </li>
 
 <li>
-<a href="{{ route('upnmengajar') }}" class="block px-5 py-2 hover:bg-gray-100">
+<a href="{{ route('tentang.upnmengajar') }}" class="block px-5 py-2 hover:bg-gray-100">
 Program Kerja UPN Mengajar
 </a>
 </li>
 
 <li>
-<a href="{{ route('tim') }}" class="block px-5 py-2 hover:bg-gray-100">
+<a href="{{ route('tentang.markdown.struktur') }}" class="block px-5 py-2 hover:bg-gray-100">
 Tim UPN Mengajar
 </a>
 </li>
@@ -178,7 +178,7 @@ Relawan
       Jadi Mitra Kami
       </a>
 
-      <a href="{{ route('tentang') }}"
+      <a href="{{ route('tentang.ukm') }}"
       class="border-2 border-white text-white font-semibold px-10 py-3 rounded-full hover:bg-white hover:text-red-700">
       Tentang Program
       </a>
@@ -550,7 +550,7 @@ So, this is your time. Step forward, take the challenge, and be part of
       <h4 class="font-semibold mb-3 text-lg">Menu</h4>
       <ul class="space-y-2 text-sm">
         <li><a href="{{ url('/') }}" class="hover:underline">Home</a></li>
-        <li><a href="{{ route('tentang') }}" class="hover:underline">Tentang</a></li>
+        <li><a href="{{ route('tentang.ukm') }}" class="hover:underline">Tentang</a></li>
         <li><a href="{{ route('kegiatan') }}" class="hover:underline">Kegiatan</a></li>
         <li><a href="{{ route('relawan') }}" class="hover:underline">Relawan</a></li>
       </ul>
@@ -606,21 +606,21 @@ So, this is your time. Step forward, take the challenge, and be part of
         <div class="flex items-center gap-2">
           <img src="{{ asset('foto/Untitled design (17).png') }}" class="w-5 h-6">
           <a href="mailto:upnmengajar.jt@gmail.com" class="hover:underline">
-            upnmengajar.jt@gmail.com
+             upnmengajar.jt@gmail.com
           </a>
         </div>
 
         <div class="flex items-center gap-2">
           <img src="{{ asset('foto/instagram.png') }}" class="w-5 h-6">
           <a href="https://instagram.com/upnmengajar.jt" class="hover:underline">
-            @upnmengajar.jt
+             @upnmengajar.jt
           </a>
         </div>
 
         <div class="flex items-center gap-2">
           <img src="{{ asset('foto/whatsapp.png') }}" class="w-5 h-6">
           <a href="https://wa.me/6289699808453" class="hover:underline">
-            089699808453 (Nabila)
+             089699808453 (Nabila)
           </a>
         </div>
 

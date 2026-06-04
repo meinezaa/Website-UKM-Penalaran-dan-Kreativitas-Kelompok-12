@@ -26,12 +26,18 @@ Route::get('/tentang', function () {
 
 // Jalur Akses Dropdown "Tentang" Lainnya
 Route::prefix('tentang')->group(function () {
-    Route::get('/ukm', function () {
-        $kegiatan = DB::table('kegiatan')->orderBy('id_kegiatan', 'desc')->take(3)->get();
-        return view('ukm', compact('kegiatan'));
+    // Ubah ->name('ukm') menjadi ->name('tentang.ukm') agar seragam
+    Route::get('/ukm', function () { 
+        return view('ukm'); 
     })->name('tentang.ukm');
-    Route::get('/upn-mengajar', function () { return view('upnmengajar'); })->name('tentang.upnmengajar');
-    Route::get('/struktur', function () { return view('tim'); })->name('tentang.struktur');
+
+    Route::get('/upn-mengajar', function () { 
+        return view('upnmengajar'); 
+    })->name('tentang.upnmengajar');
+
+    Route::get('/struktur', function () { 
+        return view('tim'); 
+    })->name('tentang.struktur');
 });
 
 // Jalur akses menampilkan halaman kontak publik
