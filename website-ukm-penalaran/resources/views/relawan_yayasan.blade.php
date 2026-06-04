@@ -85,7 +85,7 @@
         <div class="space-y-6">
           
           <div class="bg-white rounded-[20px] overflow-hidden shadow-sm border border-gray-100 aspect-video md:h-[450px]">
-            @php $foto = $kegiatan->foto_kegiatan ?? 'yayasan.jpg'; @endphp
+            @php $foto = $kegiatan->foto_kegiatan ?? 'yayasan.jpg'; @php_end
             <img src="{{ asset('foto/' . $foto) }}" alt="Kegiatan Yayasan" class="w-full h-full object-cover" />
           </div>
 
@@ -134,58 +134,162 @@
             @endif
           </div>
 
+          {{-- FORMULIR INTERAKTIF MULTI-STEP RELAWAN YAYASAN --}}
           <div id="form-pendaftaran" class="bg-white rounded-[20px] border border-gray-100 shadow-md p-6 md:p-8 scroll-mt-28">
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">Formulir Pendaftaran Relawan</h3>
-            <p class="text-gray-500 text-sm mb-6">Silakan isi data diri Anda secara lengkap untuk mendaftar sebagai relawan Yayasan & Komunitas.</p>
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-100 pb-4 mb-6 gap-4">
+              <div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-1">Formulir Pendaftaran Relawan</h3>
+                <p class="text-gray-500 text-sm">Silakan lengkapi tahapan data untuk mendaftar sebagai relawan Yayasan & Komunitas.</p>
+              </div>
+              {{-- Progress Indikator Step --}}
+              <div class="flex items-center space-x-2 bg-gray-50 px-4 py-2 rounded-xl border">
+                <div id="dot-1" class="w-8 h-2 rounded-full bg-red-600 transition-all duration-300"></div>
+                <div id="dot-2" class="w-4 h-2 rounded-full bg-gray-200 transition-all duration-300"></div>
+                <div id="dot-3" class="w-4 h-2 rounded-full bg-gray-200 transition-all duration-300"></div>
+              </div>
+            </div>
 
             @if(session('sukses'))
               <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl mb-4">{{ session('sukses') }}</div>
             @endif
 
-            <form action="/pendaftaran/simpan" method="POST" class="space-y-5">
+            <form id="formRelawan" action="/pendaftaran/simpan" method="POST" enctype="multipart/form-data" class="space-y-5">
               @csrf
               <input type="hidden" name="id_kegiatan" value="{{ $kegiatan->id_kegiatan ?? 0 }}">
               <input type="hidden" name="kategori" value="yayasan">
 
-              <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
-                <input type="text" name="nama" value="{{ auth()->check() ? auth()->user()->name : '' }}" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-red-200 focus:border-[#8B1E1E] outline-none transition" placeholder="Masukkan nama lengkap" required>
-              </div>
-              <div class="grid md:grid-cols-2 gap-4">
+              {{-- STEP 1: INFORMASI PERSONAL & PILIHAN DIVISI --}}
+              <div id="step-1" class="space-y-5">
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">NPM / NIM</label>
-                  <input type="text" name="npm" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-red-200 focus:border-[#8B1E1E] outline-none transition" placeholder="Contoh: 21081010..." required>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
+                  <input type="text" name="nama_lengkap" value="{{ auth()->check() ? (auth()->user()->nama_lengkap ?? auth()->user()->name) : '' }}" readonly class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-gray-500 outline-none cursor-not-allowed font-medium">
                 </div>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nomor WhatsApp</label>
+                    <input type="number" name="no_hp" placeholder="Contoh: 0896..." class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-red-100 focus:border-[#8B1E1E] outline-none transition" required>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Email Aktif</label>
+                    <input type="email" value="{{ auth()->check() ? auth()->user()->email : '' }}" readonly class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-gray-500 outline-none cursor-not-allowed font-medium">
+                  </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4 items-center">
+                  <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Umur</label>
+                    <input type="number" name="umur" placeholder="Contoh: 20" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-red-100 focus:border-[#8B1E1E] outline-none transition" required>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Jenis Kelamin</label>
+                    <div class="flex gap-2">
+                      <input type="radio" name="jenis_kelamin" id="L" value="Laki-laki" class="hidden" required onchange="updateGenderStyle()">
+                      <label id="label-L" for="L" class="flex-1 text-center py-2.5 border rounded-xl cursor-pointer text-sm font-bold text-gray-400 bg-gray-50 transition-all">Laki-laki</label>
+                      
+                      <input type="radio" name="jenis_kelamin" id="P" value="Perempuan" class="hidden" onchange="updateGenderStyle()">
+                      <label id="label-P" for="P" class="flex-1 text-center py-2.5 border rounded-xl cursor-pointer text-sm font-bold text-gray-400 bg-gray-50 transition-all">Perempuan</label>
+                    </div>
+                  </div>
+                </div>
+
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">Nomor WhatsApp</label>
-                  <input type="text" name="whatsapp" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-red-200 focus:border-[#8B1E1E] outline-none transition" placeholder="Contoh: 0896..." required>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Program Studi / Jurusan</label>
+                  <select name="asal_prodi" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-red-100 focus:border-[#8B1E1E] outline-none transition bg-white">
+                    <option value="">Pilih Program Studi</option>
+                    <option value="Informatika">Informatika</option>
+                    <option value="Sistem Informasi">Sistem Informasi</option>
+                    <option value="Teknik Industri">Teknik Industri</option>
+                    <option value="Sains Data">Sains Data</option>
+                    <option value="Manajemen">Manajemen</option>
+                    <option value="Akuntansi">Akuntansi</option>
+                  </select>
                 </div>
-              </div>
-              <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Program Studi / Jurusan</label>
-                <input type="text" name="prodi" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-red-200 focus:border-[#8B1E1E] outline-none transition" placeholder="Contoh: Sistem Informasi" required>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Divisi Utama</label>
+                    <select name="pilihan_divisi_1" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-red-100 focus:border-[#8B1E1E] outline-none transition bg-white" required>
+                      <option value="">-- Pilih Divisi Utama --</option>
+                      @if(isset($divisi_kegiatan))
+                        @foreach($divisi_kegiatan as $divisi)
+                          @if(($divisi->kuota ?? 0) > 0)
+                            <option value="{{ $divisi->nama_divisi }}">{{ $divisi->nama_divisi }}</option>
+                          @endif
+                        @endforeach
+                      @endif
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Divisi Cadangan</label>
+                    <select name="pilihan_divisi_2" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-red-100 focus:border-[#8B1E1E] outline-none transition bg-white" required>
+                      <option value="">-- Pilih Divisi Cadangan --</option>
+                      @if(isset($divisi_kegiatan))
+                        @foreach($divisi_kegiatan as $divisi)
+                          @if(($divisi->kuota ?? 0) > 0)
+                            <option value="{{ $divisi->nama_divisi }}">{{ $divisi->nama_divisi }}</option>
+                          @endif
+                        @endforeach
+                      @endif
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Link Portofolio</label>
+                  <input type="url" name="portofolio" placeholder="https://drive.google.com/..." class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-red-100 focus:border-[#8B1E1E] outline-none transition" required>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Pengalaman & Alasan Mengikuti Program</label>
+                  <textarea name="pengalaman_keahlian" rows="4" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-red-100 focus:border-[#8B1E1E] outline-none transition" placeholder="Ceritakan riwayat organisasi atau motivasimu mengikuti program Yayasan ini..." required></textarea>
+                </div>
               </div>
 
-              @if(isset($divisi_kegiatan) && $divisi_kegiatan->count() > 0)
-              <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Pilih Divisi yang Diminati</label>
-                <select name="divisi_pilihan" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-red-200 focus:border-[#8B1E1E] outline-none transition bg-white" required>
-                  <option value="">-- Pilih Divisi --</option>
-                  @foreach($divisi_kegiatan as $divisi)
-                    @if(($divisi->kuota ?? 0) > 0)
-                      <option value="{{ $divisi->nama_divisi }}">{{ $divisi->nama_divisi }}</option>
-                    @endif
-                  @endforeach
-                </select>
+              {{-- STEP 2: ADMINISTRASI & BUKTI TRANSFER --}}
+              <div id="step-2" class="hidden space-y-5">
+                <div class="bg-red-50 p-5 rounded-2xl border border-red-100 text-center font-bold text-red-700 text-sm md:text-base">
+                  BIAYA REGISTRASI: RP 50.000<br>
+                  <span class="text-xs text-red-500 font-semibold tracking-wide uppercase block mt-1">BCA 12345678 A/N UPN MENGAJAR</span>
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Metode Transfer</label>
+                  <select name="metode_pembayaran" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-red-100 focus:border-[#8B1E1E] outline-none transition bg-white" required>
+                    <option value="BCA">Bank BCA</option>
+                    <option value="BNI">Bank BNI</option>
+                    <option value="MANDIRI">Bank Mandiri</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Upload Bukti Transfer</label>
+                  <div class="border-2 border-dashed border-gray-200 rounded-2xl p-8 text-center relative hover:border-red-400 transition group bg-gray-50">
+                    <input type="file" name="bukti_pembayaran" class="absolute inset-0 opacity-0 cursor-pointer" required onchange="document.getElementById('file-name').innerText = 'Berkas dipilih: ' + this.files[0].name">
+                    <p id="file-name" class="text-gray-500 font-semibold text-sm group-hover:text-[#8B1E1E] transition">Klik atau Seret Berkas Gambar di Sini</p>
+                  </div>
+                </div>
               </div>
-              @endif
 
-              <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Mengapa kamu tertarik memilih program ini?</label>
-                <textarea name="alasan" rows="4" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-red-200 focus:border-[#8B1E1E] outline-none transition" placeholder="Ceritakan motivasi singkatmu..." required></textarea>
+              {{-- STEP 3: LEMBAR KONFIRMASI PERSETUJUAN --}}
+              <div id="step-3" class="hidden space-y-5 text-center">
+                <div class="w-14 h-14 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h4 class="text-lg font-bold text-gray-900">Konfirmasi Lembar Persetujuan</h4>
+                <div class="bg-gray-50 p-5 rounded-xl text-left text-xs md:text-sm text-gray-600 border border-gray-100 space-y-2 leading-relaxed">
+                  <p>1. Saya berkomitmen penuh untuk mengikuti seluruh rangkaian program kerelawanan Yayasan & Komunitas.</p>
+                  <p>2. Seluruh data berkas dan bukti pembayaran yang dilampirkan adalah benar dan dapat dipertanggungjawabkan.</p>
+                </div>
+                <label class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl cursor-pointer border hover:border-red-200 transition text-left">
+                  <input type="checkbox" name="persetujuan" class="w-5 h-5 accent-[#8B1E1E] rounded-md" required>
+                  <span class="text-xs md:text-sm font-medium text-gray-600 select-none">Saya menyatakan setuju dengan seluruh ketentuan di atas.</span>
+                </label>
               </div>
-              <div class="pt-4">
-                <button type="submit" class="w-full bg-[#8B1E1E] hover:bg-red-900 text-white font-bold py-3 px-6 rounded-xl transition shadow-md">Kirim Formulir Pendaftaran</button>
+
+              {{-- BOTTOM CONTROLS FORM NAVIGASI --}}
+              <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                <button type="button" id="prevBtn" onclick="move(-1)" class="hidden text-gray-500 font-bold text-sm hover:text-[#8B1E1E] transition">← Kembali</button>
+                <div class="flex-1"></div>
+                <button type="button" id="nextBtn" onclick="move(1)" class="bg-[#8B1E1E] hover:bg-red-900 text-white font-bold py-2.5 px-8 rounded-xl transition shadow-sm text-sm">Lanjut</button>
               </div>
             </form>
           </div>
@@ -231,5 +335,82 @@
         <p>© 2026 UPN Mengajar — UKM Penalaran & Kreativitas UPN "Veteran" Jawa Timur</p>
       </div>
     </footer>
+
+    {{-- INTERAKTIVITAS LOGIC MULTI-STEP JAVASCRIPT --}}
+    <script>
+      const header = document.querySelector("header");
+      window.addEventListener("scroll", function () {
+        if (window.scrollY > 50) { header.classList.add("bg-red-900", "shadow-lg"); } 
+        else { header.classList.remove("bg-red-900", "shadow-lg"); }
+      });
+
+      let step = 1;
+
+      function move(n) {
+        if (n === 1) {
+          const currentStepDiv = document.getElementById(`step-${step}`);
+          const requiredInputs = currentStepDiv.querySelectorAll("input[required], select[required], textarea[required]");
+          
+          const isRadioValid = step !== 1 || document.querySelector('input[name="jenis_kelamin"]:checked');
+          
+          let allFilled = true;
+          requiredInputs.forEach(input => { 
+            if (!input.value || !input.checkValidity()) {
+              allFilled = false;
+              input.reportValidity();
+            } 
+          });
+
+          if (!allFilled || !isRadioValid) { 
+            if(!isRadioValid && allFilled) alert("Silakan pilih Jenis Kelamin terlebih dahulu!");
+            return false; 
+          }
+        }
+
+        if (step + n > 3) {
+          document.getElementById('formRelawan').submit();
+          return true;
+        }
+
+        document.getElementById(`step-${step}`).classList.add("hidden");
+        step += n;
+        
+        document.getElementById(`step-${step}`).classList.remove("hidden");
+        document.getElementById("prevBtn").classList.toggle("hidden", step === 1);
+        
+        const nextBtn = document.getElementById("nextBtn");
+        if (step === 3) {
+          nextBtn.innerText = "Kirim Pendaftaran";
+        } else {
+          nextBtn.innerText = "Lanjut";
+        }
+
+        for(let i = 1; i <= 3; i++) {
+          const dot = document.getElementById(`dot-${i}`);
+          if (i === step) {
+            dot.className = "w-8 h-2 rounded-full bg-red-600 transition-all duration-300";
+          } else if (i < step) {
+            dot.className = "w-4 h-2 rounded-full bg-red-800 transition-all duration-300";
+          } else {
+            dot.className = "w-4 h-2 rounded-full bg-gray-200 transition-all duration-300";
+          }
+        }
+      }
+
+      function updateGenderStyle() {
+        const labelL = document.getElementById('label-L');
+        const labelP = document.getElementById('label-P');
+        const radioL = document.getElementById('L');
+        const radioP = document.getElementById('P');
+
+        if (radioL.checked) {
+          labelL.className = "flex-1 text-center py-2.5 border border-red-600 rounded-xl cursor-pointer text-sm font-bold text-red-600 bg-red-50 transition-all";
+          labelP.className = "flex-1 text-center py-2.5 border border-gray-200 rounded-xl cursor-pointer text-sm font-bold text-gray-400 bg-gray-50 transition-all";
+        } else if (radioP.checked) {
+          labelP.className = "flex-1 text-center py-2.5 border border-red-600 rounded-xl cursor-pointer text-sm font-bold text-red-600 bg-red-50 transition-all";
+          labelL.className = "flex-1 text-center py-2.5 border border-gray-200 rounded-xl cursor-pointer text-sm font-bold text-gray-400 bg-gray-50 transition-all";
+        }
+      }
+    </script>
   </body>
 </html>
