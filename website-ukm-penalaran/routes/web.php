@@ -40,6 +40,12 @@ Route::prefix('tentang')->group(function () {
     })->name('tentang.struktur');
 });
 
+// Jalur Akses Halaman Kegiatan
+Route::get('/kegiatan', function () {
+    return view('kegiatan');
+})->name('kegiatan');
+
+
 // Jalur akses menampilkan halaman kontak publik
 Route::get('/kontak', function () {
     return view('kontak');

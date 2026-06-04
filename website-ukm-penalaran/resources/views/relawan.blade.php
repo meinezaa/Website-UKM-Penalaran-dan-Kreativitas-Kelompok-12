@@ -39,24 +39,22 @@
                 </a>
 
                 <ul class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out">
-                  <li><a href="/ukm" class="block px-5 py-2 hover:bg-gray-100">UKM Penalaran dan Kreativitas</a></li>
-                  <li><a href="/upnmengajar" class="block px-5 py-2 hover:bg-gray-100">Program Kerja UPN Mengajar</a></li>
-                  <li><a href="/struktur" class="block px-5 py-2 hover:bg-gray-100">Tim UPN Mengajar</a></li>
+                  <li><a href="{{ route('tentang.ukm') }}" class="block px-5 py-2 hover:bg-gray-100">UKM Penalaran dan Kreativitas</a></li>
+                  <li><a href="{{ route('tentang.upnmengajar') }}" class="block px-5 py-2 hover:bg-gray-100">Program Kerja UPN Mengajar</a></li>
+                  <li><a href="{{ route('tentang.struktur') }}" class="block px-5 py-2 hover:bg-gray-100">Tim UPN Mengajar</a></li>
                 </ul>
               </li>
 
               <li>
-                <a href="/kegiatan" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Kegiatan</a>
+                <a href="{{ route('kegiatan') }}" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Kegiatan</a>
               </li>
-
               <li>
                 <a href="{{ route('relawan.index') }}" class="relative after:absolute after:right-0 after:-bottom-1 after:h-[1.5px] after:w-full after:bg-white">Relawan</a>
               </li>
-
               @auth
                 @if(auth()->user()->role === 'admin')
                   <li>
-                    <a href="/dashboard-admin" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Dashboard Admin</a>
+                    <a href="{{ route('admin.dashboard') }}" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Dashboard Admin</a>
                   </li>
                 @endif
               @endauth

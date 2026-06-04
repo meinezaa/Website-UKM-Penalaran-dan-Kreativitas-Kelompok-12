@@ -38,7 +38,7 @@ Home
 
 <li class="relative group">
 
-<a href="{{ route('tentang.ukm') }}"
+<a href="{{ route('tentang') }}"
 class="flex items-center gap-1 relative 
 after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 
 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
@@ -78,7 +78,7 @@ Program Kerja UPN Mengajar
 </li>
 
 <li>
-<a href="{{ route('tentang.markdown.struktur') }}" class="block px-5 py-2 hover:bg-gray-100">
+<a href="{{ route('tentang.struktur') }}" class="block px-5 py-2 hover:bg-gray-100">
 Tim UPN Mengajar
 </a>
 </li>
@@ -95,7 +95,7 @@ Kegiatan
 </li>
 
 <li>
-<a href="{{ route('relawan') }}"
+<a href="{{ route('relawan.index') }}"
 class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
 Relawan
 </a>

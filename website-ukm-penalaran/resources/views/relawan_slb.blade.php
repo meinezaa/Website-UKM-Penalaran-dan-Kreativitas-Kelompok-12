@@ -29,18 +29,18 @@
         <div class="flex items-center gap-12">
           <nav>
             <ul class="flex gap-12 font-poppins font-semibold">
-              <li><a href="/beranda" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Home</a></li>
+              <li><a href="{{ route('beranda') }}" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Home</a></li>
               <li class="relative group">
-                <a href="/tentang" class="flex items-center gap-1 relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+                <a href="{{ route('tentang') }}" class="flex items-center gap-1 relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
                   Tentang
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                   </svg>
                 </a>
                 <ul class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out">
-                  <li><a href="/ukm" class="block px-5 py-2 hover:bg-gray-100">UKM Penalaran dan Kreativitas</a></li>
-                  <li><a href="/upnmengajar" class="block px-5 py-2 hover:bg-gray-100">Program Kerja UPN Mengajar</a></li>
-                  <li><a href="/struktur" class="block px-5 py-2 hover:bg-gray-100">Tim UPN Mengajar</a></li>
+                  <li><a href="{{ route('ukm') }}" class="block px-5 py-2 hover:bg-gray-100">UKM Penalaran dan Kreativitas</a></li>
+                  <li><a href="{{ route('upnmengajar') }}" class="block px-5 py-2 hover:bg-gray-100">Program Kerja UPN Mengajar</a></li>
+                  <li><a href="{{ route('struktur') }}" class="block px-5 py-2 hover:bg-gray-100">Tim UPN Mengajar</a></li>
                 </ul>
               </li>
               <li><a href="/kegiatan" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Kegiatan</a></li>

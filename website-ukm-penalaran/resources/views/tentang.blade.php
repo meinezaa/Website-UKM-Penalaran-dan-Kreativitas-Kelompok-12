@@ -22,7 +22,7 @@
             <li><a href="{{ route('tentang.upnmengajar') }}">Tentang UPN Mengajar</a></li>
             <li><a href="{{ route('tentang.ukm') }}">UKM Penalaran & Kreativitas</a></li>
             <li><a href="{{ route('tentang.struktur') }}">Tim UPN Mengajar</a></li>
-            <li><a href="kontak.html">Kontak Kami</a></li>
+            <li><a href="{{ route('kontak') }}">Kontak Kami</a></li>
           </ul>
         </li>
 
