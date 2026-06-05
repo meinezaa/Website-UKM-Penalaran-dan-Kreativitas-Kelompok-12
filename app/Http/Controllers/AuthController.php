@@ -23,10 +23,11 @@ class AuthController extends BaseController
         return view('auth.login');
     }
 
-    // 2. PROSES AKSI LOGIN (POST)
+    // 2. PROSES AKSI LOGIN (POST) - VERSI PASSWORD ANGKA BIAYA (TANPA BCRYPT)
     public function login(Request $request)
     {
-        $credentials = $request->validate([
+        // Tetap lakukan validasi input form seperti biasa
+        $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ], [
@@ -37,20 +38,29 @@ class AuthController extends BaseController
 
         $remember = $request->has('remember');
 
-        if (Auth::attempt($credentials, $remember)) {
+        // 1. CARI USER DI DATABASE BERDASARKAN EMAIL NYA
+        $user = \App\Models\User::where('email', $request->email)->first();
+
+        // 2. COCOKKAN PASSWORD TULISAN/ANGKA BIASA SECARA LANGSUNG (==)
+        if ($user && $user->password == $request->password) {
+            
+            // 3. LOGIN-KAN USER SECARA MANUAL KE SISTEM LARAVEL
+            Auth::login($user, $remember);
+            
             $request->session()->regenerate();
 
+            // Cek hak akses / role
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
             return redirect('/beranda');
         }
 
+        // 4. JIKA PASSWORD SALAH ATAU USER TIDAK DITEMUKAN
         return back()->withErrors([
             'login_error' => 'Email tidak terdaftar atau kata sandi salah!',
         ])->withInput($request->only('email'));
     }
-
     // 3. MENAMPILKAN HALAMAN REGISTER
     public function showRegister()
     {

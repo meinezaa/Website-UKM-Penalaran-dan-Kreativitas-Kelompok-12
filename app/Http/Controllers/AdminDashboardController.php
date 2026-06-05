@@ -44,13 +44,13 @@ class AdminDashboardController extends BaseController
 
         // 4. KIRIM DATA KE VIEW BLADE
         // Data dikirim ke file resources/views/dashboard_admin.blade.php
-        return view('admin.dashboard_admin', compact(
-    'count_relawan',
-    'count_program',
-    'count_baru',
-    'kegiatan',
-    'pendaftar'
-));
+        return view('dashboard_admin', compact(
+            'count_relawan', 
+            'count_program', 
+            'count_baru', 
+            'kegiatan', 
+            'pendaftar'
+        ));
     }
 
     public function __construct()
@@ -58,7 +58,7 @@ class AdminDashboardController extends BaseController
         // Perintah ini memastikan semua fungsi di controller ini harus lolos login dulu
         $this->middleware('auth');
     }
-    
+
     // LOGIKA HAPUS KEGIATAN
     public function destroyKegiatan($id)
     {
