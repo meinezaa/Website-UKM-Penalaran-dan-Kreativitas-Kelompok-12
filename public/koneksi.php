@@ -2,7 +2,7 @@
 // Konfigurasi Database
 $host       = "localhost"; // Server database (biasanya localhost untuk XAMPP)
 $user       = "root";      // Username default XAMPP
-$password   = "";          // Password default XAMPP (kosongkan saja)
+$password   = "meineza";          // Password default XAMPP (kosongkan saja)
 $database   = "upnmengajar"; // Nama database kamu sesuai di phpMyAdmin
 
 // Membuat koneksi ke database
