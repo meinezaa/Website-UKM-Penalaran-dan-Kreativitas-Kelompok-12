@@ -50,7 +50,7 @@ Home
 <!-- Tentang -->
 <li class="relative group">
 
-<a href="tentang.html"
+<a href="tentang.php"
 class="flex items-center gap-1 relative 
 after:absolute after:left-0 after:-bsottom-1 after:h-[1.5px] after:w-0 
 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
@@ -79,19 +79,19 @@ group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
 transition-all duration-300 ease-out">
 
 <li>
-<a href="ukm.html" class="block px-5 py-2 hover:bg-gray-100">
+<a href="ukm.php" class="block px-5 py-2 hover:bg-gray-100">
 UKM Penalaran dan Kreativitas
 </a>
 </li>
 
 <li>
-<a href="upnmengajar.html" class="block px-5 py-2 hover:bg-gray-100">
+<a href="upnmengajar.php" class="block px-5 py-2 hover:bg-gray-100">
 Program Kerja UPN Mengajar
 </a>
 </li>
 
 <li>
-<a href="struktur.html" class="block px-5 py-2 hover:bg-gray-100">
+<a href="tim.php" class="block px-5 py-2 hover:bg-gray-100">
 Tim UPN Mengajar
 </a>
 </li>
