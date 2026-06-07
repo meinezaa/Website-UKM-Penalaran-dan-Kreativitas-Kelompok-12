@@ -6,7 +6,12 @@ use Illuminate\Http\Request;
 
 // ==================== ROUTE PUBLIK ====================
 Route::get('/', function () { return view('publik.beranda'); });
-Route::get('/kegiatan', function () { return view('publik.kegiatan'); });
+use App\Http\Controllers\KegiatanController;
+
+Route::get('/kegiatan', [KegiatanController::class, 'index']);
+
+Route::get('/kegiatan/{id}', [KegiatanController::class, 'detail'])
+    ->name('kegiatan.detail');
 Route::get('/formulir', function () { return view('publik.formulir'); })->middleware('auth');
 
 // ==================== ROUTE ADMIN ====================
@@ -250,4 +255,40 @@ Route::put('/admin/edit-kegiatan/{id}', function (Request $request, $id) {
         ]);
 
     return redirect('/admin/kelola-kegiatan')->with('pesan', 'Data agenda kegiatan sukses diperbarui!');
+});
+
+Route::get('/', function () {
+    return view('publik.beranda');
+});
+
+Route::get('/upnmengajar', function () {
+    return view('upnmengajar');
+});
+
+Route::get('/ukm', function () {
+    return view('ukm');
+});
+
+Route::get('/tentang', function () {
+    return view('tentang');
+});
+
+Route::get('/', function () {
+    return view('publik.beranda');
+});
+
+Route::get('/upnmengajar', function () {
+    return view('publik.upnmengajar');
+});
+
+Route::get('/ukm', function () {
+    return view('publik.ukm');
+});
+
+Route::get('/tentang', function () {
+    return view('publik.tentang');
+});
+
+Route::get('/tim', function () {
+    return view('publik.tim');
 });
