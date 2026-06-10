@@ -37,8 +37,17 @@ class="w-16 scale-125">
 <!-- HOME ACTIVE -->
 <li>
  <!-- ACTIVE PAGE -->
-<a href="/"
-class="relative after:absolute after:right-0 after:-bottom-1 after:h-[1.5px] after:w-full after:bg-white">
+<a href="{{ url('/') }}"
+class="relative
+{{ request()->is('/') ? 'after:w-full' : 'after:w-0' }}
+after:absolute
+after:left-0
+after:-bottom-1
+after:h-[1.5px]
+after:bg-white
+after:transition-all
+after:duration-300
+hover:after:w-full">
 Home
 </a>
 </li>
@@ -75,19 +84,19 @@ group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
 transition-all duration-300 ease-out">
 
 <li>
-<a href="ukm.php" class="block px-5 py-2 hover:bg-gray-100">
+<a href="{{ url('/ukm') }}" class="block px-5 py-2 hover:bg-gray-100">
 UKM Penalaran dan Kreativitas
 </a>
 </li>
 
 <li>
-<a href="upnmengajar.php" class="block px-5 py-2 hover:bg-gray-100">
-Program Kerja UPN Mengajar
-</a>
+    <a href="{{ url('/upnmengajar') }}" class="block px-5 py-2 hover:bg-gray-100">
+        Program Kerja UPN Mengajar
+    </a>
 </li>
 
 <li>
-<a href="tim.php" class="block px-5 py-2 hover:bg-gray-100">
+<a href="{{ url('/tim') }}" class="block px-5 py-2 hover:bg-gray-100">
 Tim UPN Mengajar
 </a>
 </li>
@@ -98,16 +107,34 @@ Tim UPN Mengajar
 
 <!-- Kegiatan -->
 <li>
-<a href="#"
-class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+<a href="{{ url('/kegiatan') }}"
+class="relative
+{{ request()->is('kegiatan*') ? 'after:w-full' : 'after:w-0' }}
+after:absolute
+after:left-0
+after:-bottom-1
+after:h-[1.5px]
+after:bg-white
+after:transition-all
+after:duration-300
+hover:after:w-full">
 Kegiatan
 </a>
 </li>
 
 <!-- Relawan -->
 <li>
-<a href="relawan.php"
-class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+<a href="{{ url('/formulir') }}"
+class="relative
+{{ request()->is('formulir*') ? 'after:w-full' : 'after:w-0' }}
+after:absolute
+after:left-0
+after:-bottom-1
+after:h-[1.5px]
+after:bg-white
+after:transition-all
+after:duration-300
+hover:after:w-full">
 Relawan
 </a>
 </li>
@@ -141,7 +168,7 @@ Relawan
 
   @else
     <!-- JIKA BELUM LOGIN (TAMPILKAN TOMBOL MASUK / DAFTAR) -->
-    <a href="#" class="hover:text-gray-300 transition-all duration-300">
+    <a href="{{ url('/login') }}" class="hover:text-gray-300 transition-all duration-300">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.879 17.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
       </svg>

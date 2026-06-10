@@ -32,13 +32,13 @@
                             </svg>
                         </a>
                         <ul class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out">
-                            <li><a href="ukm.html" class="block px-5 py-2 hover:bg-gray-100">UKM Penalaran dan Kreativitas</a></li>
-                            <li><a href="upnmengajar.html" class="block px-5 py-2 hover:bg-gray-100">Program Kerja UPN Mengajar</a></li>
-                            <li><a href="tim.html" class="block px-5 py-2 bg-red-5 hover:bg-red-100">Tim UPN Mengajar</a></li>
+                            <li><a href="{{ url('/tentang') }}" class="block px-5 py-2 hover:bg-gray-100">UKM Penalaran dan Kreativitas</a></li>
+                            <li><a href="{{ url('/upnmengajar') }}" class="block px-5 py-2 hover:bg-gray-100">Program Kerja UPN Mengajar</a></li>
+                            <li><a href="{{ url('/tim') }}" class="block px-5 py-2 bg-red-5 hover:bg-red-100">Tim UPN Mengajar</a></li>
                         </ul>
                     </li>
-                    <li><a href="kegiatan.html" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Kegiatan</a></li>
-                    <li><a href="relawan.html" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Relawan</a></li>
+                    <li><a href="{{ url('/kegiatan') }}" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Kegiatan</a></li>
+                    <li><a href="{{ url('/formulir') }}" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Relawan</a></li>
                 </ul>
             </nav>
             <div class="relative group">

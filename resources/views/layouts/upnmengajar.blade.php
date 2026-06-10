@@ -33,140 +33,107 @@
     </style>
   </head>
 
- <header id="mainHeader" class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
-  <div class="flex items-center justify-between px-6 py-0.5 text-white">
+<header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
+    <div class="flex items-center justify-between px-6 py-0.5 text-white">
 
-    <!-- Logo -->
-    <div class="flex items-center">
-      <a href="beranda.html" class="overflow-hidden">
-        <img
-          src="./foto/logo.jpeg"
-          alt="Logo UPN Mengajar"
-          class="w-16 scale-125"
-        />
-      </a>
-    </div>
-
-    <!-- Right Side -->
-    <div class="flex items-center gap-12">
-
-      <!-- Navigation -->
-      <nav>
-        <ul class="flex gap-12 font-poppins font-semibold">
-
-          <li>
-            <a
-              href="beranda.html"
-              class="relative after:absolute after:right-0 after:-bottom-1 after:h-[1.5px] after:w-full after:bg-white"
-            >
-              Home
-            </a>
-          </li>
-
-          <!-- Tentang + Dropdown -->
-          <li class="relative group">
-            <a
-              href="tentang.html"
-              class="flex items-center gap-1 relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
-            >
-              Tentang
-
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </a>
-
-            <!-- Dropdown -->
-            <ul
-              class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md
-              opacity-0 invisible -translate-y-2
-              group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
-              transition-all duration-300 ease-out"
-            >
-              <li>
-                <a href="ukm.html" class="block px-5 py-2 hover:bg-gray-100">
-                  UKM Penalaran dan Kreativitas
-                </a>
-              </li>
-
-              <li>
-                <a href="upnmengajar.html" class="block px-5 py-2 hover:bg-gray-100">
-                  Program Kerja UPN Mengajar
-                </a>
-              </li>
-
-              <li>
-                <a href="struktur.html" class="block px-5 py-2 hover:bg-gray-100">
-                  Tim UPN Mengajar
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <li>
-            <a
-              href="kegiatan.html"
-              class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
-            >
-              Kegiatan
-            </a>
-          </li>
-
-          <li>
-            <a
-              href="relawan.html"
-              class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
-            >
-              Relawan
-            </a>
-          </li>
-
-        </ul>
-      </nav>
-
-      <!-- Login -->
-      <div class="relative group">
-        <a href="#" class="hover:text-gray-300">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-7 h-7"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5.121 17.804A9 9 0 1118.879 17.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-            />
-          </svg>
+      <div class="flex items-center">
+        <a href="/" class="overflow-hidden">
+          <img src="{{ asset('foto/logo.jpeg') }}" alt="Logo UPN Mengajar" class="w-16 scale-125">
         </a>
-
-        <div
-          class="absolute -bottom-10 left-1/2 -translate-x-1/2
-          bg-black/50 text-white text-xs px-3 py-2
-          opacity-0 group-hover:opacity-100
-          transition duration-200 whitespace-nowrap"
-        >
-          Log In
-        </div>
       </div>
 
+      <div class="flex items-center gap-12">
+
+        <nav>
+          <ul class="flex gap-12 font-poppins font-semibold">
+
+            <li>
+              <a href="{{ url('/') }}"
+                class="relative {{ request()->is('/') ? 'after:w-full' : 'after:w-0' }} after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+                Home
+              </a>
+            </li>
+
+            <li class="relative group">
+              <a href="#"
+                class="flex items-center gap-1 relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+                Tentang
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </a>
+
+              <ul class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out">
+                <li>
+    <a href="{{ url('/tentang') }}"
+       class="block px-5 py-2 hover:bg-gray-100">
+        UKM Penalaran dan Kreativitas
+    </a>
+</li>
+                <li>
+                  <a href="{{ url('/upnmengajar') }}" class="block px-5 py-2 hover:bg-gray-100">
+                    Program Kerja UPN Mengajar
+                  </a>
+                </li>
+                <li>
+                  <a href="{{ url('/tim') }}" class="block px-5 py-2 hover:bg-gray-100">
+                    Tim UPN Mengajar
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li>
+              <a href="{{ url('/kegiatan') }}"
+                class="relative {{ request()->is('kegiatan*') ? 'after:w-full' : 'after:w-0' }} after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+                Kegiatan
+              </a>
+            </li>
+
+            <li>
+              <a href="{{ url('/formulir') }}"
+                class="relative {{ request()->is('formulir*') ? 'after:w-full' : 'after:w-0' }} after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+                Relawan
+              </a>
+            </li>
+
+            @if(session('role') === 'admin')
+            <li>
+              <a href="{{ route('admin.dashboard') }}" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+                Dashboard Admin
+              </a>
+            </li>
+            @endif
+
+          </ul>
+        </nav>
+
+        <div class="relative group">
+          @if (session('id_user'))
+            <a href="#" class="hover:text-red-400 transition-all duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </a>
+            <div class="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-sm text-white text-[11px] px-4 py-2 opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap rounded-lg shadow-2xl border border-white/10">
+              Keluar
+            </div>
+          @else
+            <a href="{{ url('/login') }}" class="hover:text-gray-300 transition-all duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.879 17.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </a>
+            <div class="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-sm text-white text-[11px] px-4 py-2 opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap rounded-lg shadow-2xl border border-white/10">
+              Masuk / Daftar
+            </div>
+          @endif
+        </div>
+
+      </div>
     </div>
-  </div>
-</header>
+  </header>
+
 
     <main>
       <section
@@ -432,12 +399,12 @@
 
           <h4 class="font-semibold mb-3 text-lg">Menu</h4>
           <ul class="space-y-2 text-sm">
-            <li><a href="beranda.html" class="hover:underline">Home</a></li>
+            <li><a href="{{ url('/') }}" class="hover:underline">Home</a></li>
             <li><a href="tentang.html" class="hover:underline">Tentang</a></li>
             <li>
-              <a href="kegiatan.html" class="hover:underline">Kegiatan</a>
+              <a href="{{ url('/kegiatan') }}" class="hover:underline">Kegiatan</a>
             </li>
-            <li><a href="relawan.html" class="hover:underline">Relawan</a></li>
+            <li><a href="{{ url('/formulir') }}" class="hover:underline">Relawan</a></li>
           </ul>
         </div>
 
