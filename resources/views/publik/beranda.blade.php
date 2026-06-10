@@ -37,8 +37,17 @@ class="w-16 scale-125">
 <!-- HOME ACTIVE -->
 <li>
  <!-- ACTIVE PAGE -->
-<a href="/"
-class="relative after:absolute after:right-0 after:-bottom-1 after:h-[1.5px] after:w-full after:bg-white">
+<a href="{{ url('/') }}"
+class="relative
+{{ request()->is('/') ? 'after:w-full' : 'after:w-0' }}
+after:absolute
+after:left-0
+after:-bottom-1
+after:h-[1.5px]
+after:bg-white
+after:transition-all
+after:duration-300
+hover:after:w-full">
 Home
 </a>
 </li>
@@ -81,9 +90,9 @@ UKM Penalaran dan Kreativitas
 </li>
 
 <li>
-<a href="/upnmengajar" class="block px-5 py-2 hover:bg-gray-100">
-Program Kerja UPN Mengajar
-</a>
+    <a href="{{ url('/upnmengajar') }}" class="block px-5 py-2 hover:bg-gray-100">
+        Program Kerja UPN Mengajar
+    </a>
 </li>
 
 <li>
@@ -99,7 +108,16 @@ Tim UPN Mengajar
 <!-- Kegiatan -->
 <li>
 <a href="{{ url('/kegiatan') }}"
-class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+class="relative
+{{ request()->is('kegiatan*') ? 'after:w-full' : 'after:w-0' }}
+after:absolute
+after:left-0
+after:-bottom-1
+after:h-[1.5px]
+after:bg-white
+after:transition-all
+after:duration-300
+hover:after:w-full">
 Kegiatan
 </a>
 </li>
@@ -107,7 +125,16 @@ Kegiatan
 <!-- Relawan -->
 <li>
 <a href="{{ url('/formulir') }}"
-class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+class="relative
+{{ request()->is('formulir*') ? 'after:w-full' : 'after:w-0' }}
+after:absolute
+after:left-0
+after:-bottom-1
+after:h-[1.5px]
+after:bg-white
+after:transition-all
+after:duration-300
+hover:after:w-full">
 Relawan
 </a>
 </li>

@@ -34,11 +34,18 @@ class="w-16 scale-125">
 <nav>
 <ul class="flex gap-12 font-poppins font-semibold">
 
-<!-- HOME ACTIVE -->
 <li>
- <!-- ACTIVE PAGE -->
-<a href="/"
-class="relative after:absolute after:right-0 after:-bottom-1 after:h-[1.5px] after:w-full after:bg-white">
+<a href="{{ url('/') }}"
+class="relative
+{{ request()->is('/') ? 'after:w-full' : 'after:w-0' }}
+after:absolute
+after:left-0
+after:-bottom-1
+after:h-[1.5px]
+after:bg-white
+after:transition-all
+after:duration-300
+hover:after:w-full">
 Home
 </a>
 </li>
@@ -99,18 +106,38 @@ Tim UPN Mengajar
 <!-- Kegiatan -->
 <li>
 <a href="{{ url('/kegiatan') }}"
-class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+class="relative
+{{ request()->is('kegiatan*') ? 'after:w-full' : 'after:w-0' }}
+after:absolute
+after:left-0
+after:-bottom-1
+after:h-[1.5px]
+after:bg-white
+after:transition-all
+after:duration-300
+hover:after:w-full">
 Kegiatan
 </a>
 </li>
 
+
 <!-- Relawan -->
 <li>
 <a href="{{ url('/formulir') }}"
-class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+class="relative
+{{ request()->is('formulir*') ? 'after:w-full' : 'after:w-0' }}
+after:absolute
+after:left-0
+after:-bottom-1
+after:h-[1.5px]
+after:bg-white
+after:transition-all
+after:duration-300
+hover:after:w-full">
 Relawan
 </a>
 </li>
+
 
 @if(session('role') === 'admin')
 <li>
