@@ -313,8 +313,8 @@
                     Fokus pada literasi dan numerasi dasar melalui metode visual yang interaktif bagi anak-anak.
                 </p>
                 <div class="flex items-center mt-6">
-                    <a href="relawan_sd.html" class="bg-[#8B1E1E] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition">
-                    Lihat Detail
+                    <a href="{{ url('/kegiatan?kategori=sd') }}" class="bg-[#8B1E1E] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition">
+                        Lihat Detail
                     </a>
                 </div>
                 </div>
@@ -331,8 +331,8 @@
                     Memberikan dukungan pendidikan khusus dengan pendekatan emosional yang dirancang khusus.
                 </p>
                 <div class="flex items-center mt-6">
-                    <a href="relawan_slb.html" class="bg-[#8B1E1E] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition">
-                    Lihat Detail
+                    <a href="{{ url('/kegiatan?kategori=slb') }}" class="bg-[#8B1E1E] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition">
+                        Lihat Detail
                     </a>
                 </div>
                 </div>
@@ -348,8 +348,8 @@
                     Pendampingan belajar untuk anak-anak di panti asuhan maupun komunitas belajar jalanan.
                 </p>
                 <div class="flex items-center mt-6">
-                    <a href="relawan_yayaysan.html" class="bg-[#8B1E1E] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition">
-                    Lihat Detail
+                    <a href="{{ url('/kegiatan?kategori=yayasan') }}" class="bg-[#8B1E1E] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition">
+                        Lihat Detail
                     </a>
                 </div>
                 </div>

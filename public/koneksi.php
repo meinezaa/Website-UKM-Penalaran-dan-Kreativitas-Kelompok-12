@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
 $user = "root";
-$password = "";
+$password = "password";
 $database = "upnmengajar";
 
 // Membuat koneksi ke database

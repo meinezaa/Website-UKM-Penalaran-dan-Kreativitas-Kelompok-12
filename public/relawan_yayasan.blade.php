@@ -4,16 +4,27 @@ session_start();
 include "koneksi.php"; 
 $page = 'relawan';
 
-// 1. Ambil data kegiatan terbaru (Asumsi kategori di form disave sebagai 'Sekolah Dasar' atau 'sd')
-$query_kegiatan = mysqli_query($koneksi, "SELECT * FROM kegiatan WHERE kategori IN ('Sekolah Dasar', 'sd') ORDER BY id_kegiatan DESC LIMIT 1");
+// 1. Cek apakah ada ID di URL
+if (isset($_GET['id'])) {
+    $id = mysqli_real_escape_string($koneksi, $_GET['id']);
 
-if (!$query_kegiatan) {
-    die("Query Error (Kegiatan): " . mysqli_error($koneksi));
+    $query_kegiatan = mysqli_query($koneksi,
+        "SELECT * FROM kegiatan
+         WHERE kategori IN ('Yayasan','yayasan')
+         ORDER BY id_kegiatan DESC
+         LIMIT 1");
+} else {
+
+    $query_kegiatan = mysqli_query($koneksi,
+        "SELECT * FROM kegiatan
+         WHERE kategori IN ('Yayasan','yayasan')
+         ORDER BY id_kegiatan DESC
+         LIMIT 1");
 }
 
 $data = mysqli_fetch_assoc($query_kegiatan);
 
-// Jika tabel kosong, siapkan array kosong agar tidak error
+// Pengecekan jika tabel masih benar-benar kosong
 if (!$data) {
     $data = []; 
     $id_kegiatan = 0;
@@ -40,8 +51,8 @@ if (!$data) {
     </style>
   </head>
 
-  <body class="text-gray-800">
-   <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
+    <body class="text-gray-800">
+    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
 <div class="flex items-center justify-between px-6 py-0.5 text-white">
 
 <div class="flex items-center">
@@ -181,10 +192,10 @@ Relawan
         <div class="space-y-6">
           
           <div class="bg-white rounded-[20px] overflow-hidden shadow-sm border border-gray-100 aspect-video md:h-[450px]">
-          <?php 
-          $foto = $data['foto_kegiatan'] ?? 'sd.jpg'; 
-          ?>
-          <img src="./foto/<?php echo htmlspecialchars($foto); ?>" alt="Kegiatan SD" class="w-full h-full object-cover" />
+            <?php 
+                $foto = $data['foto_kegiatan'] ?? 'sd.jpg'; 
+            ?>
+            <img src="./foto/<?php echo htmlspecialchars($foto); ?>" alt="Kegiatan SD" class="w-full h-full object-cover" />
           </div>
 
           <div class="bg-white rounded-[20px] border border-gray-100 shadow-sm p-6 md:p-8">
@@ -305,10 +316,9 @@ Relawan
               </div>
             </div>
 
-            <a href="formulir.php?id_kegiatan=<?php echo $_GET['id']; ?>" class="bg-red-600 text-white px-6 py-3 rounded-lg font-bold">
-             Daftar Sekarang
+            <a href="formulir.php" class="block w-full text-center bg-[#EB1D2D] hover:bg-red-700 text-white font-semibold py-3.5 rounded-xl transition shadow-sm">
+              Daftar Sekarang
             </a>
-
           </div>
         </aside>
       </div>
