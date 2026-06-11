@@ -154,7 +154,7 @@ Relawan
 <div class="relative group">
   @if (session('id_user'))
     <!-- JIKA SUDAH LOGIN (TAMPILKAN TOMBOL KELUAR) -->
-    <a href="#" class="hover:text-red-400 transition-all duration-300">
+    <a href="{{ url('/logout') }}" class="hover:text-red-400 transition-all duration-300">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
       </svg>
@@ -279,8 +279,8 @@ class="fixed inset-0 bg-black/70 flex items-center justify-center opacity-0 poin
 
   <!-- Text -->
   <div>
-    <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="150">0</h3>
-    <p class="text-gray-600 font-poppins text-sm">Relawan</p>
+    <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahRelawan }}">0</h3>
+        <p class="text-gray-600 font-poppins text-sm">Relawan</p>
   </div>
 
 </div>
@@ -293,8 +293,8 @@ class="fixed inset-0 bg-black/70 flex items-center justify-center opacity-0 poin
 </div>
 
 <div>
-<h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="10">0</h3>
-<p class="text-gray-600 font-poppins text-sm">Sekolah Mitra</p>
+<h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahSekolah }}">0</h3>
+        <p class="text-gray-600 font-poppins text-sm">Sekolah Mitra</p>
 </div>
 
 </div>
@@ -307,14 +307,14 @@ class="fixed inset-0 bg-black/70 flex items-center justify-center opacity-0 poin
 </div>
 
 <div>
-<h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="500">0</h3>
-<p class="text-gray-600 font-poppins text-sm">Siswa Terlibat</p>
+<h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahSiswaTerlibat }}">0</h3>
+        <p class="text-gray-600 font-poppins text-sm">Siswa Terlibat</p>
 </div>
 
 </div>
 
-<!-- Tahun Program -->
-<div class="text-center py-4 px-6 bg-red-700 text-white leading-tight">
+    <!-- Tahun Program -->
+    <div class="text-center py-4 px-6 bg-red-700 text-white leading-tight">
   <h3 class="text-3xl md:text-4xl font-bold font-poppins counter" data-target="5">0</h3>
   <p class="mt-1 font-poppins">Tahun Program</p>
   <a href="daftar.html" class="block mt-1 underline">Jadi Relawan →</a>

@@ -1,7 +1,11 @@
 <?php
 $host = "localhost";
 $user = "root";
+<<<<<<< HEAD
 $password = "password";
+=======
+$password = "meineza";
+>>>>>>> 336f0b1 (menambahkan fitur ekspor dan menyambungkan data dengan database)
 $database = "upnmengajar";
 
 // Membuat koneksi ke database

@@ -3,92 +3,89 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KegiatanPublikController;
 
 // ==================== ROUTE PUBLIK ====================
-Route::get('/', function () { return view('publik.beranda'); });
-Route::get('/kegiatan', function () { return view('publik.kegiatan'); });
-Route::get('/formulir', function () { return view('publik.formulir'); })->middleware('auth');
-
-// ==================== ROUTE ADMIN ====================
-
-// 1. Kelola Kegiatan (Tampil Data)
-Route::get('/admin/kelola-kegiatan', function () {
-    $kegiatan = DB::table('kegiatan')->get(); 
-    return view('admin.kelola_kegiatan', compact('kegiatan'));
+Route::get('/', function () { 
+    return view('publik.beranda'); 
 });
 
-use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\AuthController;
+Route::get('/tentang', function () { 
+    return view('layouts.tentang'); 
+});
 
-// Route Login (Bisa diakses siapa saja yang belum login)
+Route::get('/ukm', function () { 
+    return view('layouts.tentang'); // Mengarah ke layout tentang/ukm yang baru
+});
+
+Route::get('/upnmengajar', function () { 
+    return view('layouts.upnmengajar'); 
+});
+
+Route::get('/tim', function () { 
+    return view('layouts.tim'); 
+});
+
+Route::get('/kegiatan', [KegiatanController::class, 'index']);
+Route::get('/kegiatan/{id}', [KegiatanController::class, 'detail'])->name('kegiatan.detail');
+
+Route::get('/formulir', function () { 
+    return view('publik.formulir'); 
+})->middleware('auth');
+
+
+// ==================== ROUTE AUTH (LOGIN & REGISTER) ====================
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.proses');
-
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.proses');
 
 
-// ==================== ROUTE ADMIN (PROTECTED VIA MIDDLEWARE) ====================
-
+// ==================== ROUTE ADMIN (MIDDLEWARE AUTH) ====================
 Route::middleware(['auth'])->group(function () {
     
-    // Dashboard Utama Admin & Jalur Hapus Dashboard
+    // Dashboard Utama Admin
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::delete('/admin/kegiatan/{id}', [AdminDashboardController::class, 'destroyKegiatan'])->name('admin.kegiatan.destroy');
     
-    // Nanti kalau ada halaman beranda user biasa yang harus login dulu, tinggal taruh di sini:
-    // Route::get('/beranda', [UserController::class, 'beranda']);
-});
+    // 1. Kelola Kegiatan (Tampil Data)
+    Route::get('/admin/kelola-kegiatan', function () {
+        $kegiatan = DB::table('kegiatan')->get(); 
+        return view('admin.kelola_kegiatan', compact('kegiatan'));
+    });
 
-// Route Tampilan Halaman Login
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-
-// Route Proses Aksi Form Login (POST)
-Route::post('/login', [AuthController::class, 'login'])->name('login.proses');
-
-// Route Tampilan Halaman Register
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-
-// Route Proses Aksi Form Register (POST)
-Route::post('/register', [AuthController::class, 'register'])->name('register.proses');
-
-// Route untuk menampilkan halaman utama dashboard admin
-Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-
-// Route untuk memproses aksi hapus kegiatan
-Route::delete('/admin/kegiatan/{id}', [AdminDashboardController::class, 'destroyKegiatan'])->name('admin.kegiatan.destroy');
-// 2. Detail Lengkap Kegiatan berdasarkan ID
-Route::get('/admin/kelola-kegiatan/{id}', function ($id) {
-    $kegiatan = DB::table('kegiatan')->where('id_kegiatan', $id)->first();
-    
-    if (!$kegiatan) {
-        return redirect('/admin/kelola-kegiatan')->with('pesan', 'Data kegiatan tidak ditemukan!');
-    }
-    
-    return view('admin.detail_kegiatan', compact('kegiatan'));
-});
+    // 2. Detail Lengkap Kegiatan berdasarkan ID
+    Route::get('/admin/kelola-kegiatan/{id}', function ($id) {
+        $kegiatan = DB::table('kegiatan')->where('id_kegiatan', $id)->first();
+        if (!$kegiatan) {
+            return redirect('/admin/kelola-kegiatan')->with('pesan', 'Data kegiatan tidak ditemukan!');
+        }
+        return view('admin.detail_kegiatan', compact('kegiatan'));
+    });
 
     // 3. Kelola Kegiatan (Proses Hapus via Kelola Kegiatan)
     Route::delete('/admin/kelola-kegiatan/{id}', function ($id) {
+        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
         DB::table('kegiatan')->where('id_kegiatan', $id)->delete();
         return redirect('/admin/kelola-kegiatan')->with('pesan', 'Kegiatan berhasil dihapus!');
     });
 
     // 4. Form Edit Kegiatan (GET)
     Route::get('/admin/edit-kegiatan/{id}', function ($id) {
+        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
         $kegiatan = DB::table('kegiatan')->where('id_kegiatan', $id)->first();
         if (!$kegiatan) {
             return redirect('/admin/kelola-kegiatan')->with('pesan', 'Data kegiatan tidak ditemukan!');
         }
         return view('admin.edit_kegiatan', compact('kegiatan'));
-
     });
 
     // 5. Proses Update Data Kegiatan (PUT)
     Route::put('/admin/edit-kegiatan/{id}', function (Request $request, $id) {
+        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
         $kegiatanLama = DB::table('kegiatan')->where('id_kegiatan', $id)->first();
         $namaFoto = $kegiatanLama->foto_kegiatan;
 
@@ -123,6 +120,7 @@ Route::get('/admin/kelola-kegiatan/{id}', function ($id) {
 
     // 6. Kelola Relawan (Tampil Data Lengkap + Hubungan ke Kegiatan + Search & Filter)
     Route::get('/admin/kelola-relawan', function (Request $request) {
+        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
         $search = $request->input('search');
         $divisi = $request->input('divisi');
 
@@ -149,25 +147,67 @@ Route::get('/admin/kelola-kegiatan/{id}', function ($id) {
 
     // 7. Kelola Relawan (Proses Hapus Berdasarkan ID Pendaftaran)
     Route::delete('/admin/kelola-relawan/{id_pendaftaran}', function ($id_pendaftaran) {
+        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
         DB::table('pendaftaran_relawan')->where('id_pendaftaran', $id_pendaftaran)->delete();
         return redirect('/admin/kelola-relawan')->with('pesan', 'Data partisipasi pendaftaran relawan berhasil dihapus!');
     });
 
-    // 8. Detail Relawan
+    // 8. Kelola Relawan (Proses Impor Data dari CSV)
+    Route::post('/admin/impor-relawan', function (Request $request) {
+        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
+        $request->validate(['file_csv' => 'required|mimes:csv,txt']);
+        $file = $request->file('file_csv');
+        
+        if (($handle = fopen($file->getRealPath(), 'r')) !== FALSE) {
+            fgetcsv($handle, 1000, ','); 
+
+            while (($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
+                $nama          = $data[0];
+                $email         = $data[1];
+                $no_hp         = $data[2];
+                $umur          = $data[3];
+                $jk            = $data[4];
+                $prodi         = $data[5];
+                $nama_kegiatan = $data[6]; 
+                $divisi_1      = $data[7];
+                $divisi_2      = $data[8] ?? null;
+                $alasan        = $data[9] ?? null;
+
+                $kegiatan = DB::table('kegiatan')->where('nama_kegiatan', 'LIKE', "%{$nama_kegiatan}%")->first();
+                $id_kegiatan = $kegiatan ? $kegiatan->id_kegiatan : 1; 
+
+                DB::table('users')->updateOrInsert(
+                    ['email' => $email],
+                    ['nama_lengkap' => $nama, 'role' => 'relawan', 'password' => bcrypt('12345678')]
+                );
+
+                $user = DB::table('users')->where('email', $email)->first();
+
+                DB::table('pendaftaran_relawan')->insert([
+                    'id_user'          => $user->id_user,
+                    'id_kegiatan'      => $id_kegiatan, 
+                    'no_hp'            => $no_hp,
+                    'umur'             => $umur,
+                    'jenis_kelamin'    => $jk,
+                    'asal_prodi'       => $prodi,
+                    'pilihan_divisi_1' => $divisi_1,
+                    'pilihan_divisi_2' => $divisi_2,
+                    'alasan_bergabung' => $alasan,
+                    'status_seleksi'   => 'PENDING'
+                ]);
+            }
+            fclose($handle);
+        }
+        return redirect('/admin/kelola-relawan')->with('pesan', 'Seluruh data pendaftaran relawan dari CSV berhasil di-impor!');
+    });
+
+    // 9. Detail Relawan
     Route::get('/admin/detail-relawan/{id_pendaftaran}', function ($id_pendaftaran) {
+        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
         $relawan = DB::table('pendaftaran_relawan as p')
                     ->join('users as u', 'p.id_user', '=', 'u.id_user')
                     ->join('kegiatan as k', 'p.id_kegiatan', '=', 'k.id_kegiatan')
-                    ->select(
-                        'p.*', 
-                        'u.nama_lengkap', 
-                        'u.email', 
-                        'k.id_kegiatan',
-                        'k.nama_kegiatan', 
-                        'k.lokasi', 
-                        'k.tanggal_pelaksanaan', 
-                        'k.kategori'
-                    )
+                    ->select('p.*', 'u.nama_lengkap', 'u.email', 'k.id_kegiatan', 'k.nama_kegiatan', 'k.lokasi', 'k.tanggal_pelaksanaan', 'k.kategori')
                     ->where('p.id_pendaftaran', $id_pendaftaran)
                     ->first();
 
@@ -186,8 +226,9 @@ Route::get('/admin/kelola-kegiatan/{id}', function ($id) {
         return view('admin.detail_relawan', compact('relawan'));
     });
 
-    // 9. Proses Mengubah Status Seleksi Relawan
+    // 10. Proses Mengubah Status Seleksi Relawan
     Route::post('/admin/detail-relawan/{id_pendaftaran}/update-status', function (Request $request, $id_pendaftaran) {
+        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
         $request->validate([
             'status_seleksi' => 'required|in:Diterima,Ditolak,Pending,DITERIMA,DITOLAK,PENDING'
         ]);
@@ -204,49 +245,4 @@ Route::get('/admin/kelola-kegiatan/{id}', function ($id) {
         return redirect()->back()->with('pesan', 'Status seleksi relawan berhasil diperbarui menjadi ' . $statusUppercase . '!');
     });
 
-    // 10. Kelola Relawan (Proses Impor Data dari CSV)
-    Route::post('/admin/impor-relawan', function (Request $request) {
-        $request->validate(['file_csv' => 'required|mimes:csv,txt']);
-        $file = $request->file('file_csv');
-        
-        if (!$kegiatan) {
-            return redirect('/admin/kelola-kegiatan')->with('pesan', 'Data kegiatan tidak ditemukan!');
-        }
-        
-        return view('admin.edit_kegiatan', compact('kegiatan'));
-    });
-
-    // 11. Proses Update Data Kegiatan (PUT)
-    Route::put('/admin/edit-kegiatan/{id}', function (Request $request, $id) {
-        $kegiatanLama = DB::table('kegiatan')->where('id_kegiatan', $id)->first();
-        $namaFoto = $kegiatanLama->foto_kegiatan;
-
-        if ($request->hasFile('foto_kegiatan')) {
-            $file = $request->file('foto_kegiatan');
-            $namaFoto = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('public/kegiatan', $namaFoto);
-            $namaFoto = 'kegiatan/' . $namaFoto;
-        }
-
-        DB::table('kegiatan')
-            ->where('id_kegiatan', $id)
-            ->update([
-                'nama_kegiatan'       => $request->nama_kegiatan,
-                'kategori'            => $request->kategori,
-                'pendaftaran_dibuka'  => $request->pendaftaran_dibuka,
-                'batas_registrasi'    => $request->batas_registrasi,
-                'pengumuman_seleksi'  => $request->pengumuman_seleksi,
-                'tanggal_pelaksanaan' => $request->tanggal_pelaksanaan,
-                'divisi_dibutuhkan'   => $request->divisi_dibutuhkan,
-                'lokasi'              => $request->lokasi,
-                'jam_kegiatan'        => $request->jam_kegiatan,
-                'alamat_lengkap'      => $request->alamat_lengkap,
-                'deskripsi_detail'    => $request->deskripsi_detail,
-                'detail_aktivitas'    => $request->detail_aktivitas,
-                'status_kegiatan'     => $request->status_kegiatan,
-                'foto_kegiatan'       => $namaFoto
-            ]);
-
-    return redirect('/admin/kelola-kegiatan')->with('pesan', 'Data agenda kegiatan sukses diperbarui!');
 });
->>>>>>>>> Temporary merge branch 2

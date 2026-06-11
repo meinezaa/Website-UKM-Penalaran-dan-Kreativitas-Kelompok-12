@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use App\Models\Kegiatan;
+use Illuminate\Support\Facades\DB; // Ditambahkan untuk menghitung statistik data riil
 
 class KegiatanController extends BaseController
 {
-    public function index(Request $request)
+    public function index()
     {
         $query = Kegiatan::where('status_kegiatan', 'aktif');
 
@@ -23,6 +24,7 @@ class KegiatanController extends BaseController
         return view('publik.kegiatan', compact('kegiatan'));
     }
 
+    // 3. MENAMPILKAN HALAMAN DETAIL PROGRAM KEGIATAN
     public function detail($id)
     {
         $kegiatan = Kegiatan::findOrFail($id);
