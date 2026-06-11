@@ -124,9 +124,9 @@ Kegiatan
 
 <!-- Relawan -->
 <li>
-<a href="{{ url('/formulir') }}"
+<a href="{{ url('/relawan') }}"
 class="relative
-{{ request()->is('formulir*') ? 'after:w-full' : 'after:w-0' }}
+{{ request()->is('relawan*') ? 'after:w-full' : 'after:w-0' }}
 after:absolute
 after:left-0
 after:-bottom-1

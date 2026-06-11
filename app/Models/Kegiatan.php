@@ -52,4 +52,13 @@ class Kegiatan extends Model
     {
         return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
+    // Relasi ke tabel dokumentasi_kegiatan
+public function dokumentasi()
+{
+    return $this->hasMany(
+        DokumentasiKegiatan::class,
+        'id_kegiatan',
+        'id_kegiatan'
+    );
+}
 }

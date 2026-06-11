@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Storage;
 
 // ==================== ROUTE PUBLIK ====================
 
@@ -90,7 +91,68 @@ Route::middleware(['auth'])->group(function () {
         }
         
         return view('admin.edit_kegiatan', compact('kegiatan'));
+
     });
+
+    // ==================== KELOLA DOKUMENTASI ====================
+
+Route::get('/admin/kelola-dokumentasi', function () {
+
+    $dokumentasi = DB::table('dokumentasi_kegiatan as d')
+        ->join('kegiatan as k', 'd.id_kegiatan', '=', 'k.id_kegiatan')
+        ->select('d.*', 'k.nama_kegiatan')
+        ->orderBy('d.id_dokumentasi', 'desc')
+        ->get();
+
+    return view('admin.kelola_dokumentasi', compact('dokumentasi'));
+});
+
+// ==================== KELOLA DOKUMENTASI ====================
+
+Route::get('/admin/kelola-dokumentasi', function () {
+
+    $dokumentasi = DB::table('dokumentasi_kegiatan as d')
+        ->join('kegiatan as k', 'd.id_kegiatan', '=', 'k.id_kegiatan')
+        ->select('d.*', 'k.nama_kegiatan')
+        ->orderBy('d.id_dokumentasi', 'desc')
+        ->get();
+
+    return view('admin.kelola_dokumentasi', compact('dokumentasi'));
+});
+
+
+// FORM TAMBAH DOKUMENTASI
+Route::get('/admin/tambah-dokumentasi', function () {
+
+    $kegiatan = DB::table('kegiatan')->get();
+
+    return view('admin.tambah_dokumentasi', compact('kegiatan'));
+
+});
+
+// SIMPAN DOKUMENTASI
+Route::post('/admin/tambah-dokumentasi', function (Request $request) {
+
+    $request->validate([
+        'id_kegiatan' => 'required',
+        'judul_foto'  => 'required',
+        'foto'        => 'required|image|mimes:jpg,jpeg,png|max:2048'
+    ]);
+
+    $path = $request->file('foto')->store('dokumentasi', 'public');
+
+    DB::table('dokumentasi_kegiatan')->insert([
+        'id_kegiatan' => $request->id_kegiatan,
+        'judul_foto'  => $request->judul_foto,
+        'foto'        => $path,
+        'deskripsi'   => $request->deskripsi,
+    ]);
+
+    return redirect('/admin/kelola-dokumentasi')
+        ->with('pesan', 'Dokumentasi berhasil ditambahkan');
+});
+
+
 
     // Proses Update Data Kegiatan (PUT)
     Route::put('/admin/edit-kegiatan/{id}', function (Request $request, $id) {
@@ -258,3 +320,5 @@ Route::middleware(['auth'])->group(function () {
     });
 
 });
+
+Route::get('/relawan', [KegiatanController::class, 'dokumentasi']);

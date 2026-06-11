@@ -47,16 +47,32 @@
     </div>
 
     <nav class="flex-1 space-y-2">
-        <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm transition-all bg-primary text-white shadow-md shadow-red-200">
-            <span class="material-symbols-outlined text-[20px]">dashboard</span> Dashboard
-        </a>
-        <a href="/admin/data-relawan" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-gray-600 hover:bg-surface-container-low transition-all">
-            <span class="material-symbols-outlined text-[20px]">group</span> Data Relawan
-        </a>
-        <a href="/admin/data-kegiatan" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-gray-600 hover:bg-surface-container-low transition-all">
-            <span class="material-symbols-outlined text-[20px]">assignment</span> Kegiatan
-        </a>
-    </nav>
+
+    <a href="{{ route('admin.dashboard') }}"
+       class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm transition-all bg-primary text-white shadow-md shadow-red-200">
+        <span class="material-symbols-outlined text-[20px]">dashboard</span>
+        Dashboard
+    </a>
+
+    <a href="/admin/kelola-relawan"
+       class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-gray-600 hover:bg-surface-container-low transition-all">
+        <span class="material-symbols-outlined text-[20px]">group</span>
+        Data Relawan
+    </a>
+
+    <a href="/admin/kelola-kegiatan"
+       class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-gray-600 hover:bg-surface-container-low transition-all">
+        <span class="material-symbols-outlined text-[20px]">assignment</span>
+        Kegiatan
+    </a>
+
+    <a href="/admin/kelola-dokumentasi"
+       class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-gray-600 hover:bg-surface-container-low transition-all">
+        <span class="material-symbols-outlined text-[20px]">photo_library</span>
+        Dokumentasi
+    </a>
+
+</nav>
 
     <div class="pt-6 border-t border-surface-container">
         <form id="logout-form" action="/logout" method="POST" class="hidden">

@@ -29,4 +29,14 @@ class KegiatanController extends BaseController
 
         return view('publik.detail_kegiatan', compact('kegiatan'));
     }
+
+    // HALAMAN DOKUMENTASI
+    public function dokumentasi()
+    {
+        $kegiatan = Kegiatan::with('dokumentasi')
+                    ->orderBy('tanggal_pelaksanaan', 'desc')
+                    ->get();
+
+        return view('publik.relawan', compact('kegiatan'));
+    }
 }
