@@ -7,7 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="{{ asset('dist/output.css') }}">
 
@@ -15,7 +15,20 @@
         body { font-family: 'Poppins', sans-serif; background-color: #F8FAFC; margin: 0; padding: 0; color: #1E293B; }
         .main-container { max-w: 1200px; margin: 0 auto; padding: 0 24px; }
         
-        /* Navigasi Filter */
+        /* Mengamankan Jumbotron agar pas berada di bawah navbar */
+        .jumbotron-section {
+            padding-top: 100px; 
+            padding-bottom: 40px;
+            width: 100%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center;
+            background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 100%);
+            color: white;
+        }
+
+        /* Navigasi Filter Kapsul Slider */
         .filter-navigation { 
             display: flex; justify-content: center; gap: 12px; margin-top: 40px; margin-bottom: 32px;
             padding: 6px; position: relative; background-color: #E2E8F0; border-radius: 99px; 
@@ -41,17 +54,17 @@
             display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 24px; margin-bottom: 60px;
         }
 
-        /* Card Layout */
+        /* Ukuran Card Rata */
         .card-kegiatan { 
             background: #ffffff; border-radius: 24px; overflow: hidden; border: 1px solid #F1F5F9; 
             display: flex; flex-direction: column; justify-content: flex-start;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 18px rgba(15, 23, 42, 0.03);
+            height: 100%;
         }
         .card-kegiatan:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08); }
         
         .img-container { width: auto; aspect-ratio: 1.4 / 1; margin: 12px 12px 0 12px; position: relative; border-radius: 16px; overflow: hidden; background-color: #F8FAFC; }
         .img-container img { width: 100%; height: 100%; object-fit: cover; }
-        .img-bnw { filter: grayscale(100%) !important; }
         
         .badge-status { position: absolute; top: 12px; right: 12px; padding: 4px 10px; font-size: 9px; font-weight: 700; color: white; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .bg-buka { background-color: #10B981; }
@@ -67,45 +80,45 @@
 
         .meta-space-category { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11px; padding: 2px 0; margin-top: 2px; height: 22px; box-sizing: border-box; }
         .place-info { display: flex; align-items: center; gap: 4px; color: #64748B; font-weight: 500; max-width: 62%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        
         .tag-kategori { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; color: #A855F7; background-color: #F3E8FF; padding: 3px 8px; border-radius: 6px; max-width: 35%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .tag-berjalan { color: #3B82F6; background-color: #EFF6FF; }
         .tag-selesai { color: #64748B; background-color: #F1F5F9; }
 
         .card-desc { font-size: 11px; color: #64748B; margin: 0; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; height: 48px; }
         
-        /* Menggunakan Grid agar Posisi Tombol Kedua Selalu Sejajar Sempurna */
-        .card-footer { padding: 6px 14px 14px 14px; display: grid; grid-template-rows: 34px 34px; gap: 6px; box-sizing: border-box; margin-top: auto; }
+        .card-footer { padding: 6px 14px 14px 14px; box-sizing: border-box; margin-top: auto; }
         
         .btn-action { 
             display: block; text-align: center; width: 100%; background-color: #8B1E1E; color: white; text-decoration: none; 
-            font-size: 12px; font-weight: 600; height: 34px; line-height: 34px; border-radius: 10px; transition: all 0.2s ease; 
+            font-size: 12px; font-weight: 600; height: 36px; line-height: 36px; border-radius: 10px; transition: all 0.2s ease; 
             border: none; cursor: pointer; box-sizing: border-box; padding: 0;
         }
-        .btn-action:hover { background-color: #701717; }
-        .btn-disabled { background-color: #F1F5F9; color: #94A3B8; cursor: not-allowed; border: 1px solid #E2E8F0; }
-        
-        .btn-secondary { background-color: #FFF5F5; color: #8B1E1E; border: 1px solid #FEE2E2; }
-        .btn-secondary:hover { background-color: #8B1E1E; color: #FFFFFF; border-color: #8B1E1E; }
-
-        /* JURUS JITU: Memaksa tombol Lihat Detail di kategori SELESAI meloncat ke baris kedua grid */
-        .card-kegiatan[data-status="selesai"] .card-footer .btn-secondary { grid-row: 2; }
+        .btn-action:hover { background-color: #701717; box-shadow: 0 4px 12px rgba(139, 30, 30, 0.2); }
     </style>
 </head>
 <body>
 
-    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-transparent">
+    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
         <div class="flex items-center justify-between px-6 py-0.5 text-white">
+
             <div class="flex items-center">
                 <a href="{{ url('/') }}" class="overflow-hidden">
                     <img src="{{ asset('foto/logo.jpeg') }}" alt="Logo UPN Mengajar" class="w-16 scale-125">
                 </a>
             </div>
+
             <div class="flex items-center gap-12">
+
                 <nav>
                     <ul class="flex gap-12 font-poppins font-semibold">
+                        
                         <li>
-                            <a href="{{ url('/') }}" class="relative {{ request()->is('/') ? 'after:w-full' : 'after:w-0' }} after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">Home</a>
+                            <a href="{{ url('/') }}" class="relative {{ request()->is('/') ? 'after:w-full' : 'after:w-0' }} after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+                                Home
+                            </a>
                         </li>
+
                         <li class="relative group">
                             <a href="#" class="flex items-center gap-1 relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
                                 Tentang
@@ -119,20 +132,30 @@
                                 <li><a href="{{ url('/tim') }}" class="block px-5 py-2 hover:bg-gray-100">Tim UPN Mengajar</a></li>
                             </ul>
                         </li>
+
                         <li>
-                            <a href="{{ url('/kegiatan') }}" class="relative {{ request()->is('kegiatan*') ? 'after:w-full' : 'after:w-0' }} after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">Kegiatan</a>
+                            <a href="{{ url('/kegiatan') }}" class="relative {{ request()->is('kegiatan*') ? 'after:w-full' : 'after:w-0' }} after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+                                Kegiatan
+                            </a>
                         </li>
+
                         <li>
-                            <a href="{{ url('/formulir') }}" class="relative {{ request()->is('formulir*') ? 'after:w-full' : 'after:w-0' }} after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">Relawan</a>
+                            <a href="{{ url('/formulir') }}" class="relative {{ request()->is('formulir*') ? 'after:w-0' : 'after:w-0' }} after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+                                Relawan
+                            </a>
                         </li>
+
                         @if(session('role') === 'admin')
                         <li>
-                            <a href="{{ route('admin.dashboard') }}" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Dashboard Admin</a>
+                            <a href="{{ route('admin.dashboard') }}" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+                                Dashboard Admin
+                            </a>
                         </li>
                         @endif
+
                     </ul>
                 </nav>
-                
+
                 <div class="relative group">
                     @if (session('id_user'))
                         <a href="#" class="hover:text-red-400 transition-all duration-300">
@@ -146,19 +169,34 @@
                         <div class="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-sm text-white text-[11px] px-4 py-2 opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap rounded-lg shadow-2xl border border-white/10">Masuk / Daftar</div>
                     @endif
                 </div>
+
             </div>
         </div>
     </header>
 
-    <section class="relative h-[220px] w-full flex items-center justify-center bg-gradient-to-br from-red-800 via-red-700 to-red-600 text-white pt-14" style="background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 100%); text-align: center;">
-        <div style="padding: 0 16px;">
-            <h1 style="margin: 0 0 6px 0; font-size: 36px; font-weight: 700;">Eksplorasi Kegiatan Relawan</h1>
-            <p style="margin: 0; font-size: 14px; color: #fca5a5; font-style: italic; font-weight: 300;">Ikuti aksi nyata dan berkontribusi langsung bagi pendidikan bangsa</p>
+    <section class="jumbotron-section">
+        <div class="w-full max-w-4xl px-6 flex flex-col items-center">
+            <h1 style="margin: 0 0 6px 0; font-size: 34px; font-weight: 700;">Eksplorasi Kegiatan Relawan</h1>
+            <p style="margin: 0 0 24px 0; font-size: 14px; color: #fca5a5; font-style: italic; font-weight: 300;">Ikuti aksi nyata dan berkontribusi langsung bagi pendidikan bangsa</p>
+            
+            <div class="w-full max-w-2xl bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-4 shadow-inner flex items-center gap-3.5 text-left">
+                <div class="p-2 bg-amber-400 text-slate-950 rounded-xl shadow-md shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-amber-300 tracking-wide uppercase m-0">Syarat Pendaftaran Relawan</h4>
+                    <p class="text-xs text-gray-100 font-medium leading-relaxed mt-0.5 m-0">
+                        Calon relawan <span class="font-bold underline text-white">wajib memiliki akun dan login terlebih dahulu</span> untuk melihat detail serta mengisi formulir registrasi program kerja.
+                    </p>
+                </div>
+            </div>
         </div>
     </section>
 
     <div class="main-container">
-        
+
         <div class="filter-navigation">
             <button onclick="filterKegiatan('semua')" id="btn-semua" class="tab-link active">Semua Kegiatan</button>
             <button onclick="filterKegiatan('buka')" id="btn-buka" class="tab-link">Registrasi Dibuka</button>
@@ -188,8 +226,7 @@
                         <p class="card-desc">{{ $keg->deskripsi_detail }}</p>
                     </div>
                     <div class="card-footer">
-                        <a href="{{ url('/formulir?kegiatan=' . $keg->id_kegiatan) }}" class="btn-action">Daftar Relawan</a>
-                        <a href="{{ route('kegiatan.detail', $keg->id_kegiatan) }}" class="btn-action btn-secondary">Lihat Detail</a>
+                        <a href="{{ route('kegiatan.detail', $keg->id_kegiatan) }}" class="btn-action">Lihat Detail</a>
                     </div>
                 </div>
             @endforeach
@@ -213,8 +250,7 @@
                         <p class="card-desc">{{ $keg->deskripsi_detail }}</p>
                     </div>
                     <div class="card-footer">
-                        <button disabled class="btn-action btn-disabled">Pendaftaran Ditutup</button>
-                        <a href="{{ route('kegiatan.detail', $keg->id_kegiatan) }}" class="btn-action btn-secondary">Lihat Detail</a>
+                        <a href="{{ route('kegiatan.detail', $keg->id_kegiatan) }}" class="btn-action">Lihat Detail</a>
                     </div>
                 </div>
             @endforeach
@@ -222,30 +258,30 @@
             @foreach($kegiatanSelesai as $keg)
                 <div class="card-kegiatan" data-status="selesai">
                     <div class="img-container">
-                        <img src="{{ asset('foto/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}" class="img-bnw">
+                        <img src="{{ asset('foto/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}">
                         <span class="badge-status bg-selesai">SELESAI</span>
                     </div>
                     <div class="card-body">
-                        <h3 class="card-title" style="color: #64748B;" title="{{ $keg->nama_kegiatan }}">{{ $keg->nama_kegiatan }}</h3>
-                        <div class="card-dates" style="background-color: #F1F5F9;">
+                        <h3 class="card-title" title="{{ $keg->nama_kegiatan }}">{{ $keg->nama_kegiatan }}</h3>
+                        <div class="card-dates">
                             <div class="date-item" style="color: #94A3B8;">⏱️ <span><strong>Registrasi:</strong> Berakhir</span></div>
-                            <div class="date-item" style="color: #64748B;">📅 <span><strong>Selesai Pada:</strong> {{ \Carbon\Carbon::parse($keg->tanggal_pelaksanaan)->translatedFormat('d M Y') }}</span></div>
+                            <div class="date-item">📅 <span><strong>Selesai Pada:</strong> {{ \Carbon\Carbon::parse($keg->tanggal_pelaksanaan)->translatedFormat('d M Y') }}</span></div>
                         </div>
                         <div class="meta-space-category">
-                            <div class="place-info" style="color: #94A3B8;" title="{{ $keg->lokasi }}">📍 <span>{{ $keg->lokasi }}</span></div>
+                            <div class="place-info" title="{{ $keg->lokasi }}">📍 <span>{{ $keg->lokasi }}</span></div>
                             <span class="tag-kategori tag-selesai">{{ $keg->kategori ?? 'SMA / UMUM' }}</span>
                         </div>
-                        <p class="card-desc" style="color: #94A3B8;">{{ $keg->deskripsi_detail }}</p>
+                        <p class="card-desc">{{ $keg->deskripsi_detail }}</p>
                     </div>
                     <div class="card-footer">
-                        <a href="{{ route('kegiatan.detail', $keg->id_kegiatan) }}" class="btn-action btn-secondary">Lihat Detail</a>
+                        <a href="{{ route('kegiatan.detail', $keg->id_kegiatan) }}" class="btn-action">Lihat Detail</a>
                     </div>
                 </div>
             @endforeach
 
         </div>
 
-        <div id="no-data-msg" class="hidden" style="text-align: center; padding: 48px 0; background: white; border-radius: 24px; border: 1px solid #E2E8F0; margin-bottom: 40px;">
+        <div id="no-data-msg" style="display: none; text-align: center; padding: 48px 0; background: white; border-radius: 24px; border: 1px solid #E2E8F0; margin-bottom: 40px;">
             <p style="color: #94A3B8; font-size: 13px; font-style: italic; margin: 0;">Tidak ada agenda kegiatan relawan dalam kategori ini. 🌟</p>
         </div>
 
@@ -310,9 +346,13 @@
 
     <script>
         const header = document.querySelector("header");
+
         window.addEventListener("scroll", function () {
-            if (window.scrollY > 50) { header.classList.add("bg-red-900", "shadow-lg"); } 
-            else { header.classList.remove("bg-red-900", "shadow-lg"); }
+            if (window.scrollY > 50) {
+                header.classList.add("bg-red-900", "shadow-lg");
+            } else {
+                header.classList.remove("bg-red-900", "shadow-lg");
+            }
         });
 
         function updateSlidingBg(isInitial = false) {
@@ -340,22 +380,31 @@
             const buttons = document.querySelectorAll('.tab-link');
             let visibleCount = 0;
 
+            // Perbarui class active tombol filter
             buttons.forEach(btn => btn.classList.remove('active'));
             document.getElementById(`btn-${status}`).classList.add('active');
 
+            // Jalankan animasi slider kapsul bergeser
             updateSlidingBg(false);
+
+            // Saring kartu kegiatan dengan memanipulasi display inline CSS murni
             cards.forEach(card => {
-                if (status === 'semua' || card.getAttribute('data-status') === status) {
-                    card.classList.remove('hidden');
+                const cardStatus = card.getAttribute('data-status');
+                if (status === 'semua' || cardStatus === status) {
+                    card.style.display = 'flex'; // tampilkan kartu dengan layout rata
                     visibleCount++;
                 } else {
-                    card.classList.add('hidden');
+                    card.style.display = 'none'; // sembunyikan total kartu
                 }
             });
 
+            // Tampilkan atau sembunyikan pesan kosong jika tidak ada data
             const noDataMsg = document.getElementById('no-data-msg');
-            if (visibleCount === 0) { noDataMsg.classList.remove('hidden'); } 
-            else { noDataMsg.classList.add('hidden'); }
+            if (visibleCount === 0) { 
+                noDataMsg.style.display = 'block'; 
+            } else { 
+                noDataMsg.style.display = 'none'; 
+            }
         }
 
         window.addEventListener('DOMContentLoaded', () => { updateSlidingBg(true); });
