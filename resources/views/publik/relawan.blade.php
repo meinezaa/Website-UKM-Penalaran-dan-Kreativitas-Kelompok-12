@@ -37,34 +37,49 @@ $yayasan = getDataKegiatan($koneksi, 'yayasan', 'Program Yayasan & Komunitas');
   </head>
 
   <body class="bg-gray-50 font-poppins">
-    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
+   <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
 <div class="flex items-center justify-between px-6 py-0.5 text-white">
 
+<!-- Logo -->
 <div class="flex items-center">
-<a href="beranda.php" class="overflow-hidden">
-<img src="./foto/logo.jpeg" 
+<a href="/" class="overflow-hidden">
+<img src="{{ asset('foto/logo.jpeg') }}" 
 alt="Logo UPN Mengajar" 
 class="w-16 scale-125">
 </a>
 </div>
 
+<!-- Right Side -->
 <div class="flex items-center gap-12">
 
+<!-- Navigation -->
 <nav>
 <ul class="flex gap-12 font-poppins font-semibold">
 
+<!-- HOME ACTIVE -->
 <li>
-<a href="beranda.php"
-class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+ <!-- ACTIVE PAGE -->
+<a href="{{ url('/') }}"
+class="relative
+{{ request()->is('/') ? 'after:w-full' : 'after:w-0' }}
+after:absolute
+after:left-0
+after:-bottom-1
+after:h-[1.5px]
+after:bg-white
+after:transition-all
+after:duration-300
+hover:after:w-full">
 Home
 </a>
 </li>
 
+<!-- Tentang -->
 <li class="relative group">
 
-<a href="tentang.html"
+<a href="tentang.php"
 class="flex items-center gap-1 relative 
-after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 
+after:absolute after:left-0 after:-bsottom-1 after:h-[1.5px] after:w-0 
 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
 
 Tentang
@@ -84,25 +99,26 @@ d="M19 9l-7 7-7-7"/>
 
 </a>
 
+<!-- Dropdown -->
 <ul class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md
 opacity-0 invisible -translate-y-2
 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
 transition-all duration-300 ease-out">
 
 <li>
-<a href="ukm.html" class="block px-5 py-2 hover:bg-gray-100">
+<a href="{{ url('/ukm') }}" class="block px-5 py-2 hover:bg-gray-100">
 UKM Penalaran dan Kreativitas
 </a>
 </li>
 
 <li>
-<a href="upnmengajar.html" class="block px-5 py-2 hover:bg-gray-100">
-Program Kerja UPN Mengajar
-</a>
+    <a href="{{ url('/upnmengajar') }}" class="block px-5 py-2 hover:bg-gray-100">
+        Program Kerja UPN Mengajar
+    </a>
 </li>
 
 <li>
-<a href="struktur.html" class="block px-5 py-2 hover:bg-gray-100">
+<a href="{{ url('/tim') }}" class="block px-5 py-2 hover:bg-gray-100">
 Tim UPN Mengajar
 </a>
 </li>
@@ -111,35 +127,56 @@ Tim UPN Mengajar
 
 </li>
 
+<!-- Kegiatan -->
 <li>
-<a href="kegiatan.html"
-class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+<a href="{{ url('/kegiatan') }}"
+class="relative
+{{ request()->is('kegiatan*') ? 'after:w-full' : 'after:w-0' }}
+after:absolute
+after:left-0
+after:-bottom-1
+after:h-[1.5px]
+after:bg-white
+after:transition-all
+after:duration-300
+hover:after:w-full">
 Kegiatan
 </a>
 </li>
 
+<!-- Relawan -->
 <li>
-<a href="relawan.php"
-class="relative after:absolute after:right-0 after:-bottom-1 after:h-[1.5px] after:w-full after:bg-white">
+<a href="{{ url('/relawan') }}"
+class="relative
+{{ request()->is('relawan*') ? 'after:w-full' : 'after:w-0' }}
+after:absolute
+after:left-0
+after:-bottom-1
+after:h-[1.5px]
+after:bg-white
+after:transition-all
+after:duration-300
+hover:after:w-full">
 Relawan
 </a>
 </li>
 
-<?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') : ?>
+@if(session('role') === 'admin')
 <li>
-    <a href="dashboard_admin.php" 
-       class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+    <a href="#" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
        Dashboard Admin
     </a>
 </li>
-<?php endif; ?>
+@endif
 
 </ul>
 </nav>
 
+<!-- Login Icon + Tooltip -->
 <div class="relative group">
-  <?php if (isset($_SESSION['id_user'])) : ?>
-    <a href="logout.php" class="hover:text-red-400 transition-all duration-300">
+  @if (session('id_user'))
+    <!-- JIKA SUDAH LOGIN (TAMPILKAN TOMBOL KELUAR) -->
+    <a href="#" class="hover:text-red-400 transition-all duration-300">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
       </svg>
@@ -151,8 +188,9 @@ Relawan
       Keluar
     </div>
 
-  <?php else : ?>
-    <a href="login.php" class="hover:text-gray-300 transition-all duration-300">
+  @else
+    <!-- JIKA BELUM LOGIN (TAMPILKAN TOMBOL MASUK / DAFTAR) -->
+    <a href="{{ url('/login') }}" class="hover:text-gray-300 transition-all duration-300">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.879 17.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
       </svg>
@@ -163,7 +201,7 @@ Relawan
                 whitespace-nowrap rounded-lg shadow-2xl border border-white/10">
       Masuk / Daftar
     </div>
-  <?php endif; ?>
+  @endif
 </div>
 
 </div>
