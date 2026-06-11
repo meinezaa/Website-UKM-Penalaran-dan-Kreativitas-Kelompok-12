@@ -16,21 +16,24 @@ class Kegiatan extends Model
     protected $primaryKey = 'id_kegiatan';
 
     // 3. Daftarkan kolom yang bisa diisi massal lewat form / controller
-    protected $fillable = [
+   protected $fillable = [
         'id_user',
-        'foto_kegiatan',
         'nama_kegiatan',
-        'kategori',
+        'foto_kegiatan',
         'tanggal_pelaksanaan',
         'jam_kegiatan',
         'batas_registrasi',
+        'pendaftaran_dibuka', // Kolom baru dari phpMyAdmin
+        'pengumuman_seleksi',  // Kolom baru dari phpMyAdmin
         'lokasi',
         'alamat_lengkap',
-        'detail_aktivitas',
+        'kategori',
+        'divisi_dibutuhkan',  // Kolom baru dari phpMyAdmin
         'deskripsi_detail',
         'status_kegiatan',
+        'detail_aktivitas',
     ];
-
+    
     /**
      * RELASI ANTAR TABEL (Eloquent Relationships)
      */
