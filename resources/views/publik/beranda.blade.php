@@ -118,7 +118,8 @@ class="w-16 scale-125">
 
 @if(session('role') === 'admin')
 <li>
-    <a href="/admin/dashboard_admin" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+    <a href="{{ route('admin.dashboard') }}"
+       class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
         Dashboard Admin
     </a>
 </li>

@@ -15,7 +15,20 @@ use App\Http\Controllers\TimController;
 // ==================== ROUTE PUBLIK ====================
 
 Route::get('/', function () {
-    return view('publik.beranda');
+
+    $jumlahRelawan = DB::table('pendaftaran_relawan')->count();
+
+    $jumlahSekolah = DB::table('kegiatan')
+        ->distinct('lokasi')
+        ->count('lokasi');
+
+    $jumlahSiswaTerlibat = 0;
+
+    return view('publik.beranda', compact(
+        'jumlahRelawan',
+        'jumlahSekolah',
+        'jumlahSiswaTerlibat'
+    ));
 });
 
 // Jalur dinamis fitur UKM buatanmu (Mengambil data dari DB)
@@ -49,14 +62,21 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.proses');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.proses');
 
+Route::get('/logout', [AuthController::class, 'logout'])
+    ->name('logout');
+
 
 // ==================== ROUTE ADMIN (MIDDLEWARE AUTH) ====================
 
-Route::middleware(['auth'])->group(function () {
-    
-    // Dashboard Utama Admin
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    Route::delete('/admin/kegiatan/{id}', [AdminDashboardController::class, 'destroyKegiatan'])->name('admin.kegiatan.destroy');
+Route::get('/admin/dashboard',
+    [AdminDashboardController::class, 'index'])
+    ->name('admin.dashboard');
+
+Route::delete('/admin/kegiatan/{id}',
+    [AdminDashboardController::class, 'destroyKegiatan'])
+    ->name('admin.kegiatan.destroy');
+
+// route admin lainnya...
     
     // 1. Kelola Kegiatan (Tampil Data)
     Route::get('/admin/kelola-kegiatan', function () {
@@ -251,7 +271,5 @@ Route::middleware(['auth'])->group(function () {
         }
         return redirect('/admin/kelola-relawan')->with('pesan', 'Seluruh data pendaftaran relawan dari CSV berhasil di-impor!');
     });
-
-}); // Penutup Middleware Admin yang Benar
 
 Route::get('/tim', [TimController::class, 'index']);
