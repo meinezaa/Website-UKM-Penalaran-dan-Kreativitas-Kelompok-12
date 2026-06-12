@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -41,12 +42,13 @@
             <span class="material-symbols-outlined">person</span>
         </div>
         <div>
-            <p class="font-body font-semibold text-on-surface text-sm leading-none">{{ Auth::user()->nama_lengkap ?? 'Admin' }}</p>
+            <p class="font-body font-semibold text-on-surface text-sm leading-none">{{ session('nama_lengkap') ?? 'Admin Utama' }}</p>
             <p class="text-[10px] text-gray-400 uppercase tracking-wider mt-1">Super Admin</p>
         </div>
     </div>
 
     <nav class="flex-1 space-y-2">
+<<<<<<< HEAD
 
     <a href="{{ route('admin.dashboard') }}"
        class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm transition-all bg-primary text-white shadow-md shadow-red-200">
@@ -73,12 +75,21 @@
     </a>
 
 </nav>
+=======
+        <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm transition-all bg-primary text-white shadow-md shadow-red-200">
+            <span class="material-symbols-outlined text-[20px]">dashboard</span> Dashboard
+        </a>
+        <a href="/admin/kelola-relawan" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-gray-600 hover:bg-surface-container-low transition-all">
+            <span class="material-symbols-outlined text-[20px]">group</span> Data Relawan
+        </a>
+        <a href="/admin/kelola-kegiatan" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-gray-600 hover:bg-surface-container-low transition-all">
+            <span class="material-symbols-outlined text-[20px]">assignment</span> Kegiatan
+        </a>
+    </nav>
+>>>>>>> 336f0b1 (menambahkan fitur ekspor dan menyambungkan data dengan database)
 
     <div class="pt-6 border-t border-surface-container">
-        <form id="logout-form" action="/logout" method="POST" class="hidden">
-            @csrf
-        </form>
-        <a href="#" onclick="event.preventDefault(); if(confirm('Apakah Anda yakin ingin keluar?')) document.getElementById('logout-form').submit();" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-red-600 hover:bg-red-50 transition-all group">
+        <a href="/logout" onclick="return confirm('Apakah Anda yakin ingin keluar?')" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-red-600 hover:bg-red-50 transition-all group">
             <span class="material-symbols-outlined text-[20px] group-hover:rotate-12 transition-transform">logout</span> Logout
         </a>
     </div>
@@ -97,9 +108,9 @@
 
     <div class="p-8 space-y-10">
         
-        @if(session('pesan') == 'terhapus')
+        @if(session('pesan'))
             <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
-                Kegiatan berhasil dihapus secara permanen!
+                {{ session('pesan') }}
             </div>
         @endif
 
@@ -125,11 +136,20 @@
             </div>
         </section>
 
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                <h3 class="text-lg font-headline font-extrabold text-on-surface mb-4">Grafik Pertumbuhan Data</h3>
+                <div class="h-64 flex items-center justify-center">
+                    <canvas id="dashboardChart"></canvas>
+                </div>
+            </div>
+        </section>
+
         <section class="space-y-4">
             <div class="flex justify-between items-end">
                 <h3 class="text-xl font-headline font-extrabold text-on-background">Daftar Kegiatan</h3>
-                <a href="/admin/kegiatan/tambah" class="bg-primary text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-red-700 transition-all shadow-md shadow-red-100">
-                    <span class="material-symbols-outlined text-sm">add</span> Tambah
+                <a href="/admin/kelola-kegiatan" class="bg-primary text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-red-700 transition-all shadow-md shadow-red-100">
+                    <span class="material-symbols-outlined text-sm">visibility</span> Kelola Semua Kegiatan
                 </a>
             </div>
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -148,12 +168,8 @@
                             <td class="px-6 py-4 text-gray-500">{{ $rk->lokasi }}</td>
                             <td class="px-6 py-4 text-center">
                                 <div class="flex justify-center gap-2">
-                                    <a href="/admin/kegiatan/{{ $rk->id_kegiatan }}/edit" class="text-blue-500 hover:bg-blue-50 p-1.5 rounded-lg" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></a>
+                                    <a href="/admin/edit-kegiatan/{{ $rk->id_kegiatan }}" class="text-blue-500 hover:bg-blue-50 p-1.5 rounded-lg" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></a>
                                     
-                                    <a href="/admin/kegiatan/{{ $rk->id_kegiatan }}/arsip" onclick="return confirm('Arsipkan kegiatan ini? (Akan hilang dari beranda)')" class="text-orange-500 hover:bg-orange-50 p-1.5 rounded-lg" title="Arsipkan">
-                                        <span class="material-symbols-outlined text-lg">inventory_2</span>
-                                    </a>
-
                                     <form action="{{ route('admin.kegiatan.destroy', $rk->id_kegiatan) }}" method="POST" onsubmit="return confirm('Hapus permanen?')" class="inline">
                                         @csrf
                                         @method('DELETE')
@@ -171,7 +187,10 @@
         </section>
 
         <section class="space-y-4">
-            <h3 class="text-xl font-headline font-extrabold text-on-background">Antrian Pendaftar Baru</h3>
+            <div class="flex justify-between items-center">
+                <h3 class="text-xl font-headline font-extrabold text-on-background">Antrian Pendaftar Baru</h3>
+                <a href="/admin/kelola-relawan" class="text-xs text-primary font-bold hover:underline">Lihat Semua Data Relawan &rarr;</a>
+            </div>
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <table class="w-full text-left">
                     <thead class="bg-gray-50 border-b">
@@ -199,12 +218,8 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex justify-end gap-3">
-                                    <a href="/admin/pendaftar/{{ $rp->id_pendaftaran }}" class="text-blue-600 hover:bg-blue-50 p-1.5 rounded-full transition-all" title="Lihat Detail">
+                                    <a href="/admin/detail-relawan/{{ $rp->id_pendaftaran }}" class="text-blue-600 hover:bg-blue-50 p-1.5 rounded-full transition-all" title="Lihat Detail">
                                         <span class="material-symbols-outlined text-2xl">visibility</span>
-                                    </a>
-
-                                    <a href="/admin/pendaftar/{{ $rp->id_pendaftaran }}/terima" class="text-green-600 hover:bg-green-50 p-1.5 rounded-full transition-all" title="Terima">
-                                        <span class="material-symbols-outlined text-2xl">check_circle</span>
                                     </a>
                                 </div>
                             </td>
@@ -222,6 +237,42 @@
         </section>
     </div>
 </main>
+
+<script>
+    const ctx = document.getElementById('dashboardChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Total Relawan', 'Program Aktif', 'Antrian Baru'],
+            datasets: [{
+                label: 'Jumlah Data Real-time',
+                data: [{{ $count_relawan }}, {{ $count_program }}, {{ $count_baru }}],
+                backgroundColor: [
+                    'rgba(187, 0, 22, 0.8)', 
+                    'rgba(31, 41, 55, 0.8)',  
+                    'rgba(245, 158, 11, 0.8)'  
+                ],
+                borderColor: [
+                    '#bb0016',
+                    '#1f2937',
+                    '#f59e0b'
+                ],
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    });
+</script>
 
 </body>
 </html>

@@ -26,7 +26,6 @@
 </head>
 <body class="bg-neutral-bg text-slate-900 flex min-h-screen">
 
-<!-- SIDEBAR -->
 <aside class="h-screen w-72 fixed left-0 top-0 z-50 p-6 flex flex-col bg-white border-r border-slate-100">
     <div class="mb-10 px-4 flex items-center gap-2.5">
         <div class="w-3 h-6 bg-primary rounded-full"></div>
@@ -53,7 +52,6 @@
     </div>
 </aside>
 
-<!-- MAIN CONTENT -->
 <main class="flex-1 ml-72 p-12">
     <header class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-10">
         <div>
@@ -61,8 +59,7 @@
             <p class="text-sm text-slate-400 mt-1">Tinjau, filter, dan kelola berkas pendaftaran calon relawan.</p>
         </div>
         <div class="flex items-center gap-3 w-full lg:w-auto">
-            <!-- INPUT FILE CSV -->
-            <form action="/admin/impor-relawan" method="POST" enctype="multipart/form-data" class="flex items-center gap-2 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm">
+            <form action="/admin/impor-relawan" method="POST" enctype="multipart/form-data" class="flex items-center gap-2 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm mr-2">
                 @csrf
                 <label class="relative flex items-center px-3 py-2 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-xl cursor-pointer text-xs font-semibold">
                     <span class="material-symbols-outlined text-sm mr-2">upload_file</span>
@@ -71,8 +68,12 @@
                 </label>
                 <button type="submit" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-black transition-all">Impor Data</button>
             </form>
-            <!-- BUTTON EKSPOR EXCEL -->
-            <a href="/admin/export-excel" class="bg-emerald-600 text-white px-5 py-3 rounded-2xl text-sm font-bold flex items-center gap-2 hover:bg-emerald-700 transition-all shadow-sm">
+
+            <a href="{{ route('admin.relawan.pdf') }}" class="bg-rose-700 text-white px-5 py-3 rounded-2xl text-sm font-bold flex items-center gap-2 hover:bg-rose-800 transition-all shadow-sm">
+                <span class="material-symbols-outlined text-lg">picture_as_pdf</span> Cetak PDF
+            </a>
+
+            <a href="{{ route('admin.relawan.ekspor') }}" class="bg-emerald-600 text-white px-5 py-3 rounded-2xl text-sm font-bold flex items-center gap-2 hover:bg-emerald-700 transition-all shadow-sm">
                 <span class="material-symbols-outlined text-lg">download</span> Ekspor Excel
             </a>
         </div>
@@ -84,7 +85,6 @@
         </div>
     @endif
 
-    <!-- FILTER & PENCARIAN -->
     <section class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm mb-10">
         <form action="" method="GET" class="flex flex-col md:flex-row gap-5 items-end">
             <div class="flex-1 space-y-2 w-full">
@@ -110,9 +110,7 @@
         </form>
     </section>
 
-    <!-- DATA GRID -->
     <div class="space-y-4">
-        <!-- HEADER TABEL -->
         <div class="grid grid-cols-12 px-8 text-[11px] font-bold text-slate-400 uppercase tracking-widest">
             <div class="col-span-4">Calon Relawan</div>
             <div class="col-span-3">Program Studi</div>
@@ -121,11 +119,9 @@
             <div class="col-span-1 text-right">Aksi</div>
         </div>
 
-        <!-- LOOP ITEM -->
         <div class="space-y-3">
             @forelse($relawan as $row)
                 <div class="grid grid-cols-12 items-center bg-white p-5 px-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all group">
-                    <!-- CALON RELAWAN -->
                     <div class="col-span-4 flex items-center gap-4">
                         <div class="w-11 h-11 rounded-xl bg-primary-light text-primary flex items-center justify-center font-headline font-bold text-sm flex-shrink-0">
                             {{ strtoupper(substr($row->nama_lengkap, 0, 1)) }}
@@ -136,12 +132,10 @@
                         </div>
                     </div>
 
-                    <!-- PROGRAM STUDI -->
                     <div class="col-span-3">
                         <p class="text-sm font-semibold text-slate-600 line-clamp-2 pr-6">{{ $row->asal_prodi }}</p>
                     </div>
 
-                    <!-- GABUNGAN DIVISI BERTUMPUK -->
                     <div class="col-span-2 flex flex-col gap-1 items-start">
                         <span class="px-2.5 py-1 bg-red-50 text-primary rounded-md text-[10px] font-bold uppercase tracking-wide">
                             1. {{ $row->pilihan_divisi_1 }}
@@ -153,7 +147,6 @@
                         @endif
                     </div>
 
-                    <!-- STATUS SELEKSI -->
                     <div class="col-span-2">
                         @php
                             $status = strtoupper($row->status_seleksi ?? 'PENDING');
@@ -166,7 +159,6 @@
                         </span>
                     </div>
 
-                    <!-- AKSI -->
                     <div class="col-span-1 flex justify-end gap-1">
                         <a href="/admin/detail-relawan/{{ $row->id_pendaftaran }}" class="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all" title="Lihat Berkas Lengkap">
                             <span class="material-symbols-outlined text-xl">visibility</span>
