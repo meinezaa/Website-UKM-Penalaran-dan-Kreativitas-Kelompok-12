@@ -253,7 +253,7 @@ class="fixed inset-0 bg-black/70 flex items-center justify-center opacity-0 poin
 
   <!-- Text -->
   <div>
-    <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahRelawan }}">0</h3>
+    <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahRelawan ?? 150 }}">0</h3>
         <p class="text-gray-600 font-poppins text-sm">Relawan</p>
   </div>
 
@@ -267,7 +267,7 @@ class="fixed inset-0 bg-black/70 flex items-center justify-center opacity-0 poin
 </div>
 
 <div>
-<h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahSekolah }}">0</h3>
+<h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahSekolah ?? 10 }}">0</h3>
         <p class="text-gray-600 font-poppins text-sm">Sekolah Mitra</p>
 </div>
 
@@ -281,7 +281,7 @@ class="fixed inset-0 bg-black/70 flex items-center justify-center opacity-0 poin
 </div>
 
 <div>
-<h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahSiswaTerlibat }}">0</h3>
+<h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahSiswaTerlibat ?? 500 }}">0</h3>
         <p class="text-gray-600 font-poppins text-sm">Siswa Terlibat</p>
 </div>
 
