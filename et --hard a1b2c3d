@@ -1,0 +1,123 @@
+[33m36b2ace[m[33m ([m[1;36mHEAD[m[33m)[m HEAD@{0}: pull origin Inez --rebase (start): checkout 36b2aceef65931cb1da672277fa06877efcc5412
+[33m3885bb7[m[33m ([m[1;31morigin/Inez[m[33m, [m[1;32mInez[m[33m)[m HEAD@{1}: commit: menambahkan formulir mitra dan menambahkannya ke dalam dashboard admin
+[33m53efded[m[33m ([m[1;32mmain[m[33m)[m HEAD@{2}: checkout: moving from main to Inez
+[33m53efded[m[33m ([m[1;32mmain[m[33m)[m HEAD@{3}: merge Inez: Fast-forward
+[33m81958dc[m HEAD@{4}: pull origin main: Fast-forward
+[33m201939c[m HEAD@{5}: checkout: moving from Inez to main
+[33m53efded[m[33m ([m[1;32mmain[m[33m)[m HEAD@{6}: rebase (finish): returning to refs/heads/Inez
+[33m53efded[m[33m ([m[1;32mmain[m[33m)[m HEAD@{7}: rebase (continue): hasil pull
+[33m990bc38[m HEAD@{8}: rebase (continue): menambahkan fitur ekspor dan menyambungkan data dengan database
+[33m4cc75c4[m HEAD@{9}: rebase (continue): revisi
+[33m99ffe24[m HEAD@{10}: rebase (continue): revisi dashboard
+[33m81958dc[m HEAD@{11}: pull origin main --rebase (start): checkout 81958dc3d55a91a714c917aba7b80305339966ec
+[33m36b2ace[m[33m ([m[1;36mHEAD[m[33m)[m HEAD@{12}: commit: hasil pull
+[33m5334a80[m HEAD@{13}: commit (merge): hasil pull
+[33m1bf8bd4[m HEAD@{14}: commit (merge): revisi dashboard admin
+[33m336f0b1[m HEAD@{15}: commit: menambahkan fitur ekspor dan menyambungkan data dengan database
+[33m13cf4f1[m HEAD@{16}: commit (merge): fix: menyelesaikan merge conflict pada web.php dan admin controller
+[33m1a5134e[m HEAD@{17}: commit: revisi
+[33m5a04500[m HEAD@{18}: commit (merge): revisi
+[33m822ab25[m HEAD@{19}: checkout: moving from main to Inez
+[33m201939c[m HEAD@{20}: pull origin main: Fast-forward
+[33mdf2a974[m HEAD@{21}: checkout: moving from Inez to main
+[33m822ab25[m HEAD@{22}: commit: revisi dashboard
+[33m0951039[m HEAD@{23}: commit (merge): revisi
+[33m4c3acc4[m HEAD@{24}: checkout: moving from main to Inez
+[33mdf2a974[m HEAD@{25}: pull origin main: Fast-forward
+[33m6587516[m HEAD@{26}: checkout: moving from Inez to main
+[33m4c3acc4[m HEAD@{27}: commit: menambahkan bagian login/register
+[33md064b00[m HEAD@{28}: commit (merge): menambahkan laravel
+[33m4d244ae[m HEAD@{29}: commit: menambahkan struktur laravel
+[33m97365bf[m HEAD@{30}: commit: menambahkan laravel
+[33md8efc41[m HEAD@{31}: commit: revisi
+[33m29db383[m HEAD@{32}: commit: revisi
+[33m417fdcc[m HEAD@{33}: commit: revisi dan menambahkan model/database
+[33m9af4864[m HEAD@{34}: commit: Menambahkan bagian relawan dan ukm dalam bentuk laravel
+[33ma715a88[m HEAD@{35}: commit: menambahkan bagian laravel
+[33mc3577eb[m HEAD@{36}: commit: update dari main
+[33m6587516[m HEAD@{37}: pull origin main: Fast-forward
+[33m222aaf8[m[33m ([m[1;31morigin/tentang[m[33m)[m HEAD@{38}: checkout: moving from main to Inez
+[33m6587516[m HEAD@{39}: commit: revisi validasi dan revisi navbar
+[33m1d513e6[m HEAD@{40}: commit: menambahkan validasi
+[33md92d018[m HEAD@{41}: commit: revisi kode main
+[33mece4868[m HEAD@{42}: commit: revisi kode main
+[33m8ae6e1b[m HEAD@{43}: pull origin main: Fast-forward
+[33m5f7fb94[m HEAD@{44}: checkout: moving from tentang to main
+[33mf837151[m[33m ([m[1;32mtentang[m[33m)[m HEAD@{45}: commit (merge): menambahkan kode
+[33mc857d04[m HEAD@{46}: checkout: moving from main to tentang
+[33m5f7fb94[m HEAD@{47}: commit: revisi relawan
+[33mcb2850c[m HEAD@{48}: commit: revisi tambah kegiatan
+[33m0ac9cbd[m HEAD@{49}: commit (merge): revisi jarak foto
+[33m69cd5d2[m HEAD@{50}: commit: revisi jarak foto
+[33m5d41a03[m HEAD@{51}: checkout: moving from tentang to main
+[33mc857d04[m HEAD@{52}: checkout: moving from main to tentang
+[33m5d41a03[m HEAD@{53}: commit: memperbarui login
+[33m4511e6e[m HEAD@{54}: checkout: moving from tentang to main
+[33mc857d04[m HEAD@{55}: checkout: moving from main to tentang
+[33m4511e6e[m HEAD@{56}: checkout: moving from tentang to main
+[33mc857d04[m HEAD@{57}: checkout: moving from main to tentang
+[33m4511e6e[m HEAD@{58}: pull origin main: Merge made by the 'ort' strategy.
+[33m0019cb5[m HEAD@{59}: checkout: moving from tentang to main
+[33mc857d04[m HEAD@{60}: checkout: moving from main to tentang
+[33m0019cb5[m HEAD@{61}: checkout: moving from tentang to main
+[33mc857d04[m HEAD@{62}: commit: revisi
+[33m86daf54[m HEAD@{63}: checkout: moving from main to tentang
+[33m0019cb5[m HEAD@{64}: pull origin main: Fast-forward
+[33m857c9bf[m HEAD@{65}: checkout: moving from tentang to main
+[33m86daf54[m HEAD@{66}: commit: menyimpan revisi formulir dan login
+[33m222aaf8[m[33m ([m[1;31morigin/tentang[m[33m)[m HEAD@{67}: commit (merge): menambahkan kode
+[33mbd31214[m HEAD@{68}: checkout: moving from beranda to tentang
+[33m2ef6404[m[33m ([m[1;32mberanda[m[33m)[m HEAD@{69}: pull origin beranda: Merge made by the 'ort' strategy.
+[33m9930402[m HEAD@{70}: checkout: moving from main to beranda
+[33m857c9bf[m HEAD@{71}: pull origin main: Merge made by the 'ort' strategy.
+[33mecbeba7[m HEAD@{72}: commit: menambahkan database
+[33m40c0cb6[m HEAD@{73}: checkout: moving from tentang to main
+[33mbd31214[m HEAD@{74}: commit: revisi
+[33m50e5f2a[m HEAD@{75}: commit (merge): revisi lagi
+[33md1d221b[m HEAD@{76}: commit: revisi eror
+[33m1506004[m HEAD@{77}: commit (merge): revisi kode kedua
+[33md9c67b9[m HEAD@{78}: commit (merge): revisi kode
+[33m3ae267e[m HEAD@{79}: commit (merge): memperbarui kode
+[33mf9ceaa6[m HEAD@{80}: commit: menambahkan file php
+[33mef92b39[m HEAD@{81}: commit: Menambahkan php dan revisi bagian tim.html
+[33me8022fa[m HEAD@{82}: commit: Menambahkan foto tim
+[33m5057b6d[m HEAD@{83}: checkout: moving from beranda to tentang
+[33m9930402[m HEAD@{84}: pull origin ukm: Merge made by the 'ort' strategy.
+[33m9293f71[m HEAD@{85}: checkout: moving from ukm to beranda
+[33m4e82ed3[m[33m ([m[1;32mukm[m[33m)[m HEAD@{86}: checkout: moving from tentang to ukm
+[33m5057b6d[m HEAD@{87}: checkout: moving from beranda to tentang
+[33m9293f71[m HEAD@{88}: pull origin beranda: Fast-forward
+[33mb4e3b5f[m HEAD@{89}: pull origin beranda: Fast-forward
+[33m5845584[m HEAD@{90}: checkout: moving from tentang to beranda
+[33m5057b6d[m HEAD@{91}: commit: menambahkan
+[33mead3fa6[m HEAD@{92}: commit (merge): merge
+[33mbc87b6d[m HEAD@{93}: commit: menambahkan bagian tim
+[33m2e958a0[m HEAD@{94}: commit: menambahkan kode halaman upn mengajar
+[33m427e5b9[m HEAD@{95}: commit (merge): merge beranda ke tentang
+[33m16d3f38[m HEAD@{96}: checkout: moving from beranda to tentang
+[33m5845584[m HEAD@{97}: commit: menambahkan kode
+[33mf8161a6[m HEAD@{98}: pull origin beranda: Merge made by the 'ort' strategy.
+[33mcf311b7[m HEAD@{99}: commit: revisi
+[33ma057c1c[m HEAD@{100}: pull origin beranda: Merge made by the 'ort' strategy.
+[33m7cea34d[m HEAD@{101}: commit: Meineza menambahkan halaman tentang
+[33m6be2a82[m HEAD@{102}: pull: Fast-forward
+[33m7574ef8[m HEAD@{103}: checkout: moving from main to beranda
+[33m40c0cb6[m HEAD@{104}: checkout: moving from halaman-tentang to main
+[33m40c0cb6[m HEAD@{105}: checkout: moving from main to halaman-tentang
+[33m40c0cb6[m HEAD@{106}: checkout: moving from beranda to main
+[33m7574ef8[m HEAD@{107}: checkout: moving from meineza-footer to beranda
+[33m16d3f38[m HEAD@{108}: reset: moving to HEAD
+[33m16d3f38[m HEAD@{109}: checkout: moving from meineza-footer to meineza-footer
+[33m16d3f38[m HEAD@{110}: commit (merge): resolve merge conflict beranda
+[33mbc0b770[m HEAD@{111}: checkout: moving from main to meineza-footer
+[33m40c0cb6[m HEAD@{112}: checkout: moving from beranda to main
+[33m7574ef8[m HEAD@{113}: checkout: moving from meineza-footer to beranda
+[33mbc0b770[m HEAD@{114}: commit: meineza menambahkan footer beranda
+[33m40c0cb6[m HEAD@{115}: checkout: moving from main to meineza-footer
+[33m40c0cb6[m HEAD@{116}: checkout: moving from main to main
+[33m40c0cb6[m HEAD@{117}: commit: menambahkan folder foto dan foto logo
+[33m82c232d[m HEAD@{118}: checkout: moving from meineza-tentang to main
+[33m82c232d[m HEAD@{119}: checkout: moving from main to meineza-tentang
+[33m82c232d[m HEAD@{120}: Branch: renamed refs/heads/main to refs/heads/main
+[33m82c232d[m HEAD@{122}: Branch: renamed refs/heads/main to refs/heads/main
+[33m82c232d[m HEAD@{124}: commit (initial): first commit website UKM Penalaran
