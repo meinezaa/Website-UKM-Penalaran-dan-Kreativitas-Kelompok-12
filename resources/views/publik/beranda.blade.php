@@ -248,7 +248,7 @@ class="fixed inset-0 bg-black/70 flex items-center justify-center opacity-0 poin
         <img src="./foto/icon-relawan.png" class="w-6 h-6">
       </div>
       <div>
-        <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahRelawan }}">0</h3>
+        <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins"> {{ $jumlahRelawan }}</h3>
         <p class="text-gray-600 font-poppins text-sm">Relawan</p>
       </div>
     </div>
@@ -258,7 +258,7 @@ class="fixed inset-0 bg-black/70 flex items-center justify-center opacity-0 poin
         <img src="./foto/icon-mitra.png" class="w-6 h-6">
       </div>
       <div>
-        <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahSekolah }}">0</h3>
+        <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins" data-target="{{ $jumlahSekolah }}"> {{ $jumlahSekolah }}</h3>
         <p class="text-gray-600 font-poppins text-sm">Sekolah Mitra</p>
       </div>
     </div> <div class="flex items-center gap-4 py-4 px-6 border-r border-gray-200">
@@ -266,13 +266,13 @@ class="fixed inset-0 bg-black/70 flex items-center justify-center opacity-0 poin
         <img src="./foto/icon-siswa.png" class="w-6 h-6">
       </div>
       <div>
-        <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahSiswaTerlibat }}">0</h3>
+        <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins"> {{ $jumlahSiswaTerlibat }}</h3>
         <p class="text-gray-600 font-poppins text-sm">Siswa Terlibat</p>
       </div>
     </div>
 
     <div class="flex flex-col justify-center text-center md:text-left py-4 px-6 bg-red-700 text-white leading-tight min-h-full">
-      <h3 class="text-2xl md:text-3xl font-bold font-poppins counter" data-target="5">5+</h3>
+      <h3 class="text-2xl md:text-3xl font-bold font-poppins ">5+</h3>
       <p class="text-sm text-red-100 font-poppins mt-1">Tahun Program</p>
       <a href="/relawan" class="text-xs block mt-1 underline hover:text-red-200 transition">Jadi Relawan →</a>
     </div>
