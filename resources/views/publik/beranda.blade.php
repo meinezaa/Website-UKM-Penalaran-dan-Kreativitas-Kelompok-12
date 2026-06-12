@@ -52,74 +52,60 @@ Home
 </a>
 </li>
 
-<!-- Tentang -->
 <li class="relative group">
 
-<a href="tentang.php"
-class="flex items-center gap-1 relative 
-after:absolute after:left-0 after:-bsottom-1 after:h-[1.5px] after:w-0 
-after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+  <a href="#"
+     class="flex items-center gap-1 relative 
+            after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white 
+            after:transition-all after:duration-300 hover:after:w-full
+            {{ request()->is('ukm*') || request()->is('upnmengajar*') || request()->is('tim*') ? 'after:w-full' : 'after:w-0' }}">
 
-Tentang
+    Tentang
 
-<svg xmlns="http://www.w3.org/2000/svg"
-class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
-fill="none"
-viewBox="0 0 24 24"
-stroke="currentColor">
+    <svg xmlns="http://www.w3.org/2000/svg"
+         class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
+         fill="none"
+         viewBox="0 0 24 24"
+         stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+    </svg>
 
-<path stroke-linecap="round"
-stroke-linejoin="round"
-stroke-width="2"
-d="M19 9l-7 7-7-7"/>
+  </a>
 
-</svg>
+  <ul class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md
+             opacity-0 invisible -translate-y-2
+             group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
+             transition-all duration-300 ease-out">
 
-</a>
+    <li>
+      <a href="{{ url('/ukm') }}" class="block px-5 py-2 hover:bg-gray-100 {{ request()->is('ukm') ? 'bg-gray-100 text-red-800 font-semibold' : '' }}">
+        UKM Penalaran dan Kreativitas
+      </a>
+    </li>
 
-<!-- Dropdown -->
-<ul class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md
-opacity-0 invisible -translate-y-2
-group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
-transition-all duration-300 ease-out">
-
-<li>
-<a href="{{ url('/ukm') }}" class="block px-5 py-2 hover:bg-gray-100">
-UKM Penalaran dan Kreativitas
-</a>
-</li>
-
-<li>
-    <a href="{{ url('/upnmengajar') }}" class="block px-5 py-2 hover:bg-gray-100">
+    <li>
+      <a href="{{ url('/upnmengajar') }}" class="block px-5 py-2 hover:bg-gray-100 {{ request()->is('upnmengajar') ? 'bg-gray-100 text-red-800 font-semibold' : '' }}">
         Program Kerja UPN Mengajar
-    </a>
+      </a>
+    </li>
+
+    <li>
+      <a href="{{ url('/tim') }}" class="block px-5 py-2 hover:bg-gray-100 {{ request()->is('tim') ? 'bg-gray-100 text-red-800 font-semibold' : '' }}">
+        Tim UPN Mengajar
+      </a>
+    </li>
+
+  </ul>
+
 </li>
 
 <li>
-<a href="{{ url('/tim') }}" class="block px-5 py-2 hover:bg-gray-100">
-Tim UPN Mengajar
-</a>
-</li>
-
-</ul>
-
-</li>
-
-<!-- Kegiatan -->
-<li>
-<a href="{{ url('/kegiatan') }}"
-class="relative
-{{ request()->is('kegiatan*') ? 'after:w-full' : 'after:w-0' }}
-after:absolute
-after:left-0
-after:-bottom-1
-after:h-[1.5px]
-after:bg-white
-after:transition-all
-after:duration-300
-hover:after:w-full">
-Kegiatan
-</a>
+  <a href="{{ url('/kegiatan') }}"
+     class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white 
+            after:transition-all after:duration-300 hover:after:w-full
+            {{ request()->is('kegiatan*') ? 'after:w-full' : 'after:w-0' }}">
+    Kegiatan
+  </a>
 </li>
 
 <!-- Relawan -->

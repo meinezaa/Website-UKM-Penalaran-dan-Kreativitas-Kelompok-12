@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KegiatanPublikController;
+use App\Http\Controllers\UkmController; // Jalur Controller baru
 
 // ==================== ROUTE PUBLIK ====================
 
@@ -13,13 +14,8 @@ Route::get('/', function () {
     return view('publik.beranda'); 
 });
 
-Route::get('/tentang', function () { 
-    return view('layouts.tentang'); 
-});
-
-Route::get('/ukm', function () { 
-    return view('layouts.tentang'); 
-});
+// Jalur resmi saat opsi "UKM Penalaran dan Kreativitas" di dropdown diklik (Membawa data DB)
+Route::get('/ukm', [UkmController::class, 'index']);
 
 Route::get('/upnmengajar', function () { 
     return view('layouts.upnmengajar'); 
@@ -36,7 +32,6 @@ Route::get('/kegiatan/detail/{id}', [KegiatanPublikController::class, 'detail'])
 Route::get('/formulir', function () { 
     return view('publik.formulir'); 
 })->middleware('auth');
-
 
 // ==================== ROUTE AUTENTIKASI (LOGIN & REGISTER) ====================
 
@@ -83,7 +78,6 @@ Route::middleware(['auth'])->group(function () {
             return redirect('/admin/kelola-kegiatan')->with('pesan', 'Data kegiatan tidak ditemukan!');
         }
         return view('admin.edit_kegiatan', compact('kegiatan'));
-
     });
 
     // 5. Proses Update Data Kegiatan (PUT)
@@ -185,7 +179,7 @@ Route::middleware(['auth'])->group(function () {
         return view('admin.detail_relawan', compact('relawan'));
     });
 
-    // 9. Proses Mengubah Status Seleksi Relawan
+    // 9. Process Mengubah Status Seleksi Relawan
     Route::post('/admin/detail-relawan/{id_pendaftaran}/update-status', function (Request $request, $id_pendaftaran) {
         $request->validate([
             'status_seleksi' => 'required|in:Diterima,Ditolak,Pending,DITERIMA,DITOLAK,PENDING'
