@@ -11,6 +11,7 @@ use App\Models\Kegiatan;
 use App\Models\PendaftaranRelawan;
 use Barryvdh\DomPDF\Facade\Pdf;
 
+
 class AdminDashboardController extends BaseController 
 {
     public function index()
@@ -48,8 +49,8 @@ class AdminDashboardController extends BaseController
                         ->orderBy('id_pendaftaran', 'desc')
                         ->get();
 
-        // 4. KIRIM DATA KE VIEW BLADE
-        // Data dikirim ke file resources/views/dashboard_admin.blade.php
+        // 5. KIRIM DATA KE VIEW BLADE
+        // REVISI: Mengembalikan ke 'admin.dashboard_admin' agar sinkron dengan struktur file view admin kamu
         return view('admin.dashboard_admin', compact(
             'count_relawan', 
             'count_program', 
@@ -59,13 +60,84 @@ class AdminDashboardController extends BaseController
         ));
     }
 
-    public function __construct()
-    {
-        // Perintah ini memastikan semua fungsi di controller ini harus lolos login dulu
-        $this->middleware('auth');
-    }
+    // Ekspor data relawan ke excel (CSV)
+    public function eksporExcel()
+{
+    // 1. Ambil data relawan lengkap dari database
+    $relawan = \DB::table('pendaftaran_relawan as p')
+        ->join('users as u', 'p.id_user', '=', 'u.id_user')
+        ->join('kegiatan as k', 'p.id_kegiatan', '=', 'k.id_kegiatan')
+        ->select('u.nama_lengkap', 'u.email', 'p.no_hp', 'p.asal_prodi', 'k.nama_kegiatan', 'p.pilihan_divisi_1', 'p.status_seleksi')
+        ->get();
 
-    // LOGIKA HAPUS KEGIATAN
+    // 2. Tentukan nama file yang akan diunduh
+    $namaFile = "Data_Relawan_UPN_Mengajar_" . date('Y-m-d') . ".csv";
+    
+    // 3. Atur Header HTTP agar browser langsung mendownload sebagai file Excel/CSV
+    $headers = [
+        "Content-type"        => "text/csv",
+        "Content-Disposition" => "attachment; filename=$namaFile",
+        "Pragma"              => "no-cache",
+        "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+        "Expires"             => "0"
+    ];
+
+    // 4. Proses pembuatan baris data Excel secara instan tanpa library tambahan
+    $callback = function() use($relawan) {
+        $file = fopen('php://output', 'w');
+        
+        // Tulis Judul Kolom paling atas di Excel
+        fputcsv($file, ['Nama Lengkap', 'Email', 'No HP', 'Asal Prodi', 'Nama Kegiatan', 'Divisi', 'Status Seleksi']);
+
+        // Masukkan data relawan baris demi baris
+        foreach ($relawan as $row) {
+            fputcsv($file, [
+                $row->nama_lengkap,
+                $row->email,
+                $row->no_hp,
+                $row->asal_prodi,
+                $row->nama_kegiatan,
+                $row->pilihan_divisi_1,
+                $row->status_seleksi
+            ]);
+        }
+        fclose($file);
+    };
+
+    return response()->stream($callback, 200, $headers);
+}
+
+// Ekspor data relawan ke PDF
+public function eksporPdf()
+{
+    // Ambil data relawan yang terdaftar
+    $dataRelawan = \DB::table('pendaftaran_relawan')
+        ->join('users', 'pendaftaran_relawan.id_user', '=', 'users.id_user')
+        ->join('kegiatan', 'pendaftaran_relawan.id_kegiatan', '=', 'kegiatan.id_kegiatan')
+        ->select(
+            'users.nama_lengkap', 
+            'users.email', 
+            'pendaftaran_relawan.no_hp', 
+            'pendaftaran_relawan.asal_prodi', 
+            'kegiatan.nama_kegiatan', 
+            'pendaftaran_relawan.pilihan_divisi_1', 
+            'pendaftaran_relawan.status_seleksi'
+        )->get();
+
+    // Kirim data ke file cetak blade khusus PDF
+    $pdf = Pdf::loadView('admin.cetak_pdf', compact('dataRelawan'));
+
+    // Mengatur kertas ke ukuran A4 landscape agar tabel muat dengan rapi
+    $pdf->setPaper('a4', 'landscape');
+
+    // Unduh otomatis file PDF-nya
+    return $pdf->download('Laporan_Data_Relawan_' . date('Y-m-d') . '.pdf');
+}
+
+    // REVISI UTAMA: Fungsi __construct() dengan middleware('auth') DIHAPUS TOTAL 
+    // karena sudah digantikan oleh sistem cek session manual di dalam fungsi index() di atas.
+
+    // 6. LOGIKA HAPUS KEGIATAN
     public function destroyKegiatan($id)
     {
         // Proteksi tambahan sebelum menghapus data

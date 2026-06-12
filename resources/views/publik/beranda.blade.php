@@ -15,7 +15,7 @@
   </head>
   
 <body>
-  <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
+   <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
 <div class="flex items-center justify-between px-6 py-0.5 text-white">
 
 <div class="flex items-center">
@@ -118,7 +118,7 @@ class="w-16 scale-125">
 
 @if(session('role') === 'admin')
 <li>
-    <a href="#" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+    <a href="/admin/dashboard_admin" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
         Dashboard Admin
     </a>
 </li>
@@ -129,7 +129,7 @@ class="w-16 scale-125">
 
 <div class="relative group">
   @if (session('id_user'))
-    <a href="#" class="hover:text-red-400 transition-all duration-300">
+    <a href="/logout" class="hover:text-red-400 transition-all duration-300">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
       </svg>
@@ -159,6 +159,7 @@ class="w-16 scale-125">
 </div>
 </header>
 
+
 <section class="relative h-[530px] w-full">
 
   <!-- Background -->
@@ -183,12 +184,12 @@ class="w-16 scale-125">
 
     <div class="mt-6 flex gap-6">
 
-      <a href="daftar.html"
+      <a href="/formulir-mitra"
       class="bg-red-700 hover:bg-red-800 text-white font-semibold px-6 py-2 md:px-10 md:py-3 rounded-full">
       Jadi Mitra Kami
       </a>
 
-      <a href="#"
+      <a href="{{ url('/upnmengajar') }}"
       class="border-2 border-white text-white font-semibold px-10 py-3 rounded-full hover:bg-white hover:text-red-700">
       Tentang Program
       </a>
@@ -242,56 +243,39 @@ class="fixed inset-0 bg-black/70 flex items-center justify-center opacity-0 poin
   
   <div class="bg-white rounded-2xl shadow-xl grid grid-cols-2 md:grid-cols-4 overflow-hidden">
 
-<!-- Relawan -->
-<div class="flex items-center gap-4 py-4 px-6 border-r border-gray-200">
-
-  <!-- Icon -->
-  <div class="w-12 h-12 flex items-center justify-center bg-red-100 rounded-full">
-    <img src="./foto/icon-relawan.png" class="w-100 h-100">
-  </div>
-
-  <!-- Text -->
-  <div>
-    <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahRelawan }}">0</h3>
+    <div class="flex items-center gap-4 py-4 px-6 border-r border-b md:border-b-0 border-gray-200">
+      <div class="w-12 h-12 flex items-center justify-center bg-red-100 rounded-full flex-shrink-0">
+        <img src="./foto/icon-relawan.png" class="w-6 h-6">
+      </div>
+      <div>
+        <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahRelawan }}">0</h3>
         <p class="text-gray-600 font-poppins text-sm">Relawan</p>
-  </div>
+      </div>
+    </div>
 
-</div>
-
-<!-- Sekolah -->
-<div class="flex items-center gap-4 py-4 px-6 border-r border-gray-200">
-
-<div class="w-12 h-12 pt-2 flex items-center justify-center bg-red-100 rounded-full">
-<img src="./foto/icon-mitra.png" class="w-1000 h-10000">
-</div>
-
-<div>
-<h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahSekolah }}">0</h3>
+    <div class="flex items-center gap-4 py-4 px-6 border-r border-b md:border-b-0 border-gray-200">
+      <div class="w-12 h-12 flex items-center justify-center bg-red-100 rounded-full flex-shrink-0">
+        <img src="./foto/icon-mitra.png" class="w-6 h-6">
+      </div>
+      <div>
+        <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahSekolah }}">0</h3>
         <p class="text-gray-600 font-poppins text-sm">Sekolah Mitra</p>
-</div>
-
-</div>
-
-<!-- Siswa -->
-<div class="flex items-center gap-4 py-4 px-6 border-r border-gray-200">
-
-<div class="w-12 h-12 flex items-center justify-center bg-red-100 rounded-full">
-<img src="./foto/icon-siswa.png" class="w-1000 h-10000">
-</div>
-
-<div>
-<h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahSiswaTerlibat }}">0</h3>
+      </div>
+    </div> <div class="flex items-center gap-4 py-4 px-6 border-r border-gray-200">
+      <div class="w-12 h-12 flex items-center justify-center bg-red-100 rounded-full flex-shrink-0">
+        <img src="./foto/icon-siswa.png" class="w-6 h-6">
+      </div>
+      <div>
+        <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahSiswaTerlibat }}">0</h3>
         <p class="text-gray-600 font-poppins text-sm">Siswa Terlibat</p>
-</div>
+      </div>
+    </div>
 
-</div>
-
-    <!-- Tahun Program -->
-    <div class="text-center py-4 px-6 bg-red-700 text-white leading-tight">
-  <h3 class="text-3xl md:text-4xl font-bold font-poppins counter" data-target="5">0</h3>
-  <p class="mt-1 font-poppins">Tahun Program</p>
-  <a href="daftar.html" class="block mt-1 underline">Jadi Relawan →</a>
-</div>
+    <div class="flex flex-col justify-center text-center md:text-left py-4 px-6 bg-red-700 text-white leading-tight min-h-full">
+      <h3 class="text-2xl md:text-3xl font-bold font-poppins counter" data-target="5">5+</h3>
+      <p class="text-sm text-red-100 font-poppins mt-1">Tahun Program</p>
+      <a href="/relawan" class="text-xs block mt-1 underline hover:text-red-200 transition">Jadi Relawan →</a>
+    </div>
 
   </div>
 

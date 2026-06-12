@@ -12,31 +12,44 @@ class KegiatanController extends BaseController
     /**
      * 1. MENAMPILKAN HALAMAN UTAMA / BERANDA PUBLIK
      */
- public function beranda()
+    public function beranda()
     {
+        // 1. Menghitung jumlah relawan yang lolos seleksi (Status DITERIMA)
         $jumlahRelawan = DB::table('pendaftaran_relawan')
                     ->where('status_seleksi', 'DITERIMA')
                     ->count();
 
-        // Diubah dari $jumlahMitra menjadi $jumlahSekolah
-        $jumlahSekolah = DB::table('kegiatan')
+        // 2. FIXED LOGIC: Menghitung total sekolah mitra riil
+        // Menghitung sekolah dari tabel mitra yang sudah disetujui admin
+        $mitraDisetujui = DB::table('mitra')
+                            ->where('status_mitra', 'DISETUJUI')
+                            ->count();
+
+        // Menghitung lokasi unik sekolah dari tabel kegiatan internal
+        $lokasiKegiatan = DB::table('kegiatan')
                             ->distinct('lokasi')
                             ->count('lokasi');
 
-        $jumlahSiswaTerlibat = DB::table('pendaftaran_relawan')
-                                ->where('status_seleksi', 'DITERIMA')
-                                ->count() * 15;
+        // Gabungan total data mitra eksternal + internal kegiatan
+        $jumlahSekolah = $mitraDisetujui + $lokasiKegiatan;
 
+        // 3. Menghitung estimasi siswa yang terlibat
+        $jumlahSiswaTerlibat = DB::table('pendaftaran_relawan')
+                                    ->where('status_seleksi', 'DITERIMA')
+                                    ->count() * 15;
+
+        // Kondisi Fallback jika data database masih kosong (agar tampilan awal tidak 0)
         if ($jumlahSiswaTerlibat == 0) {
             $jumlahSiswaTerlibat = 500;
         }
         if ($jumlahSekolah == 0) {
-            $jumlahSekolah = 10; 
+            $jumlahSekolah = 1; 
         }
 
-        // Pastikan di bagian compact() juga menggunakan 'jumlahSekolah'
+        // Memastikan variabel dikirim ke view beranda
         return view('publik.beranda', compact('jumlahRelawan', 'jumlahSekolah', 'jumlahSiswaTerlibat'));
     }
+
 
     /**
      * 2. MENAMPILKAN DAFTAR SEMUA KEGIATAN AKTIF
