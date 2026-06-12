@@ -8,6 +8,9 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KegiatanPublikController;
 use App\Http\Controllers\UkmController; 
+use App\Http\Controllers\TimController;
+
+
 
 // ==================== ROUTE PUBLIK ====================
 
@@ -250,3 +253,5 @@ Route::middleware(['auth'])->group(function () {
     });
 
 }); // Penutup Middleware Admin yang Benar
+
+Route::get('/tim', [TimController::class, 'index']);
