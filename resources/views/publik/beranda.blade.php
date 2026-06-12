@@ -15,7 +15,7 @@
   </head>
   
 <body>
-  <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
+   <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
 <div class="flex items-center justify-between px-6 py-0.5 text-white">
 
 <div class="flex items-center">
@@ -62,75 +62,6 @@ class="w-16 scale-125">
    </svg>
  </a>
 
-  <a href="#"
-     class="flex items-center gap-1 relative 
-            after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white 
-            after:transition-all after:duration-300 hover:after:w-full
-            {{ request()->is('ukm*') || request()->is('upnmengajar*') || request()->is('tim*') ? 'after:w-full' : 'after:w-0' }}">
-
-    Tentang
-
-    <svg xmlns="http://www.w3.org/2000/svg"
-         class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
-         fill="none"
-         viewBox="0 0 24 24"
-         stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-    </svg>
-
-  </a>
-
-  <ul class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md
-             opacity-0 invisible -translate-y-2
-             group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
-             transition-all duration-300 ease-out">
-
-    <li>
-      <a href="{{ url('/ukm') }}" class="block px-5 py-2 hover:bg-gray-100 {{ request()->is('ukm') ? 'bg-gray-100 text-red-800 font-semibold' : '' }}">
-        UKM Penalaran dan Kreativitas
-      </a>
-    </li>
-
-    <li>
-      <a href="{{ url('/upnmengajar') }}" class="block px-5 py-2 hover:bg-gray-100 {{ request()->is('upnmengajar') ? 'bg-gray-100 text-red-800 font-semibold' : '' }}">
-        Program Kerja UPN Mengajar
-      </a>
-    </li>
-
-    <li>
-      <a href="{{ url('/tim') }}" class="block px-5 py-2 hover:bg-gray-100 {{ request()->is('tim') ? 'bg-gray-100 text-red-800 font-semibold' : '' }}">
-        Tim UPN Mengajar
-      </a>
-    </li>
-
-  </ul>
-
-</li>
-
-<li>
-  <a href="{{ url('/kegiatan') }}"
-     class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white 
-            after:transition-all after:duration-300 hover:after:w-full
-            {{ request()->is('kegiatan*') ? 'after:w-full' : 'after:w-0' }}">
-    Kegiatan
-  </a>
-</li>
-
-<!-- Relawan -->
-<li>
-<a href="{{ url('/relawan') }}"
-class="relative
-{{ request()->is('relawan*') ? 'after:w-full' : 'after:w-0' }}
-after:absolute
-after:left-0
-after:-bottom-1
-after:h-[1.5px]
-after:bg-white
-after:transition-all
-after:duration-300
-hover:after:w-full">
-Relawan
-</a>
  <ul class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md
             opacity-0 invisible -translate-y-2
             group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
@@ -187,7 +118,7 @@ Relawan
 
 @if(session('role') === 'admin')
 <li>
-    <a href="#" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+    <a href="/admin/dashboard_admin" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
         Dashboard Admin
     </a>
 </li>
@@ -198,7 +129,7 @@ Relawan
 
 <div class="relative group">
   @if (session('id_user'))
-    <a href="#" class="hover:text-red-400 transition-all duration-300">
+    <a href="/logout" class="hover:text-red-400 transition-all duration-300">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
       </svg>
@@ -228,6 +159,7 @@ Relawan
 </div>
 </header>
 
+
 <section class="relative h-[530px] w-full">
 
   <!-- Background -->
@@ -252,12 +184,12 @@ Relawan
 
     <div class="mt-6 flex gap-6">
 
-      <a href="daftar.html"
+      <a href="/formulir-mitra"
       class="bg-red-700 hover:bg-red-800 text-white font-semibold px-6 py-2 md:px-10 md:py-3 rounded-full">
       Jadi Mitra Kami
       </a>
 
-      <a href="#"
+      <a href="{{ url('/upnmengajar') }}"
       class="border-2 border-white text-white font-semibold px-10 py-3 rounded-full hover:bg-white hover:text-red-700">
       Tentang Program
       </a>
