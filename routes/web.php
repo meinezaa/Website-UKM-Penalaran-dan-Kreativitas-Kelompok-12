@@ -5,36 +5,40 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KegiatanPublikController;
 
 // ==================== ROUTE PUBLIK ====================
 
-Route::get('/', function () { 
-    return view('publik.beranda'); 
+// ==================== ROUTE PUBLIK ====================
+
+Route::get('/', function () {
+    return view('publik.beranda');
 });
 
-Route::get('/tentang', function () { 
-    return view('layouts.tentang'); 
+Route::get('/tentang', function () {
+    return view('layouts.tentang');
 });
 
-Route::get('/ukm', function () { 
-    return view('layouts.tentang'); 
+Route::get('/ukm', function () {
+    return view('layouts.tentang');
 });
 
-Route::get('/upnmengajar', function () { 
-    return view('layouts.upnmengajar'); 
+Route::get('/upnmengajar', function () {
+    return view('layouts.upnmengajar');
 });
 
-Route::get('/tim', function () { 
-    return view('layouts.tim'); 
+Route::get('/tim', function () {
+    return view('layouts.tim');
 });
 
-// Jalur Utama Eksplorasi Kegiatan & Detail (Memanggil Controller Filter Tanggal)
 Route::get('/kegiatan', [KegiatanPublikController::class, 'index']);
 Route::get('/kegiatan/detail/{id}', [KegiatanPublikController::class, 'detail'])->name('kegiatan.detail');
 
-Route::get('/formulir', function () { 
-    return view('publik.formulir'); 
+Route::get('/relawan', [KegiatanController::class, 'dokumentasi']); // PINDAH KE SINI
+
+Route::get('/formulir', function () {
+    return view('publik.formulir');
 })->middleware('auth');
 
 
@@ -250,5 +254,4 @@ Route::middleware(['auth'])->group(function () {
         }
         return redirect('/admin/kelola-relawan')->with('pesan', 'Seluruh data pendaftaran relawan dari CSV berhasil di-impor!');
     });
-
-});
+ });

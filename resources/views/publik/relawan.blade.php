@@ -1,24 +1,3 @@
-<?php 
-session_start(); 
-
-include 'koneksi.php'; 
-
-function getDataKegiatan($koneksi, $kategori, $fallbackNama) {
-    $kategori = mysqli_real_escape_string($koneksi, $kategori);
-    $query = mysqli_query($koneksi, "SELECT id_kegiatan, nama_kegiatan FROM kegiatan WHERE kategori = '$kategori' ORDER BY id_kegiatan DESC LIMIT 1");
-    $result = mysqli_fetch_assoc($query);
-    
-    if (!$result) {
-        return ['id_kegiatan' => '0', 'nama_kegiatan' => $fallbackNama];
-    }
-    return $result;
-}
-
-$sd = getDataKegiatan($koneksi, 'sd', 'Program Sekolah Dasar');
-$slb = getDataKegiatan($koneksi, 'slb', 'Program Sekolah Luar Biasa');
-$yayasan = getDataKegiatan($koneksi, 'yayasan', 'Program Yayasan & Komunitas');
-?>
-
 <!doctype html>
 <html lang="id">
   <head>
@@ -207,6 +186,7 @@ Relawan
 </div>
 </div>
 </header>
+
 
 <main class="pt-32 bg-gray-50">
 
