@@ -174,26 +174,34 @@
                                 </span>
                             </td>
                             <td class="p-5 pr-8">
-                                <div class="flex items-center justify-center gap-2">
-                                    <form action="/admin/kelola-mitra/{{ $row->id_mitra }}/update-status" method="POST" class="inline-flex gap-1">
-                                        @csrf
-                                        @if($row->status_mitra !== 'DISETUJUI')
-                                            <button type="submit" name="status_mitra" value="DISETUJUI" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 text-xs font-bold rounded-xl transition-all shadow-sm">Terima</button>
-                                        @endif
-                                        @if($row->status_mitra !== 'DITOLAK')
-                                            <button type="submit" name="status_mitra" value="DITOLAK" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 text-xs font-bold rounded-xl transition-all shadow-sm">Tolak</button>
-                                        @endif
-                                    </form>
+    <div class="flex items-center justify-center gap-2">
+        
+        <form action="/admin/kelola-mitra/{{ $row->id_mitra }}/update-status" method="POST" class="inline-flex gap-1">
+            @csrf
+            
+            @if(strtoupper($row->status_mitra) !== 'DISETUJUI')
+                <button type="submit" name="status_mitra" value="DISETUJUI" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 text-xs font-bold rounded-xl transition-all shadow-sm cursor-pointer">
+                    Terima
+                </button>
+            @endif
 
-                                    <form action="/admin/kelola-mitra/{{ $row->id_mitra }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data kemitraan ini?')" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="w-9 h-9 flex items-center justify-center text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all" title="Hapus Data">
-                                            <span class="material-symbols-outlined text-xl">delete</span>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
+            @if(strtoupper($row->status_mitra) !== 'DITOLAK')
+                <button type="submit" name="status_mitra" value="DITOLAK" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 text-xs font-bold rounded-xl transition-all shadow-sm cursor-pointer">
+                    Tolak
+                </button>
+            @endif
+        </form>
+
+        <form action="/admin/kelola-mitra/{{ $row->id_mitra }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data kemitraan ini?')" class="inline">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="w-9 h-9 flex items-center justify-center text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all" title="Hapus Data">
+                <span class="material-symbols-outlined text-xl">delete</span>
+            </button>
+        </form>
+
+    </div>
+</td>
                         </tr>
                     @empty
                         <tr>

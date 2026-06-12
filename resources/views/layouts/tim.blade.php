@@ -10,7 +10,7 @@
     
     <link rel="stylesheet" href="../dist/output.css">
 </head>
-<body class="font-[Poppins] bg-gray-50">
+<body class="font-[Poppins] bg-[#fafafa] overflow-x-hidden">
     
  <header id="main-nav" class="fixed top-0 left-0 w-full bg-red-900 text-white z-[9999] shadow-md">
     <div class="flex items-center justify-between px-6 py-0.5 text-white">
@@ -53,107 +53,381 @@
 </header>
 
 <div class="h-24"></div>
-    <section class="px-6 text-center">
-        <div class="max-w-5xl mx-auto">
-            <h1 class="text-center text-3xl font-bold mt-4">TIM UPN MENGAJAR</h1>
-        
-            <p class="text-gray-600 mb-8 mt-4">Program UPN Mengajar dikelola oleh Bidang Pendidikan Sosial (Diksos) UKM Penalaran dan Kreativitas UPN Veteran Jawa Timur. 
-            Bidang ini berperan dalam merancang dan mengoordinasikan kegiatan bersama relawan mahasiswa yang terlibat dalam program UPN Mengajar.</p>
 
-            <div class="py-5">
-                <div class="mt-8 overflow-hidden rounded-2xl shadow-2xl shadow-gray-200">
-                    <img src="foto/Foto lengkap.jpg" alt="all diksos" 
-                    class="mx-auto w-full h-auto object-cover object-center transform transition-transform duration-700 ease-out hover:scale-105">
+<main class="bg-gradient-to-b from-white via-red-50/30 to-white">
+
+    <!-- HERO -->
+<section class="relative overflow-hidden bg-white">
+
+    <!-- Background Merah -->
+    <div class="absolute top-0 right-0 w-[45%] h-full bg-gradient-to-br from-[#8B1E1E] to-[#B22222] rounded-bl-[180px]">
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 py-20 relative z-10">
+
+        <div class="flex justify-between items-center gap-10">
+
+            <!-- KIRI -->
+           <div class="w-[45%]">
+
+                <span class="inline-flex items-center px-4 py-2 rounded-full bg-red-100 text-[#8B1E1E] text-sm font-semibold">
+                    TIM UPN MENGAJAR
+                </span>
+
+                <h1 class="mt-6 text-6xl font-extrabold leading-none">
+                    TIM UPN
+                    <span class="block text-[#8B1E1E] mt-2">
+                        MENGAJAR
+                    </span>
+                </h1>
+
+                <p class="mt-8 text-gray-600 text-lg leading-relaxed max-w-xl">
+                    Program UPN Mengajar dikelola oleh Bidang Pendidikan Sosial
+                    (Diksos) UKM Penalaran dan Kreativitas UPN Veteran Jawa Timur.
+                    Kami berperan dalam merancang dan mengoordinasikan kegiatan
+                    bersama relawan mahasiswa yang terlibat.
+                </p>
+
+                <a href="#bph"
+                   class="inline-flex items-center gap-2 mt-8 px-8 py-4 bg-[#8B1E1E] text-white rounded-full font-semibold shadow-lg hover:bg-red-800 transition">
+
+                    Kenali Tim Kami
+                </a>
+
+            </div>
+
+            <!-- KANAN -->
+            <div class="relative">
+
+                <!-- Lingkaran transparan -->
+                <div class="absolute -top-10 -right-10 w-40 h-40 border border-white/30 rounded-full"></div>
+
+                <div class="relative">
+
+                    <!-- Bingkai putih -->
+                    <div class="bg-white p-3 rounded-[30px] shadow-2xl">
+
+                        <img
+    src="{{ asset('foto/Foto lengkap.jpg') }}"
+    alt="Tim UPN Mengajar"
+    class="w-full h-[420px] object-cover rounded-[24px]"
+>
+
+                    </div>
+
                 </div>
-            </div>
-            
-           <section class="pt-16">
-               <h2 class="mt-16 text-2xl font-semibold mb-10 uppercase">BPH BIDANG DIKSOS</h2>
-                <div class="grid md:grid-cols-3 gap-8 mb-16">
-                    <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
-                        <div class="overflow-hidden rounded-lg mb-4">
-                        <img src="foto/Ketua Bidang.jpeg" 
-                        class="w-full h-auto transform transition-transform duration-500 ease-out hover:scale-110">
-                        </div>
-                            <div class="text-center">
-                            <h3 class="font-bold text-gray-800">Raihan Putra Pradana</h3>
-                            <p class="text-sm text-gray-500">Ketua Bidang</p>
-                            </div>
-                    </div>
-                    
-                    <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
-                        <div class="overflow-hidden rounded-lg mb-4">
-                            <img src="foto/Wakil Ketua Bidang.jpg" 
-                            class="w-full h-auto transform transition-transform duration-500 ease-out hover:scale-110">
-                         </div>
-                             <div class="text-center">
-                                <h3 class="font-bold text-gray-800">Andre Luhut Jairus</h3>
-                                <p class="text-sm text-gray-500">Wakil Ketua</p>
-                            </div>
-                        </div>
-    
-                    <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
-                         <div class="overflow-hidden rounded-lg mb-4">
-                         <img src="foto/Sekretaris Bidang.jpg" 
-                         class="w-full h-auto transform transition-transform duration-500 ease-out hover:scale-110">
-                        </div>
-                            <div class="text-center">
-                                <h3 class="font-bold text-gray-800">Nabila Devi Salma</h3>
-                                <p class="text-sm text-gray-500">Sekretaris</p>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-            </section>
 
-           <section class="mb-16">
-                <h2 class="text-2xl font-semibold mb-8 text-center md:text-left">STAF AHLI</h2>
-                <div class="grid md:grid-cols-4 gap-8">
-                    <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
-                    <div class="overflow-hidden rounded-lg mb-3">
-                <img src="foto/Staff Ahli Medsos Diksos.jpg" 
-                class="w-full h-auto transform transition-transform duration-500 ease-out hover:scale-110">
             </div>
-            <div class="text-center">
-                <h3 class="text-sm font-semibold text-gray-800">Fitri Aulia Taulani</h3>
-                <p class="text-xs text-gray-500">Medsos Diksos</p>
-            </div>
+
         </div>
 
-        <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
-            <div class="overflow-hidden rounded-lg mb-3">
-                <img src="foto/Staff Ahli Bina Desa.jpg" 
-                class="w-full h-auto transform transition-transform duration-500 ease-out hover:scale-110">
+    </div>
+
+</section>
+
+    <!-- BPH -->
+<section id="bph" class="max-w-7xl mx-auto px-6 py-20">
+
+    <!-- Judul -->
+    <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold text-[#8B1E1E] uppercase">
+            BPH Bidang Diksos
+        </h2>
+
+        <div class="flex items-center justify-center gap-3 mt-3">
+            <span class="w-10 h-[2px] bg-yellow-500"></span>
+            <span class="w-20 h-[3px] bg-[#8B1E1E]"></span>
+            <span class="w-10 h-[2px] bg-yellow-500"></span>
+        </div>
+    </div>
+
+    <!-- Card -->
+    <div class="grid md:grid-cols-3 gap-8">
+
+        <!-- Ketua -->
+        <div class="relative bg-white rounded-2xl overflow-hidden
+                    shadow-lg hover:shadow-xl hover:-translate-y-2
+                    transition-all duration-300">
+
+            <div class="p-8 text-center">
+
+                <img
+                    src="{{ asset('foto/juhoon.jpg') }}"
+                    alt="Raihan"
+                    class="w-28 h-28 rounded-full object-cover mx-auto border-4 border-gray-100">
+
+                <h3 class="mt-5 font-bold text-xl text-gray-800">
+                    Raihan Putra Pradana
+                </h3>
+
+                <p class="mt-1 text-[#8B1E1E] text-sm">
+                    Ketua Bidang
+                </p>
+
+                <!-- Sosmed -->
+                <div class="flex justify-center gap-3 mt-4">
+
+                    <a href="#"
+                       class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-[#8B1E1E] hover:bg-red-100">
+                        IG
+                    </a>
+
+                    <a href="#"
+                       class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-[#8B1E1E] hover:bg-red-100">
+                        @
+                    </a>
+
+                </div>
+
             </div>
-            <div class="text-center">
-                <h3 class="text-sm font-semibold text-gray-800">Muhammad Alvin</h3>
-                <p class="text-xs text-gray-500">Bina Desa</p>
-            </div>
+
+            <div class="absolute bottom-0 left-0 w-full h-[5px] bg-[#8B1E1E]"></div>
+
         </div>
 
-        <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
-            <div class="overflow-hidden rounded-lg mb-3">
-                <img src="foto/Staff Ahli UPN Mengajar.jpg" 
-                class="w-full h-auto transform transition-transform duration-500 ease-out hover:scale-110">
+        <!-- Wakil -->
+        <div class="relative bg-white rounded-2xl overflow-hidden
+                    shadow-lg hover:shadow-xl hover:-translate-y-2
+                    transition-all duration-300">
+
+            <div class="p-8 text-center">
+
+                <img
+                    src="{{ asset('foto/soobin.jpg') }}"
+                    alt="Andre"
+                    class="w-28 h-28 rounded-full object-cover mx-auto border-4 border-gray-100">
+
+                <h3 class="mt-5 font-bold text-xl text-gray-800">
+                    Andre Luhut Jairus
+                </h3>
+
+                <p class="mt-1 text-[#8B1E1E] text-sm">
+                    Wakil Ketua
+                </p>
+
+                <div class="flex justify-center gap-3 mt-4">
+
+                    <a href="#"
+                       class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-[#8B1E1E] hover:bg-red-100">
+                        IG
+                    </a>
+
+                    <a href="#"
+                       class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-[#8B1E1E] hover:bg-red-100">
+                        @
+                    </a>
+
+                    <a href="#"
+                       class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-[#8B1E1E] hover:bg-red-100">
+                        in
+                    </a>
+
+                </div>
+
             </div>
-            <div class="text-center">
-                <h3 class="text-sm font-semibold text-gray-800">Margaretha Deana</h3>
-                <p class="text-xs text-gray-500">UPN Mengajar</p>
-            </div>
+
+            <div class="absolute bottom-0 left-0 w-full h-[5px] bg-[#8B1E1E]"></div>
+
         </div>
 
-        <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition-shadow duration-300">
-            <div class="overflow-hidden rounded-lg mb-3">
-                <img src="foto/Staff Ahlii Nalar Peduli.jpg" 
-                class="w-full h-auto transform transition-transform duration-500 ease-out hover:scale-110">
+        <!-- Sekretaris -->
+        <div class="relative bg-white rounded-2xl overflow-hidden
+                    shadow-lg hover:shadow-xl hover:-translate-y-2
+                    transition-all duration-300">
+
+            <div class="p-8 text-center">
+
+                <img
+                    src="{{ asset('foto/wonyoung.jpg') }}"
+                    alt="Nabila"
+                    class="w-28 h-28 rounded-full object-cover mx-auto border-4 border-gray-100">
+
+                <h3 class="mt-5 font-bold text-xl text-gray-800">
+                    Nabila Devi Salma
+                </h3>
+
+                <p class="mt-1 text-[#8B1E1E] text-sm">
+                    Sekretaris
+                </p>
+
+                <div class="flex justify-center gap-3 mt-4">
+
+                    <a href="#"
+                       class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-[#8B1E1E] hover:bg-red-100">
+                        IG
+                    </a>
+
+                    <a href="#"
+                       class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-[#8B1E1E] hover:bg-red-100">
+                        @
+                    </a>
+
+                </div>
+
             </div>
-            <div class="text-center">
-                <h3 class="text-sm font-semibold text-gray-800">Nayla Sabrina</h3>
-                <p class="text-xs text-gray-500">Nalar Peduli</p>
-            </div>
+
+            <div class="absolute bottom-0 left-0 w-full h-[5px] bg-[#8B1E1E]"></div>
+
         </div>
-        
-    </div> </section>
+
+    </div>
+
+</section>
+
+<!-- STAF AHLI -->
+<section class="max-w-7xl mx-auto px-6 py-16">
+
+    <div class="text-center mb-12">
+
+        <h2 class="text-4xl font-bold text-[#8B1E1E] uppercase">
+            Staf Ahli
+        </h2>
+
+        <div class="w-16 h-1 bg-[#8B1E1E] mx-auto mt-3"></div>
+
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-6">
+
+        <!-- Fitri -->
+        <div class="relative bg-white rounded-2xl shadow-lg p-6 text-center overflow-hidden">
+
+            <img
+                src="{{ asset('foto/jiwoo.jpg') }}"
+                class="w-24 h-24 rounded-full object-cover mx-auto border-2 border-gray-100">
+
+            <h3 class="mt-4 font-bold text-lg text-gray-800">
+                Fitri Aulia Taulani
+            </h3>
+
+            <p class="text-[#8B1E1E] text-sm">
+                Medsos Diksos
+            </p>
+
+            <div class="flex justify-center gap-3 mt-4">
+
+                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
+                    IG
+                </div>
+
+                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
+                    TT
+                </div>
+
+                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
+                    @
+                </div>
+
+            </div>
+
+            <div class="absolute bottom-0 left-0 w-full h-1.5 bg-[#8B1E1E]"></div>
+
+        </div>
+
+        <!-- Alvin -->
+        <div class="relative bg-white rounded-2xl shadow-lg p-6 text-center overflow-hidden">
+
+            <img
+                src="{{ asset('foto/cortis 1.jpg') }}"
+                class="w-24 h-24 rounded-full object-cover mx-auto border-2 border-gray-100">
+
+            <h3 class="mt-4 font-bold text-lg text-gray-800">
+                Muhammad Alvin
+            </h3>
+
+            <p class="text-[#8B1E1E] text-sm">
+                Bina Desa
+            </p>
+
+            <div class="flex justify-center gap-3 mt-4">
+
+                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
+                    IG
+                </div>
+
+                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
+                    @
+                </div>
+
+            </div>
+
+            <div class="absolute bottom-0 left-0 w-full h-1.5 bg-[#8B1E1E]"></div>
+
+        </div>
+
+        <!-- Deana -->
+        <div class="relative bg-white rounded-2xl shadow-lg p-6 text-center overflow-hidden">
+
+            <img
+                src="{{ asset('foto/nayeon.jpg') }}"
+                class="w-24 h-24 rounded-full object-cover mx-auto border-2 border-gray-100">
+
+            <h3 class="mt-4 font-bold text-lg text-gray-800">
+                Margaretha Deana
+            </h3>
+
+            <p class="text-[#8B1E1E] text-sm">
+                UPN Mengajar
+            </p>
+
+            <div class="flex justify-center gap-3 mt-4">
+
+                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
+                    IG
+                </div>
+
+                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
+                    @
+                </div>
+
+                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
+                    in
+                </div>
+
+            </div>
+
+            <div class="absolute bottom-0 left-0 w-full h-1.5 bg-[#8B1E1E]"></div>
+
+        </div>
+
+        <!-- Nayla -->
+        <div class="relative bg-white rounded-2xl shadow-lg p-6 text-center overflow-hidden">
+
+            <img
+                src="{{ asset('foto/wonhee.jpg') }}"
+                class="w-24 h-24 rounded-full object-cover mx-auto border-2 border-gray-100">
+
+            <h3 class="mt-4 font-bold text-lg text-gray-800">
+                Nayla Sabrina
+            </h3>
+
+            <p class="text-[#8B1E1E] text-sm">
+                Nalar Peduli
+            </p>
+
+            <div class="flex justify-center gap-3 mt-4">
+
+                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
+                    IG
+                </div>
+
+                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
+                    @
+                </div>
+
+            </div>
+
+            <div class="absolute bottom-0 left-0 w-full h-1.5 bg-[#8B1E1E]"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+ 
+
+</main>
 
     <footer class="bg-[#8B1E1E] text-white pt-16">
         <div class="max-w-7xl mx-auto px-6 md:px-20 grid md:grid-cols-3 gap-10 pb-10">
