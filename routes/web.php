@@ -5,20 +5,22 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthController; 
 use App\Http\Controllers\KegiatanPublikController;
 
 // ==================== ROUTE PUBLIK ====================
+
 Route::get('/', function () { 
     return view('publik.beranda'); 
 });
 
+// REVISI: Mengubah target folder view sesuai instruksi terbaru Anda
 Route::get('/tentang', function () { 
     return view('layouts.tentang'); 
 });
 
 Route::get('/ukm', function () { 
-    return view('layouts.tentang'); // Mengarah ke layout tentang/ukm yang baru
+    return view('layouts.tentang'); 
 });
 
 Route::get('/upnmengajar', function () { 
@@ -30,6 +32,7 @@ Route::get('/tim', function () {
 });
 
 Route::get('/kegiatan', [KegiatanController::class, 'index']);
+
 Route::get('/kegiatan/{id}', [KegiatanController::class, 'detail'])->name('kegiatan.detail');
 
 Route::get('/formulir', function () { 
