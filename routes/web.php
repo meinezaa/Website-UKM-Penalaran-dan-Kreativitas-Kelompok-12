@@ -7,8 +7,7 @@ use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KegiatanPublikController;
-
-// ==================== ROUTE PUBLIK ====================
+use App\Http\Controllers\UkmController; 
 
 // ==================== ROUTE PUBLIK ====================
 
@@ -16,11 +15,10 @@ Route::get('/', function () {
     return view('publik.beranda');
 });
 
-Route::get('/tentang', function () {
-    return view('layouts.tentang');
-});
+// Jalur dinamis fitur UKM buatanmu (Mengambil data dari DB)
+Route::get('/ukm', [UkmController::class, 'index']);
 
-Route::get('/ukm', function () {
+Route::get('/tentang', function () {
     return view('layouts.tentang');
 });
 
@@ -34,8 +32,7 @@ Route::get('/tim', function () {
 
 Route::get('/kegiatan', [KegiatanPublikController::class, 'index']);
 Route::get('/kegiatan/detail/{id}', [KegiatanPublikController::class, 'detail'])->name('kegiatan.detail');
-
-Route::get('/relawan', [KegiatanController::class, 'dokumentasi']); // PINDAH KE SINI
+Route::get('/relawan', [KegiatanController::class, 'dokumentasi']); 
 
 Route::get('/formulir', function () {
     return view('publik.formulir');
@@ -43,6 +40,7 @@ Route::get('/formulir', function () {
 
 
 // ==================== ROUTE AUTH (LOGIN & REGISTER) ====================
+
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.proses');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
@@ -50,6 +48,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.pr
 
 
 // ==================== ROUTE ADMIN (MIDDLEWARE AUTH) ====================
+
 Route::middleware(['auth'])->group(function () {
     
     // Dashboard Utama Admin
@@ -123,7 +122,7 @@ Route::middleware(['auth'])->group(function () {
         return redirect('/admin/kelola-kegiatan')->with('pesan', 'Data agenda kegiatan sukses diperbarui!');
     });
 
-    // 6. Kelola Relawan (Tampil Data Lengkap + Hubungan ke Kegiatan + Search & Filter)
+    // 6. Kelola Relawan (Tampil Data + Search & Filter)
     Route::get('/admin/kelola-relawan', function (Request $request) {
         if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
         $search = $request->input('search');
@@ -150,14 +149,58 @@ Route::middleware(['auth'])->group(function () {
         return view('admin.kelola_relawan', compact('relawan'));
     });
 
-    // 7. Kelola Relawan (Proses Hapus Berdasarkan ID Pendaftaran)
+    // 7. Kelola Relawan (Proses Hapus)
     Route::delete('/admin/kelola-relawan/{id_pendaftaran}', function ($id_pendaftaran) {
         if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
         DB::table('pendaftaran_relawan')->where('id_pendaftaran', $id_pendaftaran)->delete();
         return redirect('/admin/kelola-relawan')->with('pesan', 'Data partisipasi pendaftaran relawan berhasil dihapus!');
     });
 
-    // 8. Kelola Relawan (Proses Impor Data dari CSV)
+    // 8. Detail Relawan
+    Route::get('/admin/detail-relawan/{id_pendaftaran}', function ($id_pendaftaran) {
+        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
+        $relawan = DB::table('pendaftaran_relawan as p')
+                    ->join('users as u', 'p.id_user', '=', 'u.id_user')
+                    ->join('kegiatan as k', 'p.id_kegiatan', '=', 'k.id_kegiatan')
+                    ->select('p.*', 'u.nama_lengkap', 'u.email', 'k.id_kegiatan', 'k.nama_kegiatan', 'k.lokasi', 'k.tanggal_pelaksanaan', 'k.kategori')
+                    ->where('p.id_pendaftaran', $id_pendaftaran)
+                    ->first();
+
+        if (!$relawan) {
+            return redirect('/admin/kelola-relawan')->with('pesan', 'Data relawan tidak ditemukan!');
+        }
+
+        $relawan->kegiatan = (object) [
+            'id_kegiatan' => $relawan->id_kegiatan,
+            'nama_kegiatan' => $relawan->nama_kegiatan,
+            'lokasi' => $relawan->lokasi,
+            'tanggal_pelaksanaan' => $relawan->tanggal_pelaksanaan,
+            'kategori' => $relawan->kategori,
+        ];
+
+        return view('admin.detail_relawan', compact('relawan'));
+    });
+
+    // 9. Proses Mengubah Status Seleksi Relawan
+    Route::post('/admin/detail-relawan/{id_pendaftaran}/update-status', function (Request $request, $id_pendaftaran) {
+        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
+        $request->validate([
+            'status_seleksi' => 'required|in:Diterima,Ditolak,Pending,DITERIMA,DITOLAK,PENDING'
+        ]);
+
+        $statusUppercase = strtoupper($request->status_seleksi);
+
+        DB::table('pendaftaran_relawan')
+            ->where('id_pendaftaran', $id_pendaftaran)
+            ->update([
+                'status_seleksi' => $statusUppercase,
+                'updated_at' => now()
+            ]);
+
+        return redirect()->back()->with('pesan', 'Status seleksi relawan berhasil diperbarui menjadi ' . $statusUppercase . '!');
+    });
+
+    // 10. Kelola Relawan (Proses Impor Data dari CSV)
     Route::post('/admin/impor-relawan', function (Request $request) {
         if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
         $request->validate(['file_csv' => 'required|mimes:csv,txt']);
@@ -205,48 +248,5 @@ Route::middleware(['auth'])->group(function () {
         }
         return redirect('/admin/kelola-relawan')->with('pesan', 'Seluruh data pendaftaran relawan dari CSV berhasil di-impor!');
     });
- });
 
-    // 9. Detail Relawan
-    Route::get('/admin/detail-relawan/{id_pendaftaran}', function ($id_pendaftaran) {
-        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
-        $relawan = DB::table('pendaftaran_relawan as p')
-                    ->join('users as u', 'p.id_user', '=', 'u.id_user')
-                    ->join('kegiatan as k', 'p.id_kegiatan', '=', 'k.id_kegiatan')
-                    ->select('p.*', 'u.nama_lengkap', 'u.email', 'k.id_kegiatan', 'k.nama_kegiatan', 'k.lokasi', 'k.tanggal_pelaksanaan', 'k.kategori')
-                    ->where('p.id_pendaftaran', $id_pendaftaran)
-                    ->first();
-
-        if (!$relawan) {
-            return redirect('/admin/kelola-relawan')->with('pesan', 'Data relawan tidak ditemukan!');
-        }
-
-        $relawan->kegiatan = (object) [
-            'id_kegiatan' => $relawan->id_kegiatan,
-            'nama_kegiatan' => $relawan->nama_kegiatan,
-            'lokasi' => $relawan->lokasi,
-            'tanggal_pelaksanaan' => $relawan->tanggal_pelaksanaan,
-            'kategori' => $relawan->kategori,
-        ];
-
-        return view('admin.detail_relawan', compact('relawan'));
-    });
-
-    // 10. Proses Mengubah Status Seleksi Relawan
-    Route::post('/admin/detail-relawan/{id_pendaftaran}/update-status', function (Request $request, $id_pendaftaran) {
-        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
-        $request->validate([
-            'status_seleksi' => 'required|in:Diterima,Ditolak,Pending,DITERIMA,DITOLAK,PENDING'
-        ]);
-
-        $statusUppercase = strtoupper($request->status_seleksi);
-
-        DB::table('pendaftaran_relawan')
-            ->where('id_pendaftaran', $id_pendaftaran)
-            ->update([
-                'status_seleksi' => $statusUppercase,
-                'updated_at' => now()
-            ]);
-
-        return redirect()->back()->with('pesan', 'Status seleksi relawan berhasil diperbarui menjadi ' . $statusUppercase . '!');
-    });
+}); // Penutup Middleware Admin yang Benar
