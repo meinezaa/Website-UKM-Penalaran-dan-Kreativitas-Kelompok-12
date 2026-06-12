@@ -7,6 +7,9 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KegiatanPublikController;
 use App\Http\Controllers\UkmController; 
+use App\Http\Controllers\TimController;
+
+
 
 // ==================== ROUTE PUBLIK ====================
 
@@ -196,48 +199,4 @@ Route::middleware(['auth'])->group(function () {
         return redirect('/admin/kelola-relawan')->with('pesan', 'Seluruh data pendaftaran relawan dari CSV berhasil di-impor!');
     });
 
-    // 9. Detail Relawan
-    Route::get('/admin/detail-relawan/{id_pendaftaran}', function ($id_pendaftaran) {
-        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
-        $relawan = DB::table('pendaftaran_relawan as p')
-                    ->join('users as u', 'p.id_user', '=', 'u.id_user')
-                    ->join('kegiatan as k', 'p.id_kegiatan', '=', 'k.id_kegiatan')
-                    ->select('p.*', 'u.nama_lengkap', 'u.email', 'k.id_kegiatan', 'k.nama_kegiatan', 'k.lokasi', 'k.tanggal_pelaksanaan', 'k.kategori')
-                    ->where('p.id_pendaftaran', $id_pendaftaran)
-                    ->first();
-
-        if (!$relawan) {
-            return redirect('/admin/kelola-relawan')->with('pesan', 'Data relawan tidak ditemukan!');
-        }
-
-        $relawan->kegiatan = (object) [
-            'id_kegiatan' => $relawan->id_kegiatan,
-            'nama_kegiatan' => $relawan->nama_kegiatan,
-            'lokasi' => $relawan->lokasi,
-            'tanggal_pelaksanaan' => $relawan->tanggal_pelaksanaan,
-            'kategori' => $relawan->kategori,
-        ];
-
-        return view('admin.detail_relawan', compact('relawan'));
-    });
-
-    // 10. Proses Mengubah Status Seleksi Relawan
-    Route::post('/admin/detail-relawan/{id_pendaftaran}/update-status', function (Request $request, $id_pendaftaran) {
-        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
-        $request->validate([
-            'status_seleksi' => 'required|in:Diterima,Ditolak,Pending,DITERIMA,DITOLAK,PENDING'
-        ]);
-
-        $statusUppercase = strtoupper($request->status_seleksi);
-
-        DB::table('pendaftaran_relawan')
-            ->where('id_pendaftaran', $id_pendaftaran)
-            ->update([
-                'status_seleksi' => $statusUppercase,
-                'updated_at' => now()
-            ]);
-
-        return redirect()->back()->with('pesan', 'Status seleksi relawan berhasil diperbarui menjadi ' . $statusUppercase . '!');
-    });
-
-});
+}); // Penutup Middleware Admin yang Benar

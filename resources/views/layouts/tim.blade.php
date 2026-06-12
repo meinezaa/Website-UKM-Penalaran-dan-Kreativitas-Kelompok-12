@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tim UPN Mengajar</title>
+    <title>Tim UPNberik Mengajar</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -141,136 +141,35 @@
         </div>
     </div>
 
-    <!-- Card -->
-    <div class="grid md:grid-cols-3 gap-8">
+<div class="grid md:grid-cols-3 gap-8">
 
-        <!-- Ketua -->
-        <div class="relative bg-white rounded-2xl overflow-hidden
-                    shadow-lg hover:shadow-xl hover:-translate-y-2
-                    transition-all duration-300">
+    @foreach($bph as $anggota)
 
-            <div class="p-8 text-center">
+    <div class="relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
 
-                <img
-                    src="{{ asset('foto/juhoon.jpg') }}"
-                    alt="Raihan"
-                    class="w-28 h-28 rounded-full object-cover mx-auto border-4 border-gray-100">
+        <div class="p-8 text-center">
 
-                <h3 class="mt-5 font-bold text-xl text-gray-800">
-                    Raihan Putra Pradana
-                </h3>
+            <img
+                src="{{ asset('foto/'.$anggota->foto) }}"
+                class="w-28 h-28 rounded-full object-cover mx-auto border-4 border-gray-100">
 
-                <p class="mt-1 text-[#8B1E1E] text-sm">
-                    Ketua Bidang
-                </p>
+            <h3 class="mt-5 font-bold text-xl text-gray-800">
+                {{ $anggota->nama }}
+            </h3>
 
-                <!-- Sosmed -->
-                <div class="flex justify-center gap-3 mt-4">
-
-                    <a href="#"
-                       class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-[#8B1E1E] hover:bg-red-100">
-                        IG
-                    </a>
-
-                    <a href="#"
-                       class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-[#8B1E1E] hover:bg-red-100">
-                        @
-                    </a>
-
-                </div>
-
-            </div>
-
-            <div class="absolute bottom-0 left-0 w-full h-[5px] bg-[#8B1E1E]"></div>
+            <p class="mt-1 text-[#8B1E1E] text-sm">
+                {{ $anggota->jabatan }}
+            </p>
 
         </div>
 
-        <!-- Wakil -->
-        <div class="relative bg-white rounded-2xl overflow-hidden
-                    shadow-lg hover:shadow-xl hover:-translate-y-2
-                    transition-all duration-300">
-
-            <div class="p-8 text-center">
-
-                <img
-                    src="{{ asset('foto/soobin.jpg') }}"
-                    alt="Andre"
-                    class="w-28 h-28 rounded-full object-cover mx-auto border-4 border-gray-100">
-
-                <h3 class="mt-5 font-bold text-xl text-gray-800">
-                    Andre Luhut Jairus
-                </h3>
-
-                <p class="mt-1 text-[#8B1E1E] text-sm">
-                    Wakil Ketua
-                </p>
-
-                <div class="flex justify-center gap-3 mt-4">
-
-                    <a href="#"
-                       class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-[#8B1E1E] hover:bg-red-100">
-                        IG
-                    </a>
-
-                    <a href="#"
-                       class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-[#8B1E1E] hover:bg-red-100">
-                        @
-                    </a>
-
-                    <a href="#"
-                       class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-[#8B1E1E] hover:bg-red-100">
-                        in
-                    </a>
-
-                </div>
-
-            </div>
-
-            <div class="absolute bottom-0 left-0 w-full h-[5px] bg-[#8B1E1E]"></div>
-
-        </div>
-
-        <!-- Sekretaris -->
-        <div class="relative bg-white rounded-2xl overflow-hidden
-                    shadow-lg hover:shadow-xl hover:-translate-y-2
-                    transition-all duration-300">
-
-            <div class="p-8 text-center">
-
-                <img
-                    src="{{ asset('foto/wonyoung.jpg') }}"
-                    alt="Nabila"
-                    class="w-28 h-28 rounded-full object-cover mx-auto border-4 border-gray-100">
-
-                <h3 class="mt-5 font-bold text-xl text-gray-800">
-                    Nabila Devi Salma
-                </h3>
-
-                <p class="mt-1 text-[#8B1E1E] text-sm">
-                    Sekretaris
-                </p>
-
-                <div class="flex justify-center gap-3 mt-4">
-
-                    <a href="#"
-                       class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-[#8B1E1E] hover:bg-red-100">
-                        IG
-                    </a>
-
-                    <a href="#"
-                       class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-[#8B1E1E] hover:bg-red-100">
-                        @
-                    </a>
-
-                </div>
-
-            </div>
-
-            <div class="absolute bottom-0 left-0 w-full h-[5px] bg-[#8B1E1E]"></div>
-
-        </div>
+        <div class="absolute bottom-0 left-0 w-full h-[5px] bg-[#8B1E1E]"></div>
 
     </div>
+
+    @endforeach
+
+</div>
 
 </section>
 
@@ -289,143 +188,32 @@
 
     <div class="grid md:grid-cols-4 gap-6">
 
-        <!-- Fitri -->
-        <div class="relative bg-white rounded-2xl shadow-lg p-6 text-center overflow-hidden">
+    @foreach($stafAhli as $anggota)
 
-            <img
-                src="{{ asset('foto/jiwoo.jpg') }}"
-                class="w-24 h-24 rounded-full object-cover mx-auto border-2 border-gray-100">
+    <div class="relative bg-white rounded-2xl shadow-lg p-6 text-center overflow-hidden">
 
-            <h3 class="mt-4 font-bold text-lg text-gray-800">
-                Fitri Aulia Taulani
-            </h3>
+        <img
+            src="{{ asset('foto/'.$anggota->foto) }}"
+            class="w-24 h-24 rounded-full object-cover mx-auto border-2 border-gray-100">
 
-            <p class="text-[#8B1E1E] text-sm">
-                Medsos Diksos
-            </p>
+        <h3 class="mt-4 font-bold text-lg text-gray-800">
+            {{ $anggota->nama }}
+        </h3>
 
-            <div class="flex justify-center gap-3 mt-4">
+        <p class="text-[#8B1E1E] text-sm">
+            {{ $anggota->jabatan }}
+        </p>
 
-                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
-                    IG
-                </div>
-
-                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
-                    TT
-                </div>
-
-                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
-                    @
-                </div>
-
-            </div>
-
-            <div class="absolute bottom-0 left-0 w-full h-1.5 bg-[#8B1E1E]"></div>
-
-        </div>
-
-        <!-- Alvin -->
-        <div class="relative bg-white rounded-2xl shadow-lg p-6 text-center overflow-hidden">
-
-            <img
-                src="{{ asset('foto/cortis 1.jpg') }}"
-                class="w-24 h-24 rounded-full object-cover mx-auto border-2 border-gray-100">
-
-            <h3 class="mt-4 font-bold text-lg text-gray-800">
-                Muhammad Alvin
-            </h3>
-
-            <p class="text-[#8B1E1E] text-sm">
-                Bina Desa
-            </p>
-
-            <div class="flex justify-center gap-3 mt-4">
-
-                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
-                    IG
-                </div>
-
-                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
-                    @
-                </div>
-
-            </div>
-
-            <div class="absolute bottom-0 left-0 w-full h-1.5 bg-[#8B1E1E]"></div>
-
-        </div>
-
-        <!-- Deana -->
-        <div class="relative bg-white rounded-2xl shadow-lg p-6 text-center overflow-hidden">
-
-            <img
-                src="{{ asset('foto/nayeon.jpg') }}"
-                class="w-24 h-24 rounded-full object-cover mx-auto border-2 border-gray-100">
-
-            <h3 class="mt-4 font-bold text-lg text-gray-800">
-                Margaretha Deana
-            </h3>
-
-            <p class="text-[#8B1E1E] text-sm">
-                UPN Mengajar
-            </p>
-
-            <div class="flex justify-center gap-3 mt-4">
-
-                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
-                    IG
-                </div>
-
-                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
-                    @
-                </div>
-
-                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
-                    in
-                </div>
-
-            </div>
-
-            <div class="absolute bottom-0 left-0 w-full h-1.5 bg-[#8B1E1E]"></div>
-
-        </div>
-
-        <!-- Nayla -->
-        <div class="relative bg-white rounded-2xl shadow-lg p-6 text-center overflow-hidden">
-
-            <img
-                src="{{ asset('foto/wonhee.jpg') }}"
-                class="w-24 h-24 rounded-full object-cover mx-auto border-2 border-gray-100">
-
-            <h3 class="mt-4 font-bold text-lg text-gray-800">
-                Nayla Sabrina
-            </h3>
-
-            <p class="text-[#8B1E1E] text-sm">
-                Nalar Peduli
-            </p>
-
-            <div class="flex justify-center gap-3 mt-4">
-
-                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
-                    IG
-                </div>
-
-                <div class="w-8 h-8 rounded-full border border-red-300 flex items-center justify-center text-xs text-[#8B1E1E]">
-                    @
-                </div>
-
-            </div>
-
-            <div class="absolute bottom-0 left-0 w-full h-1.5 bg-[#8B1E1E]"></div>
-
-        </div>
+        <div class="absolute bottom-0 left-0 w-full h-1.5 bg-[#8B1E1E]"></div>
 
     </div>
 
+    @endforeach
+
+</div>
+
 </section>
 
- 
 
 </main>
 
