@@ -30,9 +30,9 @@
 </head>
 <body class="bg-surface font-body text-on-surface min-h-screen flex items-center justify-center p-4 md:p-8">
 
-    <a href="{{ route('login') }}" class="fixed top-6 left-6 z-50 hidden md:flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-100 rounded-full text-xs font-bold text-gray-500 hover:text-primary transition-all shadow-sm group">
+    <a href="{{ url('/') }}" class="fixed top-6 left-6 z-50 hidden md:flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-100 rounded-full text-xs font-bold text-gray-500 hover:text-primary transition-all shadow-sm group">
         <span class="material-symbols-outlined text-lg group-hover:-translate-x-1 transition-transform">arrow_back</span>
-        KEMBALI KE LOGIN
+        KEMBALI KE BERANDA
     </a>
 
     <main class="w-full max-w-5xl relative z-10">
