@@ -53,6 +53,9 @@ Route::get('/tim', function () {
     return view('layouts.tim', compact('tim'));
 });
 
+Route::get('/relawan', [KegiatanController::class, 'dokumentasi'])
+    ->name('relawan');
+
 // Detail Agenda Kegiatan untuk Publik
 Route::get('/agenda/{id}', [KegiatanPublikController::class, 'showDetailPublik'])->name('agenda.detail');
 
@@ -60,9 +63,9 @@ Route::get('/agenda/{id}', [KegiatanPublikController::class, 'showDetailPublik']
 // ==================== ROUTE AUTENTIKASI (LOGIN/LOGOUT) ===================
 // =========================================================================
 
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // =========================================================================
 // ==================== ROUTE REGISTRASI RELAWAN & MITRA ===================
