@@ -279,20 +279,52 @@ Route::group([], function () {
 
     // ------------------ KELOLA DOKUMENTASI ------------------
     Route::get('/admin/kelola-dokumentasi', function () {
+<<<<<<< Updated upstream
     if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
     
     // KUNCI PERBAIKAN: Ubah nama tabel menjadi 'dokumentasi_kegiatan'
     $dokumentasi = DB::table('dokumentasi_kegiatan')->orderBy('id_dokumentasi', 'DESC')->get(); 
     
     return view('admin.kelola_dokumentasi', compact('dokumentasi'));
+=======
+
+    if (!session('id_user') || session('role') !== 'admin') {
+        return redirect('/login');
+    }
+
+    $dokumentasi = DB::table('dokumentasi_kegiatan as d')
+        ->leftJoin('kegiatan as k', 'd.id_kegiatan', '=', 'k.id_kegiatan')
+        ->select(
+            'd.*',
+            'k.nama_kegiatan'
+        )
+        ->orderBy('d.id_dokumentasi', 'DESC')
+        ->get();
+
+    return view('admin.kelola_dokumentasi', compact('dokumentasi'));
+
+>>>>>>> Stashed changes
 })->name('admin.dokumentasi');
 
     Route::get('/admin/tambah-dokumentasi', function () {
-        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
-        return view('admin.tambah_dokumentasi');
-    })->name('admin.dokumentasi.tambah');
+
+    if (!session('id_user') || session('role') !== 'admin') {
+        return redirect('/login');
+    }
+
+    $kegiatan = DB::table('kegiatan')
+        ->orderBy('nama_kegiatan')
+        ->get();
+
+    return view(
+        'admin.tambah_dokumentasi',
+        compact('kegiatan')
+    );
+
+})->name('admin.dokumentasi.tambah');
 
     Route::post('/admin/tambah-dokumentasi', function (Request $request) {
+<<<<<<< Updated upstream
         if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
         $pathFoto = null;
         if ($request->hasFile('foto')) {
@@ -306,6 +338,41 @@ Route::group([], function () {
         ]);
         return redirect('/admin/kelola-dokumentasi')->with('pesan', 'Dokumentasi berhasil diunggah!');
     })->name('admin.dokumentasi.store');
+=======
+
+    if (!session('id_user') || session('role') !== 'admin') {
+        return redirect('/login');
+    }
+
+    $pathFoto = null;
+
+    if ($request->hasFile('foto')) {
+
+        $file = $request->file('foto');
+
+        $namaFoto = time().'_'.$file->getClientOriginalName();
+
+        $file->storeAs(
+            'public/dokumentasi',
+            $namaFoto
+        );
+
+        $pathFoto = 'dokumentasi/'.$namaFoto;
+    }
+
+    DB::table('dokumentasi_kegiatan')->insert([
+        'id_kegiatan' => $request->id_kegiatan,
+        'judul_foto'  => $request->judul_foto,
+        'deskripsi'   => $request->deskripsi,
+        'foto'        => $pathFoto,
+        'created_at'  => now()
+    ]);
+
+    return redirect('/admin/kelola-dokumentasi')
+            ->with('pesan', 'Dokumentasi berhasil diunggah!');
+
+})->name('admin.dokumentasi.store');
+>>>>>>> Stashed changes
 
     // ------------------ KELOLA MITRA ------------------
     Route::get('/admin/kelola-mitra', function (Request $request) {
@@ -361,6 +428,21 @@ Route::group([], function () {
         }
         return redirect()->back()->with('pesan', 'Visi Misi diperbarui!');
     })->name('admin.kelola_upnmengajar.update');
+
+    Route::delete('/admin/hapus-dokumentasi/{id}', function ($id) {
+
+    if (!session('id_user') || session('role') !== 'admin') {
+        return redirect('/login');
+    }
+
+    DB::table('dokumentasi_kegiatan')
+        ->where('id_dokumentasi', $id)
+        ->delete();
+
+    return redirect('/admin/kelola-dokumentasi')
+        ->with('success', 'Dokumentasi berhasil dihapus');
+
+})->name('admin.dokumentasi.destroy');
 
     // ------------------ KELOLA DROPDOWN TENTANG: HALAMAN UKM ------------------
     Route::get('/admin/kelola-ukm', function () {
