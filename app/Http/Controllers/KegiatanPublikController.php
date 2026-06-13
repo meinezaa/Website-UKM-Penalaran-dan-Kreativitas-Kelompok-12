@@ -8,55 +8,75 @@ use Illuminate\Http\Request;
 
 class KegiatanPublikController extends Controller
 {
+    /**
+     * Tampilan Halaman Utama Eksplorasi Kegiatan (Daftar Kegiatan)
+     */
     public function index()
     {
-        $today = Carbon::today();
+        // Mengunci tanggal hari ini berdasarkan waktu berjalan sistem (Tahun 2026)
+        $today = Carbon::today()->format('Y-m-d');
 
-        // 1. Registrasi Dibuka: Batas registrasi belum lewat DAN pelaksanaan juga belum lewat
-        $kegiatanBuka = Kegiatan::where('batas_registrasi', '>=', $today)
+        // 1. REGISTRASI DIBUKA (Untuk Tab 'Registrasi Dibuka')
+        // Batas registrasi masih hari ini atau di masa depan (>= today) ATAU belum diisi (null)
+        $kegiatanBuka = Kegiatan::where(function($query) use ($today) {
+                                    $query->whereDate('batas_registrasi', '>=', $today)
+                                          ->orWhereNull('batas_registrasi');
+                                })
                                 ->where(function($query) use ($today) {
-                                    $query->where('tanggal_pelaksanaan', '>=', $today)
+                                    $query->whereDate('tanggal_pelaksanaan', '>=', $today)
                                           ->orWhereNull('tanggal_pelaksanaan');
                                 })
                                 ->get();
 
-        // 2. Sedang Berlangsung: Registrasi sudah lewat, tapi pelaksanaan belum selesai
-        $kegiatanBerjalan = Kegiatan::where('batas_registrasi', '<', $today)
-                                    ->where('tanggal_pelaksanaan', '>=', $today)
+        // 2. SEDANG BERLANGSUNG (Untuk Tab 'Sedang Berlangsung')
+        // Batas registrasi sudah lewat, TAPI tanggal pelaksanaan masih hari ini atau masa depan
+        $kegiatanBerjalan = Kegiatan::whereDate('batas_registrasi', '<', $today)
+                                    ->whereDate('tanggal_pelaksanaan', '>=', $today)
                                     ->get();
 
-        // 3. Sudah Selesai: Jika tanggal pelaksanaan sudah mutlak terlewati kemarin atau sebelumnya
-        $kegiatanSelesai = Kegiatan::where('tanggal_pelaksanaan', '<', $today)->get();
+        // 3. SUDAH SELESAI (Untuk Tab 'Sudah Selesai')
+        // Tanggal pelaksanaan sudah terlewati (< today) ATAU kolom status_kegiatan memang bernilai 'selesai'
+        $kegiatanSelesai = Kegiatan::where(function($query) use ($today) {
+                                    $query->whereDate('tanggal_pelaksanaan', '<', $today)
+                                          ->orWhere('status_kegiatan', 'selesai');
+                                })
+                                ->get();
 
-        return view('publik.kegiatan', compact('kegiatanBuka', 'kegiatanBerjalan', 'kegiatanSelesai'));
+        // 4. SEMUA DATA KEGIATAN (Khusus Untuk Tab Utama 'Semua Kegiatan')
+        // Mengambil total seluruh baris data yang ada di database tanpa filter tanggal
+        $semuaKegiatan = Kegiatan::all();
+
+        // Mengirimkan keempat variabel ke view 'publik.kegiatan'
+        return view('publik.kegiatan', compact('kegiatanBuka', 'kegiatanBerjalan', 'kegiatanSelesai', 'semuaKegiatan'));
     }
 
     /**
-     * Tampilan Halaman Detail Kegiatan Berdasarkan ID (Sesuai Alur Tombol Lihat Detail)
+     * Tampilan Halaman Detail Kegiatan Berdasarkan ID
      */
-    public function detail($id)
+    public function showDetailPublik($id)
     {
-        // 1. Cari data kegiatan berdasarkan id_kegiatan, jika tidak ada langsung munculkan error 404
+        // 1. Cari data kegiatan berdasarkan id_kegiatan
         $kegiatan = Kegiatan::where('id_kegiatan', $id)->first();
 
+        // Jika data tidak ditemukan, kembalikan ke halaman daftar dengan pesan peringatan
         if (!$kegiatan) {
             return redirect('/kegiatan')->with('pesan', 'Maaf, data kegiatan tidak ditemukan!');
         }
 
-        // 2. Hitung status secara real-time berdasarkan tanggal hari ini (Supaya sinkron dengan halaman index)
+        // 2. Hitung status secara real-time untuk kebutuhan visual di halaman detail (Supaya sinkron)
         $today = Carbon::today();
-        $batasRegistrasi = Carbon::parse($kegiatan->batas_registrasi);
+        $batasRegistrasi = $kegiatan->batas_registrasi ? Carbon::parse($kegiatan->batas_registrasi) : null;
         $tanggalPelaksanaan = $kegiatan->tanggal_pelaksanaan ? Carbon::parse($kegiatan->tanggal_pelaksanaan) : null;
 
-        if ($batasRegistrasi->gte($today) && ($tanggalPelaksanaan === null || $tanggalPelaksanaan->gte($today))) {
+        if (($batasRegistrasi === null || $batasRegistrasi->gte($today)) && ($tanggalPelaksanaan === null || $tanggalPelaksanaan->gte($today))) {
             $kegiatan->status_kegiatan = 'buka';
-        } elseif ($batasRegistrasi->lt($today) && $tanggalPelaksanaan !== null && $tanggalPelaksanaan->gte($today)) {
+        } elseif ($batasRegistrasi !== null && $batasRegistrasi->lt($today) && $tanggalPelaksanaan !== null && $tanggalPelaksanaan->gte($today)) {
             $kegiatan->status_kegiatan = 'berjalan';
         } else {
             $kegiatan->status_kegiatan = 'selesai';
         }
 
-        // 3. Oper data kegiatan yang sudah disisipi 'status_kegiatan' ke dalam view detail
+        // 3. Oper data kegiatan ke view 'publik.detail_kegiatan'
         return view('publik.detail_kegiatan', compact('kegiatan'));
     }
 }

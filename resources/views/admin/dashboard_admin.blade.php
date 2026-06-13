@@ -47,7 +47,6 @@
         </div>
     </div>
 
-</nav>
     <nav class="flex-1 space-y-2 overflow-y-auto">
         <a href="/admin/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm transition-all bg-primary text-white shadow-md shadow-red-200">
             <span class="material-symbols-outlined text-[20px]">dashboard</span> Dashboard
@@ -111,12 +110,13 @@
             </div>
         @endif
 
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             <div class="p-8 rounded-2xl bg-gradient-to-br from-primary to-red-800 text-white shadow-xl shadow-red-100">
                 <span class="material-symbols-outlined text-4xl mb-4 opacity-70">group</span>
                 <h3 class="text-5xl font-headline font-black">{{ $count_relawan }}</h3>
                 <p class="text-xs font-bold uppercase tracking-widest opacity-80 mt-2">Total Relawan</p>
             </div>
+            
             <div class="p-8 rounded-2xl bg-white border border-gray-100 shadow-sm">
                 <div class="w-12 h-12 rounded-lg bg-red-50 flex items-center justify-center mb-4 text-primary">
                     <span class="material-symbols-outlined">school</span>
@@ -124,19 +124,28 @@
                 <h3 class="text-5xl font-headline font-black text-on-surface">{{ $count_program }}</h3>
                 <p class="text-gray-400 text-xs font-bold uppercase tracking-widest mt-2">Program Aktif</p>
             </div>
-            <div class="p-8 rounded-2xl bg-gray-50 border border-gray-100">
-                <div class="w-12 h-12 rounded-lg bg-white flex items-center justify-center mb-4 text-orange-500 shadow-sm">
+            
+            <div class="p-8 rounded-2xl bg-white border border-gray-100 shadow-sm">
+                <div class="w-12 h-12 rounded-lg bg-orange-50 flex items-center justify-center mb-4 text-orange-500 shadow-sm">
                     <span class="material-symbols-outlined">person_add</span>
                 </div>
                 <h3 class="text-5xl font-headline font-black text-on-surface">{{ $count_baru }}</h3>
                 <p class="text-gray-400 text-xs font-bold uppercase tracking-widest mt-2">Antrian Baru</p>
             </div>
+
+            <div class="p-8 rounded-2xl bg-white border border-gray-100 shadow-sm">
+                <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center mb-4 text-blue-600 shadow-sm">
+                    <span class="material-symbols-outlined">handshake</span>
+                </div>
+                <h3 class="text-5xl font-headline font-black text-on-surface">{{ $count_mitra }}</h3>
+                <p class="text-gray-400 text-xs font-bold uppercase tracking-widest mt-2">Total Mitra</p>
+            </div>
         </section>
 
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                <h3 class="text-lg font-headline font-extrabold text-on-surface mb-4">Grafik Pertumbuhan Data</h3>
-                <div class="h-64 flex items-center justify-center">
+        <section class="grid grid-cols-1 gap-6">
+            <div class="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                <h3 class="text-lg font-headline font-extrabold text-on-surface mb-4">Grafik Tren Pertumbuhan Pendaftaran Bulanan (Tahun Ini)</h3>
+                <div class="h-80 w-full relative">
                     <canvas id="dashboardChart"></canvas>
                 </div>
             </div>
@@ -232,42 +241,117 @@
                 </table>
             </div>
         </section>
+
+        <section class="space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="text-xl font-headline font-extrabold text-on-background">Antrian Pendaftaran Kemitraan Baru</h3>
+                <a href="/admin/kelola-mitra" class="text-xs text-primary font-bold hover:underline">Lihat Semua Data Kemitraan &rarr;</a>
+            </div>
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-50 border-b">
+                        <tr class="text-[10px] font-bold uppercase tracking-widest text-gray-500">
+                            <th class="px-6 py-4">Nama Instansi / Mitra</th>
+                            <th class="px-6 py-4">Email Kontak</th>
+                            <th class="px-6 py-4">Status</th>
+                            <th class="px-6 py-4 text-right">Tindakan</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-sm">
+                        @forelse($mitra_baru as $rm)
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xs font-bold border border-blue-100">
+                                    {{ strtoupper(substr($rm->nama_mitra ?? 'M', 0, 1)) }}
+                                </div>
+                                <span class="font-bold">{{ $rm->nama_mitra ?? 'Nama Instansi Tidak Ada' }}</span>
+                            </td>
+                            <td class="px-6 py-4 text-gray-500">{{ $rm->email_mitra ?? $rm->email ?? '-' }}</td>
+                            <td class="px-6 py-4">
+                                <span class="bg-yellow-50 text-yellow-600 border border-yellow-100 px-2 py-1 rounded text-[9px] font-black uppercase">
+                                    {{ $rm->status_mitra }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex justify-end gap-3">
+                                    <a href="/admin/detail-mitra/{{ $rm->id_mitra }}" class="text-blue-600 hover:bg-blue-50 p-1.5 rounded-full transition-all" title="Lihat Detail">
+                                        <span class="material-symbols-outlined text-2xl">visibility</span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-12 text-center text-gray-400 font-bold uppercase text-[10px] tracking-widest">
+                                Tidak ada antrian pengajuan mitra baru saat ini
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </div>
 </main>
 
 <script>
-    const ctx = document.getElementById('dashboardChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Total Relawan', 'Program Aktif', 'Antrian Baru'],
-            datasets: [{
-                label: 'Jumlah Data Real-time',
-                data: [{{ $count_relawan }}, {{ $count_program }}, {{ $count_baru }}],
-                backgroundColor: [
-                    'rgba(187, 0, 22, 0.8)', 
-                    'rgba(31, 41, 55, 0.8)',  
-                    'rgba(245, 158, 11, 0.8)'  
-                ],
-                borderColor: [
-                    '#bb0016',
-                    '#1f2937',
-                    '#f59e0b'
-                ],
-                borderWidth: 2,
-                borderRadius: 8
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { stepSize: 1 }
+    document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById('dashboardChart').getContext('2d');
+        
+        // Mengonversi data array bulanan dari Laravel Controller
+        const dataRelawan = @json($dataGrafikRelawan);
+        const dataMitra = @json($dataGrafikMitra);
+
+        new Chart(ctx, {
+            type: 'line', 
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+                datasets: [
+                    {
+                        label: 'Pendaftaran Relawan',
+                        data: dataRelawan,
+                        borderColor: '#bb0016', // Warna Khas Primary Red
+                        backgroundColor: 'rgba(187, 0, 22, 0.05)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#bb0016',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Pendaftaran Mitra',
+                        data: dataMitra,
+                        borderColor: '#1f2937', // Warna Gelap Elegan Gray-800
+                        backgroundColor: 'rgba(31, 41, 55, 0.05)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#1f2937',
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { font: { family: 'Inter', weight: '500' } }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            font: { family: 'Inter' }
+                        }
+                    },
+                    x: {
+                        ticks: { font: { family: 'Inter' } }
+                    }
                 }
             }
-        }
+        });
     });
 </script>
 

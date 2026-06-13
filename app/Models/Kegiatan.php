@@ -16,22 +16,30 @@ class Kegiatan extends Model
     protected $primaryKey = 'id_kegiatan';
 
     // 3. Daftarkan kolom yang bisa diisi massal lewat form / controller
-   protected $fillable = [
+    protected $fillable = [
         'id_user',
         'nama_kegiatan',
         'foto_kegiatan',
         'tanggal_pelaksanaan',
         'jam_kegiatan',
         'batas_registrasi',
-        'pendaftaran_dibuka', // Kolom baru dari phpMyAdmin
-        'pengumuman_seleksi',  // Kolom baru dari phpMyAdmin
+        'pendaftaran_dibuka', 
+        'pengumuman_seleksi',  
         'lokasi',
         'alamat_lengkap',
         'kategori',
-        'divisi_dibutuhkan',  // Kolom baru dari phpMyAdmin
+        'divisi_dibutuhkan',  
         'deskripsi_detail',
         'status_kegiatan',
         'detail_aktivitas',
+    ];
+
+    // 4. Tambahkan ini! Mengubah string tanggal dari DB otomatis menjadi Objek Date/Carbon
+    protected $casts = [
+        'tanggal_pelaksanaan' => 'date',
+        'batas_registrasi'    => 'date',
+        'pendaftaran_dibuka'  => 'date',
+        'pengumuman_seleksi'  => 'date',
     ];
     
     /**
@@ -55,13 +63,10 @@ class Kegiatan extends Model
     {
         return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
+
     // Relasi ke tabel dokumentasi_kegiatan
-public function dokumentasi()
-{
-    return $this->hasMany(
-        DokumentasiKegiatan::class,
-        'id_kegiatan',
-        'id_kegiatan'
-    );
-}
+    public function dokumentasi()
+    {
+        return $this->hasMany(DokumentasiKegiatan::class, 'id_kegiatan', 'id_kegiatan');
+    }
 }
