@@ -112,7 +112,7 @@ class="w-16 scale-125">
  after:transition-all
  after:duration-300
  hover:after:w-full">
- Relawan
+ Dokumentasi
  </a>
 </li>
 
@@ -580,7 +580,7 @@ So, this is your time. Step forward, take the challenge, and be part of
         <li><a href="#" class="hover:underline">Home</a></li>
         <li><a href="#" class="hover:underline">Tentang</a></li>
         <li><a href="#" class="hover:underline">Kegiatan</a></li>
-        <li><a href="#" class="hover:underline">Relawan</a></li>
+        <li><a href="#" class="hover:underline">Dokumentasi</a></li>
       </ul>
 
     </div>

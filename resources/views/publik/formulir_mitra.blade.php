@@ -35,7 +35,7 @@
             <p class="text-red-100 text-sm mt-2 font-medium leading-relaxed">Jalin kolaborasi bersama kami untuk membangun harapan pendidikan masa depan yang lebih cerah.</p>
         </div>
 
-        <form action="/formulir-mitra" method="POST" class="p-8 md:p-10 space-y-6">
+       <form action="{{ route('mitra.daftar') }}" method="POST" class="p-8 md:p-10 space-y-6">
             @csrf
 
             @if(session('sukses'))

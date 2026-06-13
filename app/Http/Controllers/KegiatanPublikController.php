@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\Kegiatan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -59,4 +59,20 @@ class KegiatanPublikController extends Controller
         // 3. Oper data kegiatan yang sudah disisipi 'status_kegiatan' ke dalam view detail
         return view('publik.detail_kegiatan', compact('kegiatan'));
     }
+    public function submitMitra(Request $request)
+{
+    DB::table('mitra')->insert([
+        'nama_instansi' => $request->nama_instansi,
+        'nama_penanggung_jawab' => $request->nama_penanggung_jawab,
+        'email_instansi' => $request->email_instansi,
+        'no_hp' => $request->no_hp,
+        'jenis_kemitraan' => $request->jenis_kemitraan,
+        'pesan_kolaborasi' => $request->pesan_kolaborasi,
+        'status_mitra' => 'MENUNGGU',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    return back()->with('sukses', 'Pengajuan kemitraan berhasil dikirim.');
+}
 }

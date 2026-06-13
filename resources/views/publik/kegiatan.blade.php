@@ -137,7 +137,7 @@
                         </li>
 
                         <li>
-                            <a href="{{ url('/formulir') }}" class="relative {{ request()->is('formulir*') ? 'after:w-0' : 'after:w-0' }} after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+                            <a href="{{ url('/relawan') }}" class="relative {{ request()->is('relawan*') ? 'after:w-0' : 'after:w-0' }} after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">
                                 Dokumentasi
                             </a>
                         </li>
@@ -296,7 +296,7 @@
                     <li><a href="{{ url('/') }}" class="hover:underline">Home</a></li>
                     <li><a href="{{ url('/ukm') }}" class="hover:underline">Tentang</a></li>
                     <li><a href="{{ url('/kegiatan') }}" class="hover:underline">Kegiatan</a></li>
-                    <li><a href="{{ url('/formulir') }}" class="hover:underline">Relawan</a></li>
+                    <li><a href="{{ url('/relawan') }}" class="hover:underline">Relawan</a></li>
                 </ul>
             </div>
 

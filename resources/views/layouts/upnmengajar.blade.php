@@ -33,165 +33,45 @@
     </style>
   </head>
 
- <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
-<div class="flex items-center justify-between px-6 py-0.5 text-white">
+ <header id="main-nav" class="fixed top-0 left-0 w-full bg-red-900 text-white z-[9999] shadow-md">
+    <div class="flex items-center justify-between px-6 py-0.5 text-white">
+        <div class="flex items-center">
+            <a href="{{ url('/') }}" class="overflow-hidden">
+                <img src="./foto/logo.jpeg" alt="Logo UPN Mengajar" class="w-16 scale-125">
+            </a>
+        </div>
 
-<div class="flex items-center">
-<a href="/" class="overflow-hidden">
-<img src="{{ asset('foto/logo.jpeg') }}" 
-alt="Logo UPN Mengajar" 
-class="w-16 scale-125">
-</a>
-</div>
-
-<div class="flex items-center gap-12">
-
-<nav>
-<ul class="flex gap-12 font-poppins font-semibold">
-
-<li>
- <a href="{{ url('/') }}"
-class="relative
-{{ request()->is('/') ? 'after:w-full' : 'after:w-0' }}
-after:absolute
-after:left-0
-after:-bottom-1
-after:h-[1.5px]
-after:bg-white
-after:transition-all
-after:duration-300
-hover:after:w-full">
-Home
-</a>
-</li>
-
-<li class="relative group">
-
-<a href="tentang.php"
-class="flex items-center gap-1 relative 
-after:absolute after:left-0 after:-bsottom-1 after:h-[1.5px] after:w-0 
-after:bg-white after:transition-all after:duration-300 hover:after:w-full">
-
-Tentang
-
-<svg xmlns="http://www.w3.org/2000/svg"
-class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
-fill="none"
-viewBox="0 0 24 24"
-stroke="currentColor">
-
-<path stroke-linecap="round"
-stroke-linejoin="round"
-stroke-width="2"
-d="M19 9l-7 7-7-7"/>
-
-</svg>
-
-</a>
-
-<ul class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md
-opacity-0 invisible -translate-y-2
-group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
-transition-all duration-300 ease-out">
-
-<li>
-<a href="{{ url('/ukm') }}" class="block px-5 py-2 hover:bg-gray-100">
-UKM Penalaran dan Kreativitas
-</a>
-</li>
-
-<li>
-    <a href="{{ url('/upnmengajar') }}" class="block px-5 py-2 hover:bg-gray-100">
-        Program Kerja UPN Mengajar
-    </a>
-</li>
-
-<li>
-<a href="{{ url('/tim') }}" class="block px-5 py-2 hover:bg-gray-100">
-Tim UPN Mengajar
-</a>
-</li>
-
-</ul>
-
-</li>
-
-<li>
-<a href="{{ url('/kegiatan') }}"
-class="relative
-{{ request()->is('kegiatan*') ? 'after:w-full' : 'after:w-0' }}
-after:absolute
-after:left-0
-after:-bottom-1
-after:h-[1.5px]
-after:bg-white
-after:transition-all
-after:duration-300
-hover:after:w-full">
-Kegiatan
-</a>
-</li>
-
-<li>
-<a href="{{ url('/relawan') }}"
-class="relative
-{{ request()->is('relawan*') ? 'after:w-full' : 'after:w-0' }}
-after:absolute
-after:left-02
-after:-bottom-1
-after:h-[1.5px]
-after:bg-white
-after:transition-all
-after:duration-300
-hover:after:w-full">
-Dokumentasi
-</a>
-</li>
-
-@if(session('role') === 'admin')
-<li>
-    <a href="{{ url('/admin/dashboard') }}" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
-        Dashboard Admin
-    </a>
-</li>
-@endif
-
-</ul>
-</nav>
-
-<div class="relative group">
-  @if (session('id_user'))
-    <a href="#" class="hover:text-red-400 transition-all duration-300">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-      </svg>
-    </a>
-    <div class="absolute -bottom-12 left-1/2 -translate-x-1/2 
-                bg-black/80 backdrop-blur-sm text-white text-[11px] px-4 py-2 
-                opacity-0 group-hover:opacity-100 transition-all duration-300 
-                whitespace-nowrap rounded-lg shadow-2xl border border-white/10">
-      Keluar
+        <div class="flex items-center gap-12">
+            <nav>
+                <ul class="flex gap-12 font-poppins font-semibold">
+                    <li><a href="{{ url('/') }}" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Home</a></li>
+                    <li class="relative group">
+                        <a href="#" class="flex items-center gap-1 relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-full after:bg-white after:transition-all after:duration-300">
+                            Tentang
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </a>
+                        <ul class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out">
+                            <li><a href="{{ url('/tentang') }}" class="block px-5 py-2 hover:bg-gray-100">UKM Penalaran dan Kreativitas</a></li>
+                            <li><a href="{{ url('/upnmengajar') }}" class="block px-5 py-2 hover:bg-gray-100">Program Kerja UPN Mengajar</a></li>
+                            <li><a href="{{ url('/tim') }}" class="block px-5 py-2 bg-red-5 hover:bg-red-100">Tim UPN Mengajar</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{{ url('/kegiatan') }}" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Kegiatan</a></li>
+                    <li><a href="{{ url('/relawan') }}" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Dokumentasi</a></li>
+                </ul>
+            </nav>
+            <div class="relative group">
+                <a href="#" class="hover:text-gray-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.879 17.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
     </div>
-
-  @else
-    <a href="{{ url('/login') }}" class="hover:text-gray-300 transition-all duration-300">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.879 17.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-      </svg>
-    </a>
-    <div class="absolute -bottom-12 left-1/2 -translate-x-1/2 
-                bg-black/80 backdrop-blur-sm text-white text-[11px] px-4 py-2 
-                opacity-0 group-hover:opacity-100 transition-all duration-300 
-                whitespace-nowrap rounded-lg shadow-2xl border border-white/10">
-      Masuk / Daftar
-    </div>
-  @endif
-</div>
-
-</div>
-</div>
 </header>
-
 
     <main>
       <section

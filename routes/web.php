@@ -71,7 +71,10 @@ Route::get('/agenda/{id}', [KegiatanPublikController::class, 'showDetailPublik']
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.proses');
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.proses');
 Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
+
 
 // ==================== ROUTE REGISTRASI RELAWAN & MITRA ===================
 
