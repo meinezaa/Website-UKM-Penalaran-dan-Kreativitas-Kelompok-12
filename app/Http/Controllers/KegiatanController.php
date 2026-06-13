@@ -19,19 +19,11 @@ class KegiatanController extends BaseController
                     ->where('status_seleksi', 'DITERIMA')
                     ->count();
 
-        // 2. FIXED LOGIC: Menghitung total sekolah mitra riil
-        // Menghitung sekolah dari tabel mitra yang sudah disetujui admin
-        $mitraDisetujui = DB::table('mitra')
+        // 2. FIXED LOGIC: Menghitung total sekolah mitra riil yang disetujui oleh admin
+        // Menggunakan kolom 'status_mitra' sesuai dengan struktur query yang ada pada web.php Anda
+        $jumlahSekolah = DB::table('mitra')
                             ->where('status_mitra', 'DISETUJUI')
                             ->count();
-
-        // Menghitung lokasi unik sekolah dari tabel kegiatan internal
-        $lokasiKegiatan = DB::table('kegiatan')
-                            ->distinct('lokasi')
-                            ->count('lokasi');
-
-        // Gabungan total data mitra eksternal + internal kegiatan
-        $jumlahSekolah = $mitraDisetujui + $lokasiKegiatan;
 
         // 3. Menghitung estimasi siswa yang terlibat
         $jumlahSiswaTerlibat = DB::table('pendaftaran_relawan')

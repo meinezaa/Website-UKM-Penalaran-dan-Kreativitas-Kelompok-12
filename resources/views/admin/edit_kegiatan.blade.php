@@ -130,17 +130,17 @@
             </h2>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-surface-container-low p-3 rounded-xl border border-gray-100">
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5 font-headline">1. Pendaftaran Buka</label>
-                    <input type="date" name="pendaftaran_dibuka" value="{{ $kegiatan->pendaftaran_dibuka ?? '' }}" class="w-full px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-700 outline-none focus:border-primary">
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">1. Pendaftaran Buka</label>
+                    <input type="date" name="pendaftaran_dibuka" value="{{ $kegiatan->pendaftaran_dibuka }}" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 outline-none focus:border-primary">
                 </div>
-                <div class="bg-surface-container-low p-3 rounded-xl border border-gray-100">
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5 font-headline">2. Batas Registrasi</label>
-                    <input type="date" name="batas_registrasi" value="{{ $kegiatan->batas_registrasi ?? '' }}" class="w-full px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-700 outline-none focus:border-primary">
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">2. Batas Registrasi</label>
+                    <input type="date" name="batas_registrasi" value="{{ $kegiatan->batas_registrasi }}" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 outline-none focus:border-primary">
                 </div>
-                <div class="bg-surface-container-low p-3 rounded-xl border border-gray-100">
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5 font-headline">3. Hari Pengumuman</label>
-                    <input type="date" name="pengumuman_seleksi" value="{{ $kegiatan->pengumuman_seleksi ?? '' }}" class="w-full px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-700 outline-none focus:border-primary">
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">3. Hari Pengumuman</label>
+                    <input type="date" name="pengumuman_seleksi" value="{{ $kegiatan->pengumuman_seleksi }}" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 outline-none focus:border-primary">
                 </div>
                 <div class="bg-surface-container-low p-3 rounded-xl border border-gray-100">
                     <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5 font-headline">4. Pelaksanaan H-H</label>
@@ -157,9 +157,9 @@
                 <span class="text-[10px] bg-red-50 text-primary px-2 py-0.5 rounded font-bold font-headline">Pemisah Koma ( , )</span>
             </div>
             <div>
-                <label class="block text-xs font-bold text-gray-500 mb-1.5 font-headline">Daftar Kebutuhan Divisi</label>
-                <input type="text" name="divisi_dibutuhkan" value="{{ $kegiatan->divisi_dibutuhkan ?? '' }}" placeholder="Contoh: Divisi Mengajar, Divisi Logistik, Medis, Dokumentasi" class="w-full px-4 py-2.5 bg-surface-container-low border border-gray-200 focus:border-primary focus:bg-white rounded-xl text-xs font-semibold outline-none transition-all">
-                <p class="text-[10px] text-gray-400 mt-1.5 font-medium leading-relaxed">Sistem akan secara otomatis memecah isian teks di atas menjadi label tag dinamis pada lembar rincian kegiatan relawan.</p>
+                <label class="block text-xs font-bold text-slate-500 mb-1">Daftar Kebutuhan Divisi</label>
+                <input type="text" name="divisi_dibutuhkan" value="{{ $kegiatan->divisi_dibutuhkan }}" placeholder="Contoh: Divisi Mengajar, Divisi Logistik, Medis, Dokumentasi" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-primary focus:bg-white rounded-xl text-xs font-semibold outline-none transition-all">
+                <p class="text-[10px] text-slate-400 mt-1.5 font-medium leading-relaxed">Sistem akan secara otomatis memecah isian teks di atas menjadi label tag dinamis pada lembar rincian kegiatan relawan.</p>
             </div>
         </div>
 
