@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Routing\Controller as BaseController; 
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends BaseController
 {
@@ -39,7 +38,7 @@ class AuthController extends BaseController
         $user = User::where('email', $request->email)->first();
 
         // Pencocokan string angka polos langsung (tanpa fungsi Hash bawaan)
-        if ($user && Hash::check($request->password, $user->password)){
+       if ($user && $request->password === $user->password){
 
         
             
