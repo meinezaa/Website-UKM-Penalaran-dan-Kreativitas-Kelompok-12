@@ -38,9 +38,10 @@ class AuthController extends BaseController
         $user = User::where('email', $request->email)->first();
 
         // Pencocokan string angka polos langsung (tanpa fungsi Hash bawaan)
-       if ($user && $request->password === $user->password){
 
         
+        // KUNCI PERBAIKAN: Pencocokan string polos langsung menggunakan === (Tanpa Hash::check Bcrypt)
+        if ($user && $request->password === $user->password) {
             
             // Kunci status login ke dalam data session web
             $request->session()->put('id_user', $user->id_user);
@@ -89,7 +90,7 @@ class AuthController extends BaseController
         ]);
 
         try {
-            // Menyimpan password angka polos murni (tanpa Hash::make)
+            // KUNCI PERBAIKAN: Menyimpan password angka polos murni langsung ke database
             $user = User::create([
                 'nama_lengkap' => $request->nama_lengkap,
                 'email' => $request->email,

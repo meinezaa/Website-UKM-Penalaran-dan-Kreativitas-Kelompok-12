@@ -93,7 +93,7 @@
         </div>
         
         <div class="grid grid-cols-2 gap-3 w-full lg:w-auto">
-            <form action="/admin/impor-relawan" method="POST" enctype="multipart/form-data" class="col-span-2 sm:col-span-1 flex items-center gap-2 bg-white p-1.5 rounded-xl border border-gray-200 shadow-sm whitespace-nowrap overflow-x-auto min-w-0">
+            <form action="/admin/kelola-relawan/impor" method="POST" enctype="multipart/form-data" class="col-span-2 sm:col-span-1 flex items-center gap-2 bg-white p-1.5 rounded-xl border border-gray-200 shadow-sm whitespace-nowrap overflow-x-auto min-w-0">
                 @csrf
                 <label class="relative flex-shrink-0 flex items-center px-3 py-1.5 bg-gray-50 hover:bg-gray-100 text-gray-600 rounded-lg cursor-pointer text-xs font-semibold whitespace-nowrap min-w-0">
                     <span class="material-symbols-outlined text-sm mr-2 flex-shrink-0">upload_file</span>
@@ -183,8 +183,7 @@
                             <span class="px-2 py-0.5 bg-gray-100 text-gray-500 rounded text-[9px] font-bold uppercase tracking-wide">
                                 2. {{ $row->pilihan_divisi_2 }}
                             </span>
-                            @endif
-                        </div>
+                            @endif </div>
 
                         <div class="col-span-2">
                             @php
@@ -199,10 +198,11 @@
                         </div>
 
                         <div class="col-span-1 flex justify-end gap-1">
-                            <a href="/admin/detail-relawan/{{ $row->id_pendaftaran }}" class="text-blue-500 hover:bg-blue-50 p-1.5 rounded-lg" title="Lihat Berkas Lengkap">
+                            <a href="{{ route('admin.relawan.detail', $row->id_pendaftaran) }}" class="text-blue-500 hover:bg-blue-50 p-1.5 rounded-lg" title="Lihat Berkas Lengkap">
                                 <span class="material-symbols-outlined text-lg">visibility</span>
                             </a>
-                            <form action="/admin/kelola-relawan/{{ $row->id_user }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data pendaftar ini?')">
+                            
+                            <form action="{{ route('admin.relawan.destroy', $row->id_pendaftaran) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data pendaftar ini?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-gray-400 hover:text-red-600 p-1.5 rounded-lg transition-colors cursor-pointer" title="Hapus Data">
