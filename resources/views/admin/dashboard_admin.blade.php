@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <nav class="flex-1 space-y-2">
+    <nav class="flex-1 space-y-2 overflow-y-auto">
         <a href="/admin/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm transition-all bg-primary text-white shadow-md shadow-red-200">
             <span class="material-symbols-outlined text-[20px]">dashboard</span> Dashboard
         </a>
@@ -62,6 +62,22 @@
         </a>
         <a href="/admin/kelola-mitra" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-gray-600 hover:bg-surface-container-low transition-all">
             <span class="material-symbols-outlined text-[20px]">handshake</span> Data Kemitraan
+        </a>
+
+        <div class="pt-4 pb-1 px-4 font-headline font-bold text-[10px] uppercase tracking-widest text-gray-400 border-t border-gray-100 mt-4">
+            Konten Dropdown Tentang
+        </div>
+
+        <a href="/admin/kelola-ukm" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-gray-600 hover:bg-surface-container-low transition-all">
+            <span class="material-symbols-outlined text-[20px]">hub</span> Kelola Info UKM
+        </a>
+
+        <a href="/admin/kelola-upnmengajar" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-gray-600 hover:bg-surface-container-low transition-all">
+            <span class="material-symbols-outlined text-[20px]">description</span> Kelola Program Kerja
+        </a>
+
+        <a href="/admin/kelola-tim" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-gray-600 hover:bg-surface-container-low transition-all">
+            <span class="material-symbols-outlined text-[20px]">badge</span> Kelola Tim
         </a>
     </nav>
 

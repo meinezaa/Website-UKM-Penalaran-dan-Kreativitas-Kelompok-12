@@ -185,7 +185,7 @@
                 <div class="card-role">
                     <div class="flex justify-center flex-wrap gap-6">
                         @foreach($bph_ketua as $k)
-                        <div class="bg-white rounded-2xl shadow p-6 w-60 hover:shadow-xl transition">
+                        <div class="bg-gray-500 rounded-2xl shadow p-6 w-60 hover:shadow-xl transition">
                             <img src="{{ asset('foto/'.$k->photo) }}" class="rounded-full mx-auto mb-4 w-32 h-32 object-cover">
                             <h4>{{ $k->name }}</h4>
                             <p class="text-sm text-gray-500">{{ $k->major_year }}</p>
