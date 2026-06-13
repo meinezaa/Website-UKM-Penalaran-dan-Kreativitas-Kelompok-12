@@ -12,6 +12,18 @@ class Team extends Model
     // Menentukan nama tabel di database secara eksplisit
     protected $table = 'teams';
 
-    // Menentukan kolom mana saja yang boleh diisi (opsional tapi bagus untuk keamanan)
+    // Menentukan kolom mana saja yang boleh diisi (Mass Assignment)
+    protected $fillable = [
+        'nama',
+        'jabatan',
+        'kategori',
+        'foto',
+        'instagram',
+        'email',
+        'linkedin',
+        'urutan'
+    ];
+
+    // Menentukan kolom yang tidak boleh diisi secara massal untuk keamanan
     protected $guarded = ['id'];
 }

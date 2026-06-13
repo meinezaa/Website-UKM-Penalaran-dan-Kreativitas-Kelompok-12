@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="../dist/output.css">
 </head>
 <body class="font-[Poppins] bg-[#fafafa] overflow-x-hidden">
@@ -114,14 +113,14 @@
             @foreach($bph_teams as $team)
                 <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 pb-14 flex flex-col items-center text-center relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:scale-105">
                     
-                    <img src="{{ asset('foto/' . $team['foto']) }}" 
-     alt="{{ $team['nama'] }}" 
-     class="w-64 h-64 rounded-2xl object-cover object-center border-4 border-gray-100 shadow-md bg-gray-100 mx-auto"
-     onerror="this.onerror=null; this.src='{{ asset('foto/Ketua Bidaang.jpg') }}';">
+                    <img src="{{ asset('foto/' . $team->foto) }}" 
+                         alt="{{ $team->nama }}" 
+                         class="w-64 h-64 rounded-2xl object-cover object-center border-4 border-gray-100 shadow-md bg-gray-100 mx-auto"
+                         onerror="this.onerror=null; this.src='{{ asset('foto/Ketua Bidaang.jpg') }}';">
                     
                     <div class="mt-6 flex flex-col justify-center">
-                        <h3 class="font-bold text-xl text-gray-800 px-2 line-clamp-2 min-h-[3.5rem] flex items-center justify-center">{{ $team['nama'] }}</h3>
-                        <p class="mt-1 text-[#8B1E1E] text-sm font-semibold uppercase tracking-wider">{{ $team['jabatan'] }}</p>
+                        <h3 class="font-bold text-xl text-gray-800 px-2 line-clamp-2 min-h-[3.5rem] flex items-center justify-center">{{ $team->nama }}</h3>
+                        <p class="mt-1 text-[#8B1E1E] text-sm font-semibold uppercase tracking-wider">{{ $team->jabatan }}</p>
                     </div>
                     
                     <div class="absolute bottom-0 left-0 w-full h-[5px] bg-[#8B1E1E]"></div>
@@ -131,34 +130,34 @@
     </section>
 
     <section class="max-w-7xl mx-auto px-6 py-8">
-    <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-[#8B1E1E] uppercase">Staf Ahli</h2>
-        <div class="w-16 h-1 bg-[#8B1E1E] mx-auto mt-3"></div>
-    </div>
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-[#8B1E1E] uppercase">Staf Ahli</h2>
+            <div class="w-16 h-1 bg-[#8B1E1E] mx-auto mt-3"></div>
+        </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 items-stretch">
-        @foreach($staf_teams as $staf)
-            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 pb-12 flex flex-col items-center text-center justify-between min-h-[320px] relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:scale-105">
-                
-                <img src="{{ asset('foto/' . $staf['foto']) }}" 
-                     alt="{{ $staf['nama'] }}" 
-                     class="w-36 h-36 rounded-2xl object-cover object-center border-4 border-gray-100 shadow-md bg-gray-100 mx-auto mt-2">
-                
-                <div class="mt-4 flex-grow flex flex-col justify-center w-full">
-                    <h3 class="font-bold text-lg text-gray-800 line-clamp-2 px-1 min-h-[3rem] flex items-center justify-center">{{ $staf['nama'] }}</h3>
-                    <p class="text-[#8B1E1E] text-sm font-medium mt-1">{{ $staf['jabatan'] }}</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 items-stretch">
+            @foreach($staf_teams as $staf)
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 pb-12 flex flex-col items-center text-center justify-between min-h-[320px] relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:scale-105">
+                    
+                    <img src="{{ asset('foto/' . $staf->foto) }}" 
+                         alt="{{ $staf->nama }}" 
+                         class="w-36 h-36 rounded-2xl object-cover object-center border-4 border-gray-100 shadow-md bg-gray-100 mx-auto mt-2">
+                    
+                    <div class="mt-4 flex-grow flex flex-col justify-center w-full">
+                        <h3 class="font-bold text-lg text-gray-800 line-clamp-2 px-1 min-h-[3rem] flex items-center justify-center">{{ $staf->nama }}</h3>
+                        <p class="text-[#8B1E1E] text-sm font-medium mt-1">{{ $staf->jabatan }}</p>
+                    </div>
+                    
+                    <div class="absolute bottom-0 left-0 w-full h-1.5 bg-[#8B1E1E]"></div>
                 </div>
-                
-                <div class="absolute bottom-0 left-0 w-full h-1.5 bg-[#8B1E1E]"></div>
-            </div>
-        @endforeach
-    </div>
-</section>
+            @endforeach
+        </div>
+    </section>
+
 </main>
 
 <footer class="bg-[#8B1E1E] text-white pt-16">
     <div class="max-w-7xl mx-auto px-6 md:px-20 grid md:grid-cols-3 gap-10 pb-10">
-
         <div class="md:border-r md:border-red-300 md:pr-10">
             <div class="w-24 h-24 overflow-hidden mb-5">
                 <img src="foto/logo.jpeg" class="w-full h-full object-cover scale-150">
@@ -208,7 +207,6 @@
                 <p>Universitas Pembangunan Nasional "Veteran" Jawa Timur<br>Jl. Raya Rungkut Madya, Gunung Anyar, Surabaya, Jawa Timur</p>
             </div>
         </div>
-
     </div>
 
     <div class="bg-[#6e1515] px-6 md:px-20 py-4 flex flex-col md:flex-row justify-between text-sm text-gray-200">

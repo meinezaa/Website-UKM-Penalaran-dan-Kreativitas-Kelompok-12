@@ -141,7 +141,7 @@
 
                         <li>
                             <a href="{{ url('/formulir') }}" class="relative {{ request()->is('formulir*') ? 'after:w-0' : 'after:w-0' }} after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">
-                                Relawan
+                                Dokumentasi
                             </a>
                         </li>
 
