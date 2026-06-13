@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use App\Models\Kegiatan;
-use Illuminate\Support\Facades\DB; // Ditambahkan untuk menghitung statistik data riil
+use Illuminate\Support\Facades\DB;
 
 class KegiatanController extends BaseController
 {
@@ -14,34 +14,15 @@ class KegiatanController extends BaseController
      */
     public function beranda()
     {
-        // 1. Menghitung jumlah relawan yang lolos seleksi (Status DITERIMA)
-        $jumlahRelawan = DB::table('pendaftaran_relawan')
-                    ->where('status_seleksi', 'DITERIMA')
-                    ->count();
+        $jumlahRelawan = DB::table('pendaftaran_relawan')->where('status_seleksi', 'DITERIMA')->count();
+        $jumlahSekolah = DB::table('mitra')->where('status_mitra', 'DISETUJUI')->count();
+        $jumlahSiswaTerlibat = DB::table('pendaftaran_relawan')->where('status_seleksi', 'DITERIMA')->count() * 15;
 
-        // 2. FIXED LOGIC: Menghitung total sekolah mitra riil yang disetujui oleh admin
-        // Menggunakan kolom 'status_mitra' sesuai dengan struktur query yang ada pada web.php Anda
-        $jumlahSekolah = DB::table('mitra')
-                            ->where('status_mitra', 'DISETUJUI')
-                            ->count();
+        if ($jumlahSiswaTerlibat == 0) { $jumlahSiswaTerlibat = 500; }
+        if ($jumlahSekolah == 0) { $jumlahSekolah = 1; }
 
-        // 3. Menghitung estimasi siswa yang terlibat
-        $jumlahSiswaTerlibat = DB::table('pendaftaran_relawan')
-                                    ->where('status_seleksi', 'DITERIMA')
-                                    ->count() * 15;
-
-        // Kondisi Fallback jika data database masih kosong (agar tampilan awal tidak 0)
-        if ($jumlahSiswaTerlibat == 0) {
-            $jumlahSiswaTerlibat = 500;
-        }
-        if ($jumlahSekolah == 0) {
-            $jumlahSekolah = 1; 
-        }
-
-        // Memastikan variabel dikirim ke view beranda
         return view('publik.beranda', compact('jumlahRelawan', 'jumlahSekolah', 'jumlahSiswaTerlibat'));
     }
-
 
     /**
      * 2. MENAMPILKAN DAFTAR SEMUA KEGIATAN AKTIF
@@ -49,39 +30,29 @@ class KegiatanController extends BaseController
     public function index(Request $request)
     {
         $query = Kegiatan::where('status_kegiatan', 'aktif');
-
-        if ($request->filled('kategori')) {
-            $query->where('kategori', $request->kategori);
-        }
-
-        $kegiatan = $query
-            ->orderBy('tanggal_pelaksanaan', 'asc')
-            ->get();
+        if ($request->filled('kategori')) { $query->where('kategori', $request->kategori); }
+        $kegiatan = $query->orderBy('tanggal_pelaksanaan', 'asc')->get();
 
         return view('publik.kegiatan', compact('kegiatan'));
     }
 
-    // 3. MENAMPILKAN HALAMAN DETAIL PROGRAM KEGIATAN
+    /**
+     * 3. MENAMPILKAN HALAMAN DETAIL PROGRAM KEGIATAN
+     */
     public function detail($id)
     {
         $kegiatan = Kegiatan::findOrFail($id);
-
         return view('publik.detail_kegiatan', compact('kegiatan'));
     }
 
-    // HALAMAN DOKUMENTASI
+    /**
+     * HALAMAN DOKUMENTASI
+     */
     public function dokumentasi()
     {
-        $kegiatan = Kegiatan::with('dokumentasi')
-            ->orderBy('tanggal_pelaksanaan', 'desc')
-            ->get();
-
+        $kegiatan = Kegiatan::with('dokumentasi')->orderBy('tanggal_pelaksanaan', 'desc')->get();
         return view('publik.relawan', compact('kegiatan'));
     }
-
-    /* ========================================================================= */
-    /* FITUR TAMBAHAN: MANAGEMENT INPUT & EDIT UNTUK ADMIN (SINKRONISASI IMAGE)  */
-    /* ========================================================================= */
 
     /**
      * 4. MENAMPILKAN DAFTAR KEGIATAN DI HALAMAN ADMIN
@@ -103,13 +74,10 @@ class KegiatanController extends BaseController
         ]);
 
         $nama_file = null;
-
         if ($request->hasFile('foto_kegiatan')) {
             $file = $request->file('foto_kegiatan');
             $nama_file = time() . '_' . $file->getClientOriginalName();
-            
-            // Pindahkan file fisik ke storage/app/public/
-            $file->storeAs('public', $nama_file);
+            $file->move(public_path('images'), $nama_file);
         }
 
         Kegiatan::create([
@@ -126,33 +94,47 @@ class KegiatanController extends BaseController
             'deskripsi_detail'     => $request->deskripsi_detail,
             'detail_aktivitas'     => $request->detail_aktivitas,
             'status_kegiatan'      => $request->status_kegiatan ?? 'aktif',
-            'foto_kegiatan'        => $nama_file, // Menyimpan string nama file unik ke DB
+            'foto_kegiatan'        => $nama_file,
         ]);
 
         return redirect('/admin/kelola-kegiatan')->with('pesan', 'Kegiatan baru berhasil disimpan!');
     }
 
     /**
-     * 6. MEMPROSES UPDATE/EDIT DATA KEGIATAN (+ FORMAT VALIDASI GAMBAR LAMA)
+     * 6. MENAMPILKAN HALAMAN FORM EDIT KEGIATAN (FIXED)
+     */
+    public function edit($id)
+    {
+        if (!session('id_user') || strtolower(session('role')) !== 'admin') {
+            return redirect('/login')->withErrors(['login_error' => 'Akses ditolak! Sesi Anda berakhir atau Anda bukan Admin.']);
+        }
+
+        $kegiatan = Kegiatan::where('id_kegiatan', $id)->first();
+        if (!$kegiatan) {
+            return redirect('/admin/kelola-kegiatan')->with('pesan', 'Data kegiatan tidak ditemukan!');
+        }
+
+        return view('admin.edit_kegiatan', compact('kegiatan'));
+    }
+
+    /**
+     * 7. MEMPROSES UPDATE DATA KEGIATAN
      */
     public function update(Request $request, $id)
     {
-        $kegiatan = Kegiatan::findOrFail($id);
+        $kegiatan = Kegiatan::where('id_kegiatan', $id)->first();
+        if (!$kegiatan) { return redirect('/admin/kelola-kegiatan')->with('pesan', 'Data tidak ditemukan!'); }
 
         $request->validate([
             'nama_kegiatan' => 'required',
             'foto_kegiatan' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        // Gunakan foto lama sebagai default jika tidak upload foto baru
         $nama_file = $kegiatan->foto_kegiatan;
-
         if ($request->hasFile('foto_kegiatan')) {
             $file = $request->file('foto_kegiatan');
             $nama_file = time() . '_' . $file->getClientOriginalName();
-            
-            // Pindahkan file fisik baru ke storage/app/public/
-            $file->storeAs('public', $nama_file);
+            $file->move(public_path('images'), $nama_file);
         }
 
         $kegiatan->update([

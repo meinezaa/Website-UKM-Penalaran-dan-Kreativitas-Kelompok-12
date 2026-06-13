@@ -15,7 +15,6 @@
         body { font-family: 'Poppins', sans-serif; background-color: #F8FAFC; margin: 0; padding: 0; color: #1E293B; }
         .main-container { max-w: 1200px; margin: 0 auto; padding: 0 24px; }
         
-        /* Mengamankan Jumbotron agar pas berada di bawah navbar */
         .jumbotron-section {
             padding-top: 100px; 
             padding-bottom: 40px;
@@ -101,6 +100,7 @@
 
     <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
         <div class="flex items-center justify-between px-6 py-0.5 text-white">
+
             <div class="flex items-center">
                 <a href="{{ url('/') }}" class="overflow-hidden">
                     <img src="{{ asset('foto/logo.jpeg') }}" alt="Logo UPN Mengajar" class="w-16 scale-125">
@@ -138,6 +138,7 @@
 
                         <li>
                             <a href="{{ url('/relawan') }}" class="relative {{ request()->is('relawan*') ? 'after:w-0' : 'after:w-0' }} after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+
                                 Dokumentasi
                             </a>
                         </li>
@@ -154,9 +155,12 @@
 
                 <div class="relative group">
                     @if (session('id_user'))
-                        <a href="#" class="hover:text-red-400 transition-all duration-300">
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="hover:text-red-400 transition-all duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                         </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                         <div class="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-sm text-white text-[11px] px-4 py-2 opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap rounded-lg shadow-2xl border border-white/10">Keluar</div>
                     @else
                         <a href="{{ url('/login') }}" class="hover:text-gray-300 transition-all duration-300">
@@ -165,6 +169,7 @@
                         <div class="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-sm text-white text-[11px] px-4 py-2 opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap rounded-lg shadow-2xl border border-white/10">Masuk / Daftar</div>
                     @endif
                 </div>
+
             </div>
         </div>
     </header>
@@ -202,11 +207,11 @@
 
         <div id="container-kegiatan" class="grid-kegiatan">
             
-            {{-- KATEGORI: BUKA --}}
+            {{-- DATA FILTER: REGISTRASI DIBUKA --}}
             @foreach($kegiatanBuka as $keg)
                 <div class="card-kegiatan" data-status="buka">
                     <div class="img-container">
-                        <img src="{{ asset('storage/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}" onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=No+Image';">
+                        <img src="{{ asset('foto/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}">
                         <span class="badge-status bg-buka">BUKA</span>
                     </div>
                     <div class="card-body">
@@ -227,11 +232,11 @@
                 </div>
             @endforeach
 
-            {{-- KATEGORI: BERJALAN --}}
+            {{-- DATA FILTER: SEDANG BERLANGSUNG --}}
             @foreach($kegiatanBerjalan as $keg)
                 <div class="card-kegiatan" data-status="berjalan">
                     <div class="img-container">
-                        <img src="{{ asset('storage/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}" onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=No+Image';">
+                        <img src="{{ asset('foto/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}">
                         <span class="badge-status bg-berjalan">AKTIF</span>
                     </div>
                     <div class="card-body">
@@ -252,11 +257,11 @@
                 </div>
             @endforeach
 
-            {{-- KATEGORI: SELESAI --}}
+            {{-- DATA FILTER: SUDAH SELESAI --}}
             @foreach($kegiatanSelesai as $keg)
                 <div class="card-kegiatan" data-status="selesai">
                     <div class="img-container">
-                        <img src="{{ asset('storage/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}" onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=No+Image';">
+                        <img src="{{ asset('foto/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}">
                         <span class="badge-status bg-selesai">SELESAI</span>
                     </div>
                     <div class="card-body">
@@ -289,7 +294,7 @@
         <div class="max-w-7xl mx-auto px-6 md:px-20 grid md:grid-cols-3 gap-10 pb-10">
             <div class="md:border-r md:border-red-300 md:pr-10">
                 <div class="w-24 h-24 overflow-hidden mb-5">
-                    <img src="{{ asset('foto/logo.jpeg') }}" class="w-full h-full object-cover scale-150">
+                    <img src="{{ asset('foto/logo.jpeg') }}" class="w-full h-full object-cover scale-150" alt="Logo">
                 </div>
                 <h4 class="font-semibold mb-3 text-lg">Menu</h4>
                 <ul class="space-y-2 text-sm">
@@ -317,15 +322,15 @@
                 <h4 class="font-semibold mb-4 text-lg">Contact Us</h4>
                 <div class="space-y-3 text-sm">
                     <div class="flex items-center gap-2">
-                        <img src="{{ asset('foto/email.png') }}" class="w-5 h-6">
+                        <img src="{{ asset('foto/email.png') }}" class="w-5 h-6" alt="Email">
                         <a href="mailto:upnmengajar.jt@gmail.com" class="hover:underline">upnmengajar.jt@gmail.com</a>
                     </div>
                     <div class="flex items-center gap-2">
-                        <img src="{{ asset('foto/instagram.png') }}" class="w-5 h-6">
+                        <img src="{{ asset('foto/instagram.png') }}" class="w-5 h-6" alt="Instagram">
                         <a href="https://instagram.com/upnmengajar.jt" class="hover:underline">@upnmengajar.jt</a>
                     </div>
                     <div class="flex items-center gap-2">
-                        <img src="{{ asset('foto/whatsapp.png') }}" class="w-5 h-6">
+                        <img src="{{ asset('foto/whatsapp.png') }}" class="w-5 h-6" alt="Whatsapp">
                         <a href="https://wa.me/6289699808453" class="hover:underline">089699808453 (Nabila)</a>
                     </div>
                 </div>
@@ -386,10 +391,10 @@
             cards.forEach(card => {
                 const cardStatus = card.getAttribute('data-status');
                 if (status === 'semua' || cardStatus === status) {
-                    card.style.display = 'flex'; 
+                    card.style.display = 'flex';
                     visibleCount++;
                 } else {
-                    card.style.display = 'none'; 
+                    card.style.display = 'none';
                 }
             });
 
@@ -401,7 +406,11 @@
             }
         }
 
-        window.addEventListener('DOMContentLoaded', () => { updateSlidingBg(true); });
+        // Panggil filterKegiatan('semua') di awal agar inisialisasi javascript menyinkronkan seluruh card
+        window.addEventListener('DOMContentLoaded', () => { 
+            updateSlidingBg(true); 
+            filterKegiatan('semua');
+        });
         window.addEventListener('resize', () => { updateSlidingBg(false); });
     </script>
 </body>
