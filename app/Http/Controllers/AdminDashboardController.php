@@ -49,7 +49,6 @@ class AdminDashboardController extends BaseController
                         ->orderBy('id_pendaftaran', 'desc')
                         ->get();
 
-<<<<<<< HEAD
         // 4. KIRIM DATA KE VIEW BLADE
 return view('admin.dashboard_admin', compact(
     'count_relawan',
@@ -61,19 +60,6 @@ return view('admin.dashboard_admin', compact(
     }
 
     
-    // LOGIKA HAPUS KEGIATAN
-=======
-        // 5. KIRIM DATA KE VIEW BLADE
-        // REVISI: Mengembalikan ke 'admin.dashboard_admin' agar sinkron dengan struktur file view admin kamu
-        return view('admin.dashboard_admin', compact(
-            'count_relawan', 
-            'count_program', 
-            'count_baru', 
-            'kegiatan', 
-            'pendaftar'
-        ));
-    }
-
     // Ekspor data relawan ke excel (CSV)
     public function eksporExcel()
 {
@@ -152,7 +138,6 @@ public function eksporPdf()
     // karena sudah digantikan oleh sistem cek session manual di dalam fungsi index() di atas.
 
     // 6. LOGIKA HAPUS KEGIATAN
->>>>>>> edc5a8a65686b80dcea45f80e13548fb0142bb3d
     public function destroyKegiatan($id)
     {
         // Proteksi tambahan sebelum menghapus data

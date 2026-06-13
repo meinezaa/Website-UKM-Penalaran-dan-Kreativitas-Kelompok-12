@@ -20,22 +20,8 @@ use App\Models\Program;
 
 // ==================== ROUTE PUBLIK ====================
 
-Route::get('/', function () {
-    $jumlahRelawan = DB::table('pendaftaran_relawan')->count();
-
-    $jumlahSekolah = DB::table('kegiatan')
-        ->distinct('lokasi')
-        ->count('lokasi');
-
-    $jumlahSiswaTerlibat = 0;
-
-    return view('publik.beranda', compact(
-        'jumlahRelawan',
-        'jumlahSekolah',
-        'jumlahSiswaTerlibat'
-    ));
-})->name('beranda');
-
+// Route Beranda (Menggunakan KegiatanController)
+Route::get('/', [KegiatanController::class, 'beranda'])->name('beranda');
 Route::get('/beranda', [KegiatanController::class, 'beranda']);
 
 // Halaman Utama UKM (Menampilkan Sosmed, Visi, Misi, BPH, Divisi & Proker)
@@ -74,6 +60,8 @@ Route::get('/kegiatan', function () {
     return view('publik.kegiatan', compact('kegiatanBuka', 'kegiatanBerjalan', 'kegiatanSelesai', 'kegiatanTutup'));
 });
 
+Route::get('/relawan', [KegiatanController::class, 'dokumentasi'])->name('relawan');
+
 // Detail Agenda Kegiatan untuk Publik
 Route::get('/agenda/{id}', [KegiatanPublikController::class, 'showDetailPublik'])->name('agenda.detail');
 
@@ -85,12 +73,7 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.proses');
 Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
 
-// =========================================================================
 // ==================== ROUTE REGISTRASI RELAWAN & MITRA ===================
-// =========================================================================
-Route::get('/relawan', function () {
-    return view('publik.relawan'); 
-})->name('relawan');
 
 Route::get('/formulir-mitra', function () {
     return view('publik.formulir_mitra');
@@ -104,7 +87,7 @@ Route::post('/mitra/daftar', [KegiatanPublikController::class, 'submitMitra'])->
 Route::group([], function () {
     
     // Dashboard Utama Admin
-    Route::get('/admin/dashboard_admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     
     // 1. Kelola Kegiatan (Tampil Data)
     Route::get('/admin/kelola-kegiatan', function () {
@@ -488,4 +471,4 @@ Route::group([], function () {
         return redirect()->back()->with('pesan', 'Anggota tim dihapus!');
     })->name('admin.kelola_tim.destroy');
 
-});
+}); // <-- Bagian ini tadi kurang satu penutup rute grup, sekarang sudah diperbaiki.
