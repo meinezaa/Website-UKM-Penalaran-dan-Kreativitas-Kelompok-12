@@ -101,7 +101,6 @@
 
     <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
         <div class="flex items-center justify-between px-6 py-0.5 text-white">
-
             <div class="flex items-center">
                 <a href="{{ url('/') }}" class="overflow-hidden">
                     <img src="{{ asset('foto/logo.jpeg') }}" alt="Logo UPN Mengajar" class="w-16 scale-125">
@@ -109,10 +108,8 @@
             </div>
 
             <div class="flex items-center gap-12">
-
                 <nav>
                     <ul class="flex gap-12 font-poppins font-semibold">
-                        
                         <li>
                             <a href="{{ url('/') }}" class="relative {{ request()->is('/') ? 'after:w-full' : 'after:w-0' }} after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">
                                 Home
@@ -141,7 +138,7 @@
 
                         <li>
                             <a href="{{ url('/formulir') }}" class="relative {{ request()->is('formulir*') ? 'after:w-0' : 'after:w-0' }} after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">
-                                Relawan
+                                Dokumentasi
                             </a>
                         </li>
 
@@ -152,7 +149,6 @@
                             </a>
                         </li>
                         @endif
-
                     </ul>
                 </nav>
 
@@ -169,7 +165,6 @@
                         <div class="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-sm text-white text-[11px] px-4 py-2 opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap rounded-lg shadow-2xl border border-white/10">Masuk / Daftar</div>
                     @endif
                 </div>
-
             </div>
         </div>
     </header>
@@ -207,10 +202,11 @@
 
         <div id="container-kegiatan" class="grid-kegiatan">
             
+            {{-- KATEGORI: BUKA --}}
             @foreach($kegiatanBuka as $keg)
                 <div class="card-kegiatan" data-status="buka">
                     <div class="img-container">
-                        <img src="{{ asset('foto/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}">
+                        <img src="{{ asset('storage/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}" onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=No+Image';">
                         <span class="badge-status bg-buka">BUKA</span>
                     </div>
                     <div class="card-body">
@@ -231,10 +227,11 @@
                 </div>
             @endforeach
 
+            {{-- KATEGORI: BERJALAN --}}
             @foreach($kegiatanBerjalan as $keg)
                 <div class="card-kegiatan" data-status="berjalan">
                     <div class="img-container">
-                        <img src="{{ asset('foto/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}">
+                        <img src="{{ asset('storage/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}" onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=No+Image';">
                         <span class="badge-status bg-berjalan">AKTIF</span>
                     </div>
                     <div class="card-body">
@@ -255,10 +252,11 @@
                 </div>
             @endforeach
 
+            {{-- KATEGORI: SELESAI --}}
             @foreach($kegiatanSelesai as $keg)
                 <div class="card-kegiatan" data-status="selesai">
                     <div class="img-container">
-                        <img src="{{ asset('foto/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}">
+                        <img src="{{ asset('storage/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}" onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=No+Image';">
                         <span class="badge-status bg-selesai">SELESAI</span>
                     </div>
                     <div class="card-body">
@@ -380,25 +378,21 @@
             const buttons = document.querySelectorAll('.tab-link');
             let visibleCount = 0;
 
-            // Perbarui class active tombol filter
             buttons.forEach(btn => btn.classList.remove('active'));
             document.getElementById(`btn-${status}`).classList.add('active');
 
-            // Jalankan animasi slider kapsul bergeser
             updateSlidingBg(false);
 
-            // Saring kartu kegiatan dengan memanipulasi display inline CSS murni
             cards.forEach(card => {
                 const cardStatus = card.getAttribute('data-status');
                 if (status === 'semua' || cardStatus === status) {
-                    card.style.display = 'flex'; // tampilkan kartu dengan layout rata
+                    card.style.display = 'flex'; 
                     visibleCount++;
                 } else {
-                    card.style.display = 'none'; // sembunyikan total kartu
+                    card.style.display = 'none'; 
                 }
             });
 
-            // Tampilkan atau sembunyikan pesan kosong jika tidak ada data
             const noDataMsg = document.getElementById('no-data-msg');
             if (visibleCount === 0) { 
                 noDataMsg.style.display = 'block'; 

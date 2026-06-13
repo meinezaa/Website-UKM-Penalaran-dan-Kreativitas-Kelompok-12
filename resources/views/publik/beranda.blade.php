@@ -191,7 +191,7 @@ class="w-16 scale-125">
       </a>
 
       <a href="{{ url('/upnmengajar') }}"
-      class="border-2 border-white text-white font-semibold px-10 py-3 rounded-full hover:bg-white hover:text-red-700">
+      class="bg-white text-red-700 px-6 py-3 rounded-full border border-white hover:bg-transparent hover:text-white transition">
       Tentang Program
       </a>
 
@@ -202,7 +202,7 @@ class="w-16 scale-125">
 
  <div class="absolute right-24 top-[64%] -translate-y-1/2 z-20">
   <button onclick="openVideo()" 
-  class="bg-white w-20 h-20 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition">
+  class="bg-white w-20 h-20 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition focus:outline-none">
 
     <svg xmlns="http://www.w3.org/2000/svg"
       class="w-14 h-14 pr-2 text-red-600 ml-1"
@@ -221,79 +221,62 @@ class="fixed inset-0 bg-black/70 flex items-center justify-center opacity-0 poin
   <div id="videoBox"
   class="relative w-[800px] max-w-[90%] scale-90 transition-all duration-300">
 
-    <!-- tombol close -->
     <button onclick="closeVideo()"
-    class="absolute -top-10 right-0 text-white text-3xl">
+    class="absolute -top-10 right-0 text-white text-3xl hover:text-red-500 transition">
       ✕
     </button>
 
     <iframe
       id="videoFrame"
-      class="w-full h-[450px] rounded-lg"
-      src="https://www.youtube.com/embed/bxPMBFV0df8"
+      class="w-full h-[450px] rounded-lg shadow-2xl"
+      src=""
       frameborder="0"
+      allow="autoplay"
       allowfullscreen>
     </iframe>
 
   </div>
-
 </div>
+
 
 <!-- Statistik Program -->
 <section class="relative -mt-20 z-20 px-6 md:px-8 lg:px-20">
   
   <div class="bg-white rounded-2xl shadow-xl grid grid-cols-2 md:grid-cols-4 overflow-hidden">
 
-<!-- Relawan -->
-<div class="flex items-center gap-4 py-4 px-6 border-r border-gray-200">
-
-  <!-- Icon -->
-  <div class="w-12 h-12 flex items-center justify-center bg-red-100 rounded-full">
-    <img src="./foto/icon-relawan.png" class="w-100 h-100">
-  </div>
-
-  <!-- Text -->
-  <div>
-    <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahRelawan }}">0</h3>
+    <div class="flex items-center gap-4 py-4 px-6 border-r border-b md:border-b-0 border-gray-200">
+      <div class="w-12 h-12 flex items-center justify-center bg-red-100 rounded-full flex-shrink-0">
+        <img src="./foto/icon-relawan.png" class="w-6 h-6">
+      </div>
+      <div>
+        <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins"> {{ $jumlahRelawan }}</h3>
         <p class="text-gray-600 font-poppins text-sm">Relawan</p>
-  </div>
+      </div>
+    </div>
 
-</div>
-
-<!-- Sekolah -->
-<div class="flex items-center gap-4 py-4 px-6 border-r border-gray-200">
-
-<div class="w-12 h-12 pt-2 flex items-center justify-center bg-red-100 rounded-full">
-<img src="./foto/icon-mitra.png" class="w-1000 h-10000">
-</div>
-
-<div>
-<h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahSekolah }}">0</h3>
+    <div class="flex items-center gap-4 py-4 px-6 border-r border-b md:border-b-0 border-gray-200">
+      <div class="w-12 h-12 flex items-center justify-center bg-red-100 rounded-full flex-shrink-0">
+        <img src="./foto/icon-mitra.png" class="w-6 h-6">
+      </div>
+      <div>
+        <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins" data-target="{{ $jumlahSekolah }}"> {{ $jumlahSekolah }}</h3>
         <p class="text-gray-600 font-poppins text-sm">Sekolah Mitra</p>
-</div>
-
-</div>
-
-<!-- Siswa -->
-<div class="flex items-center gap-4 py-4 px-6 border-r border-gray-200">
-
-<div class="w-12 h-12 flex items-center justify-center bg-red-100 rounded-full">
-<img src="./foto/icon-siswa.png" class="w-1000 h-10000">
-</div>
-
-<div>
-<h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins counter" data-target="{{ $jumlahSiswaTerlibat }}">0</h3>
+      </div>
+    </div> <div class="flex items-center gap-4 py-4 px-6 border-r border-gray-200">
+      <div class="w-12 h-12 flex items-center justify-center bg-red-100 rounded-full flex-shrink-0">
+        <img src="./foto/icon-siswa.png" class="w-6 h-6">
+      </div>
+      <div>
+        <h3 class="text-2xl md:text-3xl font-bold text-red-700 font-poppins"> {{ $jumlahSiswaTerlibat }}</h3>
         <p class="text-gray-600 font-poppins text-sm">Siswa Terlibat</p>
-</div>
+      </div>
+    </div>
 
-</div>
-
-    <!-- Tahun Program -->
-    <div class="text-center py-4 px-6 bg-red-700 text-white leading-tight">
-  <h3 class="text-3xl md:text-4xl font-bold font-poppins counter" data-target="5">0</h3>
-  <p class="mt-1 font-poppins">Tahun Program</p>
-  <a href="daftar.html" class="block mt-1 underline">Jadi Relawan →</a>
-</div>
+    <div class="flex flex-col justify-center text-center md:text-left py-4 px-6 bg-red-700 text-white leading-tight min-h-full">
+      <h3 class="text-2xl md:text-3xl font-bold font-poppins ">5+</h3>
+      <p class="text-sm text-red-100 font-poppins mt-1">Tahun Program</p>
+      <a href="/relawan" class="text-xs block mt-1 underline hover:text-red-200 transition">Jadi Relawan →</a>
+    </div>
 
   </div>
 
@@ -742,28 +725,42 @@ counters.forEach(counter => {
 </script>
 
 <script>
+  // Taruh link Google Drive kamu di sini (Pastikan belakangnya berakhiran /preview)
+  const googleDriveUrl = "https://drive.google.com/file/d/1ODxlBBu6DGl6a-_yLPOzuCovqiC9uSmy/preview";
 
-function openVideo() {
-  const modal = document.getElementById("videoModal");
-  const box = document.getElementById("videoBox");
+  const modal = document.getElementById('videoModal');
+  const box = document.getElementById('videoBox');
+  const frame = document.getElementById('videoFrame');
 
-  modal.classList.remove("opacity-0","pointer-events-none");
-  box.classList.remove("translate-y-10");
+  function openVideo() {
+    frame.setAttribute('src', googleDriveUrl); // Pasang video Drive
+    
+    // Munculkan modal dengan transisi halus Tailwind
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+    modal.classList.add('opacity-100');
+    
+    box.classList.remove('scale-90');
+    box.classList.add('scale-100');
+  }
 
-  document.getElementById("videoFrame").src =
-  "https://www.youtube.com/embed/bxPMBFV0df8";
-}
+  function closeVideo() {
+    // Sembunyikan modal kembali
+    modal.classList.remove('opacity-100');
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    
+    box.classList.remove('scale-100');
+    box.classList.add('scale-90');
+    
+    // Kosongkan src iframe agar video Google Drive langsung MATI & tidak bersuara di latar belakang
+    frame.setAttribute('src', '');
+  }
 
-function closeVideo() {
-  const modal = document.getElementById("videoModal");
-  const box = document.getElementById("videoBox");
-
-  modal.classList.add("opacity-0","pointer-events-none");
-  box.classList.add("translate-y-10");
-
-  document.getElementById("videoFrame").src = "";
-}
-
+  // Tambahan: Tutup modal otomatis jika user klik area hitam di luar video box
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+      closeVideo();
+    }
+  });
 </script>
 
 <script>
