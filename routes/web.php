@@ -109,26 +109,36 @@ Route::middleware([])->group(function () {
             return view('admin.edit_kegiatan', compact('kegiatan'));
         });
 
+        // ------------------ KELOLA KEGIATAN (SINKRONISASI JALUR GAMBAR) ------------------
+       // ------------------ KELOLA KEGIATAN (SINKRONISASI JALUR GAMBAR) ------------------
         Route::put('/edit-kegiatan/{id}', function (Request $request, $id) {
             if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
+            
+            // 1. Ambil data lama dari database
             $kegiatanLama = DB::table('kegiatan')->where('id_kegiatan', $id)->first();
+            if (!$kegiatanLama) { return redirect('/admin/kelola-kegiatan')->with('pesan', 'Data kegiatan tidak ditemukan!'); }
+
+            // Default gunakan foto lama jika tidak ada file baru yang diunggah
             $namaFoto = $kegiatanLama->foto_kegiatan;
 
+            // 2. Jika admin mengunggah file gambar baru
             if ($request->hasFile('foto_kegiatan')) {
                 $file = $request->file('foto_kegiatan');
+                
+                // Buat nama file murni (TANPA embel-embel teks folder 'kegiatan/' di depannya)
                 $namaFoto = time() . '_' . $file->getClientOriginalName();
-                $file->storeAs('public/kegiatan', $namaFoto);
-                $namaFoto = 'kegiatan/' . $namaFoto;
+                
+                // Simpan langsung di dalam folder 'public' agar sejajar dengan asset('storage/' . $row->foto_kegiatan)
+                $file->storeAs('public', $namaFoto);
             }
 
+            // 3. Update data ke database secara aman (SELAIN GAMBAR, TANGGAL & TEKS SEKARANG IKUT DISIMPAN)
+            // 3. Update data ke database secara aman (Hanya kolom yang PASTI ada di DB)
             DB::table('kegiatan')->where('id_kegiatan', $id)->update([
                 'nama_kegiatan'       => $request->nama_kegiatan,
                 'kategori'            => $request->kategori,
-                'pendaftaran_dibuka'  => $request->pendaftaran_dibuka,
                 'batas_registrasi'    => $request->batas_registrasi,
-                'pengumuman_seleksi'  => $request->pengumuman_seleksi,
                 'tanggal_pelaksanaan' => $request->tanggal_pelaksanaan,
-                'divisi_dibutuhkan'   => $request->divisi_dibutuhkan,
                 'lokasi'              => $request->lokasi,
                 'jam_kegiatan'        => $request->jam_kegiatan,
                 'alamat_lengkap'      => $request->alamat_lengkap,

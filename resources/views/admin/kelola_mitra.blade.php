@@ -3,219 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manajemen Mitra - UPN Mengajar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=600;700;800&family=Inter:wght=400;500;600;700&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Manajemen Kemitraan - UPN Mengajar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         "primary": "#bb0016",
-                        "primary-light": "#fff5f5",
-                        "primary-hover": "#990012",
-                        "neutral-bg": "#f8fafc",
+                        "primary-container": "#e32128",
+                        "surface": "#f9f9f9",
+                        "on-surface": "#1a1c1c",
+                        "surface-container-low": "#f3f3f3",
+                        "surface-container-lowest": "#ffffff",
                     },
-                    fontFamily: { headline: ["Plus Jakarta Sans"], body: ["Inter"] }
+                    fontFamily: { headline: ["Manrope"], body: ["Inter"] }
                 }
             }
         }
     </script>
-    <style> body { font-family: 'Inter', sans-serif; } </style>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Inter', sans-serif; min-height: 100vh; }
+    </style>
 </head>
-<body class="bg-neutral-bg text-slate-900 flex min-h-screen relative">
+<body class="bg-surface text-on-surface flex">
 
-<aside class="w-64 bg-white min-h-screen border-r border-gray-100 flex flex-col justify-between p-6 fixed top-0 left-0 bottom-0 z-50">
-    <div>
-        <div class="flex items-center gap-3 px-2 mb-8">
-            <span class="text-red-600 font-bold text-xl tracking-wider Headline uppercase tracking-tighter">UPN MENGAJAR</span>
-        </div>
-
-        <div class="bg-gray-50 rounded-2xl p-4 flex items-center gap-4 mb-8 border border-gray-100">
-            <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-600 border border-red-100">
-                <span class="material-symbols-outlined text-2xl">person</span>
-            </div>
-            <div>
-                <h4 class="font-bold text-sm text-gray-800">{{ session('nama_lengkap', 'Admin1') }}</h4>
-                <p class="text-xs text-gray-400 font-medium uppercase tracking-wider">{{ session('role', 'SUPER ADMIN') }}</p>
-            </div>
-        </div>
-
-        <nav class="space-y-2">
-            <a href="/admin/dashboard" 
-               class="flex items-center gap-4 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 
-               {{ Request::is('admin/dashboard*') ? 'bg-red-600 text-white shadow-md shadow-red-100' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="material-symbols-outlined">dashboard</span>
-                <span>Dashboard</span>
-            </a>
-
-            <a href="/admin/data-relawan" 
-               class="flex items-center gap-4 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 
-               {{ Request::is('admin/data-relawan*') || Request::is('admin/kelola-relawan*') ? 'bg-red-600 text-white shadow-md shadow-red-100' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="material-symbols-outlined">group</span>
-                <span>Data Relawan</span>
-            </a>
-
-            <a href="/admin/kelola-kegiatan" 
-               class="flex items-center gap-4 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 
-               {{ Request::is('admin/kelola-kegiatan*') ? 'bg-red-600 text-white shadow-md shadow-red-100' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="material-symbols-outlined">calendar_today</span>
-                <span>Kegiatan</span>
-            </a>
-
-            <a href="/admin/kelola-dokumentasi" 
-               class="flex items-center gap-4 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 
-               {{ Request::is('admin/kelola-dokumentasi*') ? 'bg-red-600 text-white shadow-md shadow-red-100' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="material-symbols-outlined">description</span>
-                <span>Kelola Dokumentasi</span>
-            </a>
-
-            <a href="/admin/kelola-mitra" 
-               class="flex items-center gap-4 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 
-               {{ Request::is('admin/kelola-mitra*') || Request::is('admin/kelola-mitra') ? 'bg-red-600 text-white shadow-md shadow-red-100' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="material-symbols-outlined">handshake</span>
-                <span>Data Kemitraan</span>
-            </a>
-        </nav>
+<aside class="h-screen w-72 fixed left-0 top-0 bottom-0 z-50 p-6 flex flex-col bg-surface-container-lowest border-r shadow-[20px_0_40px_rgba(0,0,0,0.02)]">
+    <div class="mb-10 px-4">
+        <span class="font-headline font-extrabold text-primary text-2xl tracking-tighter uppercase">UPN Mengajar</span>
     </div>
 
-    <div class="px-2">
-        <a href="/logout" 
-           class="flex items-center gap-4 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl font-semibold text-sm transition-all duration-200">
-            <span class="material-symbols-outlined">logout</span>
-            <span>Logout</span>
+    <div class="flex items-center gap-4 px-4 py-6 mb-6 rounded-xl bg-surface-container-low">
+        <div class="w-12 h-12 rounded-full bg-red-50 text-primary flex items-center justify-center font-bold">
+            <span class="material-symbols-outlined">person</span>
+        </div>
+        <div>
+            <p class="font-body font-semibold text-on-surface text-sm leading-none">{{ session('nama_lengkap') ?? 'Admin Utama' }}</p>
+            <p class="text-[10px] text-gray-400 uppercase tracking-wider mt-1">Super Admin</p>
+        </div>
+    </div>
+
+    <nav class="flex-1 space-y-2 overflow-y-auto">
+        <a href="/admin/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm transition-all {{ Request::is('admin/dashboard*') ? 'bg-primary text-white shadow-md shadow-red-200' : 'text-gray-600 hover:bg-surface-container-low' }}">
+            <span class="material-symbols-outlined text-[20px]">dashboard</span> Dashboard
         </a>
+        <a href="/admin/data-relawan" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm transition-all {{ Request::is('admin/data-relawan*') || Request::is('admin/kelola-relawan*') ? 'bg-primary text-white shadow-md shadow-red-200' : 'text-gray-600 hover:bg-surface-container-low' }}">
+            <span class="material-symbols-outlined text-[20px]">group</span> Data Relawan
+        </a>
+        <a href="/admin/kelola-kegiatan" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm transition-all {{ Request::is('admin/kelola-kegiatan*') || Request::is('admin/edit-kegiatan*') ? 'bg-primary text-white shadow-md shadow-red-200' : 'text-gray-600 hover:bg-surface-container-low' }}">
+            <span class="material-symbols-outlined text-[20px]">assignment</span> Kegiatan
+        </a>
+        <a href="/admin/kelola-dokumentasi" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm transition-all {{ Request::is('admin/kelola-dokumentasi*') ? 'bg-primary text-white shadow-md shadow-red-200' : 'text-gray-600 hover:bg-surface-container-low' }}">
+            <span class="material-symbols-outlined text-[20px]">image</span> Kelola Dokumentasi
+        </a>
+        <a href="/admin/kelola-mitra" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm transition-all {{ Request::is('admin/kelola-mitra*') ? 'bg-primary text-white shadow-md shadow-red-200' : 'text-gray-600 hover:bg-surface-container-low' }}">
+            <span class="material-symbols-outlined text-[20px]">handshake</span> Data Kemitraan
+        </a>
+
+        <div class="pt-4 pb-1 px-4 font-headline font-bold text-[10px] uppercase tracking-widest text-gray-400 border-t border-gray-100 mt-4">
+            Konten Dropdown Tentang
+        </div>
+
+        <a href="/admin/kelola-ukm" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-gray-600 hover:bg-surface-container-low transition-all">
+            <span class="material-symbols-outlined text-[20px]">hub</span> Kelola Info UKM
+        </a>
+        <a href="/admin/kelola-upnmengajar" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-gray-600 hover:bg-surface-container-low transition-all">
+            <span class="material-symbols-outlined text-[20px]">description</span> Kelola Program Kerja
+        </a>
+        <a href="/admin/kelola-tim" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-gray-600 hover:bg-surface-container-low transition-all">
+            <span class="material-symbols-outlined text-[20px]">badge</span> Kelola Tim
+        </a>
+    </nav>
+
+    <div class="pt-6 border-t border-surface-container">
+        <form action="/logout" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin keluar?')">
+            @csrf
+            <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm text-red-600 hover:bg-red-50 transition-all group text-left cursor-pointer">
+                <span class="material-symbols-outlined text-[20px] group-hover:rotate-12 transition-transform">logout</span> Logout
+            </button>
+        </form>
     </div>
 </aside>
 
-<main class="flex-1 ml-64 p-12 overflow-x-hidden min-h-screen">
-    
-    <header class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-10">
-        <div>
-            <h1 class="font-headline font-extrabold text-3xl text-slate-900 tracking-tight">Manajemen Pengajuan Mitra</h1>
-            <p class="text-sm text-slate-400 mt-1">Tinjau, filter, dan kelola berkas kerja sama dari calon instansi/lembaga mitra.</p>
+<main class="flex-1 ml-72 min-h-screen pb-20">
+    <header class="w-full sticky top-0 z-40 bg-white/80 backdrop-blur-md flex justify-between items-center px-8 py-4 border-b">
+        <h1 class="font-headline font-bold text-2xl text-primary">Manajemen Pengajuan Mitra</h1>
+        <div class="flex items-center gap-4">
+            <a href="{{ url('/') }}" class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-bold text-gray-700 transition-all">
+                <span class="material-symbols-outlined text-lg">home</span> Beranda
+            </a>
         </div>
     </header>
 
-    @if(session('pesan'))
-        <div class="bg-emerald-50 border border-emerald-100 text-emerald-800 px-6 py-4 rounded-2xl text-sm font-semibold mb-8 flex items-center gap-3">
-            <span class="material-symbols-outlined text-emerald-600">check_circle</span>
-            {{ session('pesan') }}
-        </div>
-    @endif
+    <div class="p-8 space-y-8">
+        
+        @if(session('pesan'))
+            <div class="p-4 text-sm text-green-800 rounded-xl bg-green-50 border border-green-100 flex items-center gap-2" role="alert">
+                <span class="material-symbols-outlined text-lg">check_circle</span>
+                {{ session('pesan') }}
+            </div>
+        @endif
 
-    <section class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm mb-10">
-        <form action="/admin/kelola-mitra" method="GET" class="flex flex-col md:flex-row gap-5 items-end">
-            <div class="flex-1 space-y-2 w-full">
-                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest px-1 Headline">Cari Mitra</label>
-                <div class="relative flex items-center">
-                    <span class="material-symbols-outlined absolute left-4 text-slate-400">search</span>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Nama instansi atau penanggung jawab..." 
-                           class="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-transparent rounded-2xl focus:border-slate-200 focus:bg-white text-sm outline-none font-medium text-slate-800">
+        <section class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+            <form action="/admin/kelola-mitra" method="GET" class="flex flex-col md:flex-row gap-4 items-end">
+                <div class="flex-1 space-y-1.5 w-full">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1 font-headline">Cari Mitra</label>
+                    <div class="relative flex items-center">
+                        <span class="material-symbols-outlined absolute left-4 text-gray-400 text-[20px]">search</span>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Nama instansi atau penanggung jawab..." 
+                               class="w-full pl-12 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary focus:bg-white text-sm outline-none font-medium text-gray-800 transition-all">
+                    </div>
+                </div>
+
+                <div class="w-full md:w-64 space-y-1.5">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1 font-headline">Filter Status</label>
+                    <select name="status" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold cursor-pointer outline-none text-gray-700 focus:border-primary focus:ring-1 focus:ring-primary focus:bg-white transition-all">
+                        <option value="semua" {{ request('status') == 'semua' ? 'selected' : '' }}>Semua Status</option>
+                        <option value="PENDING" {{ request('status') == 'PENDING' ? 'selected' : '' }}>PENDING</option>
+                        <option value="DISETUJUI" {{ request('status') == 'DISETUJUI' ? 'selected' : '' }}>DISETUJUI</option>
+                        <option value="DITOLAK" {{ request('status') == 'DITOLAK' ? 'selected' : '' }}>DITOLAK</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="w-full md:w-auto bg-primary text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-red-700 transition-all flex items-center gap-2 justify-center shadow-md shadow-red-100 cursor-pointer">
+                    <span class="material-symbols-outlined text-lg">filter_alt</span> Terapkan Filter
+                </button>
+            </form>
+        </section>
+
+        <section class="space-y-4">
+            <h3 class="text-xl font-headline font-extrabold text-on-surface">Daftar Berkas Pengajuan</h3>
+            
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b">
+                            <tr class="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-headline">
+                                <th class="px-6 py-4">Detail Instansi</th>
+                                <th class="px-6 py-4">Kontak Resmi</th>
+                                <th class="px-6 py-4">Bentuk Kemitraan</th>
+                                <th class="px-6 py-4">Pesan Kolaborasi</th>
+                                <th class="px-6 py-4 text-center">Status</th>
+                                <th class="px-6 py-4 text-center">Tindakan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-sm font-body text-gray-700">
+                            @forelse($mitra as $row)
+                            <tr class="hover:bg-gray-50/80 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div class="font-bold text-on-surface text-base">{{ $row->nama_instansi }}</div>
+                                    <div class="text-xs text-gray-400 font-medium mt-0.5">PJ: {{ $row->nama_penanggung_jawab }}</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="font-semibold text-gray-700 leading-tight">{{ $row->email_instansi }}</div>
+                                    <div class="text-xs text-gray-400 mt-1">{{ $row->no_hp }}</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="bg-gray-100 text-gray-600 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded">
+                                        {{ $row->jenis_kemitraan }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 max-w-xs truncate text-gray-500" title="{{ $row->pesan_kolaborasi }}">
+                                    {{ $row->pesan_kolaborasi ?? '-' }}
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    @php
+                                        $status = strtoupper($row->status_mitra ?? 'PENDING');
+                                        $color = "bg-yellow-50 text-yellow-600 border-yellow-100";
+                                        if($status == 'DISETUJUI' || $status == 'DITERIMA') $color = "bg-green-50 text-green-600 border-green-100";
+                                        if($status == 'DITOLAK') $color = "bg-red-50 text-red-600 border-red-100";
+                                    @endphp
+                                    <span class="{{ $color }} border px-2.5 py-1 rounded text-[9px] font-black uppercase tracking-wide inline-block">
+                                        {{ $status }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center justify-center gap-2">
+                                        
+                                        <form action="/admin/kelola-mitra/{{ $row->id_mitra }}/update-status" method="POST" class="inline-flex gap-1">
+                                            @csrf
+                                            @if(strtoupper($row->status_mitra) !== 'DISETUJUI')
+                                                <button type="submit" name="status_mitra" value="DISETUJUI" class="bg-green-600 hover:bg-green-700 text-white px-2.5 py-1.5 text-xs font-bold rounded-lg transition-all shadow-sm cursor-pointer">
+                                                    Terima
+                                                </button>
+                                            @endif
+
+                                            @if(strtoupper($row->status_mitra) !== 'DITOLAK')
+                                                <button type="submit" name="status_mitra" value="DITOLAK" class="bg-red-600 hover:bg-red-700 text-white px-2.5 py-1.5 text-xs font-bold rounded-lg transition-all shadow-sm cursor-pointer">
+                                                    Tolak
+                                                </button>
+                                            @endif
+                                        </form>
+
+                                        <form action="/admin/kelola-mitra/{{ $row->id_mitra }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data kemitraan ini?')" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-gray-400 hover:text-red-600 p-1.5 rounded-lg transition-all cursor-pointer" title="Hapus Permanen">
+                                                <span class="material-symbols-outlined text-[20px]">delete</span>
+                                            </button>
+                                        </form>
+
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="6" class="px-6 py-16 text-center text-gray-400 font-bold uppercase text-[10px] tracking-widest">
+                                    <span class="material-symbols-outlined text-4xl block mb-2 opacity-50">handshake</span>
+                                    Tidak ada berkas pengajuan kemitraan saat ini
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </section>
 
-            <div class="w-full md:w-72 space-y-2">
-                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest px-1 Headline">Filter Status</label>
-                <select name="status" class="w-full px-4 py-3.5 bg-slate-50 border border-transparent rounded-2xl text-sm font-semibold cursor-pointer outline-none text-slate-700">
-                    <option value="semua" {{ request('status') == 'semua' ? 'selected' : '' }}>Semua Status</option>
-                    <option value="PENDING" {{ request('status') == 'PENDING' ? 'selected' : '' }}>PENDING</option>
-                    <option value="DISETUJUI" {{ request('status') == 'DISETUJUI' ? 'selected' : '' }}>DISETUJUI</option>
-                    <option value="DITOLAK" {{ request('status') == 'DITOLAK' ? 'selected' : '' }}>DITOLAK</option>
-                </select>
-            </div>
-
-            <button type="submit" class="w-full md:w-auto bg-primary text-white px-8 py-3.5 rounded-2xl font-bold text-sm hover:bg-primary-hover transition-all flex items-center gap-2 justify-center">
-                <span class="material-symbols-outlined text-lg">filter_alt</span>Terapkan Filter
-            </button>
-        </form>
-    </section>
-
-    <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-slate-50 border-b border-slate-100 text-[11px] font-bold text-slate-400 uppercase tracking-widest font-headline">
-                        <th class="p-5 pl-8">Detail Instansi</th>
-                        <th class="p-5">Kontak Resmi</th>
-                        <th class="p-5">Bentuk Kemitraan</th>
-                        <th class="p-5">Pesan Kolaborasi</th>
-                        <th class="p-5">Status</th>
-                        <th class="p-5 pr-8 text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 text-sm">
-                    @forelse($mitra as $row)
-                        <tr class="hover:bg-slate-50/80 transition-colors group">
-                            <td class="p-5 pl-8">
-                                <div class="font-headline font-bold text-slate-800 group-hover:text-primary transition-colors text-[15px]">{{ $row->nama_instansi }}</div>
-                                <div class="text-xs text-slate-400 font-medium mt-0.5">PJ: {{ $row->nama_penanggung_jawab }}</div>
-                            </td>
-                            <td class="p-5">
-                                <div class="font-semibold text-slate-600">{{ $row->email_instansi }}</div>
-                                <div class="text-xs text-slate-400 font-medium mt-0.5">{{ $row->no_hp }}</div>
-                            </td>
-                            <td class="p-5 font-bold text-xs text-slate-500 uppercase tracking-wide">
-                                {{ $row->jenis_kemitraan }}
-                            </td>
-                            <td class="p-5 max-w-xs truncate text-slate-500" title="{{ $row->pesan_kolaborasi }}">
-                                {{ $row->pesan_kolaborasi ?? '-' }}
-                            </td>
-                            <td class="p-5">
-                                @php
-                                    $status = strtoupper($row->status_mitra ?? 'PENDING');
-                                    $color = "bg-amber-50 text-amber-600 border-amber-100/70";
-                                    if($status == 'DISETUJUI' || $status == 'DITERIMA') $color = "bg-emerald-50 text-emerald-600 border-emerald-100/70";
-                                    if($status == 'DITOLAK') $color = "bg-rose-50 text-rose-600 border-rose-100/70";
-                                @endphp
-                                <span class="px-3 py-1.5 {{ $color }} rounded-xl text-[11px] font-bold border tracking-wide inline-block">
-                                    {{ $status }}
-                                </span>
-                            </td>
-                            <td class="p-5 pr-8">
-    <div class="flex items-center justify-center gap-2">
-        
-        <form action="/admin/kelola-mitra/{{ $row->id_mitra }}/update-status" method="POST" class="inline-flex gap-1">
-            @csrf
-            
-            @if(strtoupper($row->status_mitra) !== 'DISETUJUI')
-                <button type="submit" name="status_mitra" value="DISETUJUI" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 text-xs font-bold rounded-xl transition-all shadow-sm cursor-pointer">
-                    Terima
-                </button>
-            @endif
-
-            @if(strtoupper($row->status_mitra) !== 'DITOLAK')
-                <button type="submit" name="status_mitra" value="DITOLAK" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 text-xs font-bold rounded-xl transition-all shadow-sm cursor-pointer">
-                    Tolak
-                </button>
-            @endif
-        </form>
-
-        <form action="/admin/kelola-mitra/{{ $row->id_mitra }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data kemitraan ini?')" class="inline">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="w-9 h-9 flex items-center justify-center text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all" title="Hapus Data">
-                <span class="material-symbols-outlined text-xl">delete</span>
-            </button>
-        </form>
-
-    </div>
-</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="p-20 text-center">
-                                <div class="flex flex-col items-center justify-center gap-3">
-                                    <span class="material-symbols-outlined text-5xl text-slate-300">handshake</span>
-                                    <p class="text-slate-400 font-headline font-bold text-xs uppercase tracking-widest Headline">Tidak ada data pengajuan kemitraan yang ditemukan</p>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
     </div>
 </main>
 

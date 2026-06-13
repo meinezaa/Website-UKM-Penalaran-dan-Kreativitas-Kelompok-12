@@ -81,9 +81,105 @@ class KegiatanController extends BaseController
     public function dokumentasi()
     {
         $kegiatan = Kegiatan::with('dokumentasi')
-                    ->orderBy('tanggal_pelaksanaan', 'desc')
-                    ->get();
+            ->orderBy('tanggal_pelaksanaan', 'desc')
+            ->get();
 
         return view('publik.relawan', compact('kegiatan'));
+    }
+
+    /* ========================================================================= */
+    /* FITUR TAMBAHAN: MANAGEMENT INPUT & EDIT UNTUK ADMIN (SINKRONISASI IMAGE)  */
+    /* ========================================================================= */
+
+    /**
+     * 4. MENAMPILKAN DAFTAR KEGIATAN DI HALAMAN ADMIN
+     */
+    public function kelolaKegiatan()
+    {
+        $kegiatan = Kegiatan::orderBy('id_kegiatan', 'desc')->get();
+        return view('admin.kegiatan', compact('kegiatan')); 
+    }
+
+    /**
+     * 5. MEMPROSES INPUT KEGIATAN BARU (+ UPLOAD GAMBAR)
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nama_kegiatan' => 'required',
+            'foto_kegiatan' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        $nama_file = null;
+
+        if ($request->hasFile('foto_kegiatan')) {
+            $file = $request->file('foto_kegiatan');
+            $nama_file = time() . '_' . $file->getClientOriginalName();
+            
+            // Pindahkan file fisik ke storage/app/public/
+            $file->storeAs('public', $nama_file);
+        }
+
+        Kegiatan::create([
+            'nama_kegiatan'        => $request->nama_kegiatan,
+            'kategori'             => $request->kategori,
+            'pendaftaran_dibuka'   => $request->pendaftaran_dibuka,
+            'batas_registrasi'     => $request->batas_registrasi,
+            'pengumuman_seleksi'   => $request->pengumuman_seleksi,
+            'tanggal_pelaksanaan'  => $request->tanggal_pelaksanaan,
+            'divisi_dibutuhkan'    => $request->divisi_dibutuhkan,
+            'lokasi'               => $request->lokasi,
+            'jam_kegiatan'         => $request->jam_kegiatan,
+            'alamat_lengkap'       => $request->alamat_lengkap,
+            'deskripsi_detail'     => $request->deskripsi_detail,
+            'detail_aktivitas'     => $request->detail_aktivitas,
+            'status_kegiatan'      => $request->status_kegiatan ?? 'aktif',
+            'foto_kegiatan'        => $nama_file, // Menyimpan string nama file unik ke DB
+        ]);
+
+        return redirect('/admin/kelola-kegiatan')->with('pesan', 'Kegiatan baru berhasil disimpan!');
+    }
+
+    /**
+     * 6. MEMPROSES UPDATE/EDIT DATA KEGIATAN (+ FORMAT VALIDASI GAMBAR LAMA)
+     */
+    public function update(Request $request, $id)
+    {
+        $kegiatan = Kegiatan::findOrFail($id);
+
+        $request->validate([
+            'nama_kegiatan' => 'required',
+            'foto_kegiatan' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        // Gunakan foto lama sebagai default jika tidak upload foto baru
+        $nama_file = $kegiatan->foto_kegiatan;
+
+        if ($request->hasFile('foto_kegiatan')) {
+            $file = $request->file('foto_kegiatan');
+            $nama_file = time() . '_' . $file->getClientOriginalName();
+            
+            // Pindahkan file fisik baru ke storage/app/public/
+            $file->storeAs('public', $nama_file);
+        }
+
+        $kegiatan->update([
+            'nama_kegiatan'        => $request->nama_kegiatan,
+            'kategori'             => $request->kategori,
+            'pendaftaran_dibuka'   => $request->pendaftaran_dibuka,
+            'batas_registrasi'     => $request->batas_registrasi,
+            'pengumuman_seleksi'   => $request->pengumuman_seleksi,
+            'tanggal_pelaksanaan'  => $request->tanggal_pelaksanaan,
+            'divisi_dibutuhkan'    => $request->divisi_dibutuhkan,
+            'lokasi'               => $request->lokasi,
+            'jam_kegiatan'         => $request->jam_kegiatan,
+            'alamat_lengkap'       => $request->alamat_lengkap,
+            'deskripsi_detail'     => $request->deskripsi_detail,
+            'detail_aktivitas'     => $request->detail_aktivitas,
+            'status_kegiatan'      => $request->status_kegiatan,
+            'foto_kegiatan'        => $nama_file,
+        ]);
+
+        return redirect('/admin/kelola-kegiatan')->with('pesan', 'Perubahan data kegiatan berhasil diperbarui!');
     }
 }
