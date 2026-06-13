@@ -36,7 +36,6 @@
  <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
 <div class="flex items-center justify-between px-6 py-0.5 text-white">
 
-<!-- Logo -->
 <div class="flex items-center">
 <a href="/" class="overflow-hidden">
 <img src="{{ asset('foto/logo.jpeg') }}" 
@@ -45,17 +44,13 @@ class="w-16 scale-125">
 </a>
 </div>
 
-<!-- Right Side -->
 <div class="flex items-center gap-12">
 
-<!-- Navigation -->
 <nav>
 <ul class="flex gap-12 font-poppins font-semibold">
 
-<!-- HOME ACTIVE -->
 <li>
- <!-- ACTIVE PAGE -->
-<a href="{{ url('/') }}"
+ <a href="{{ url('/') }}"
 class="relative
 {{ request()->is('/') ? 'after:w-full' : 'after:w-0' }}
 after:absolute
@@ -70,7 +65,6 @@ Home
 </a>
 </li>
 
-<!-- Tentang -->
 <li class="relative group">
 
 <a href="tentang.php"
@@ -95,7 +89,6 @@ d="M19 9l-7 7-7-7"/>
 
 </a>
 
-<!-- Dropdown -->
 <ul class="absolute left-0 mt-3 w-max bg-white text-gray-600 text-sm shadow-md
 opacity-0 invisible -translate-y-2
 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
@@ -123,7 +116,6 @@ Tim UPN Mengajar
 
 </li>
 
-<!-- Kegiatan -->
 <li>
 <a href="{{ url('/kegiatan') }}"
 class="relative
@@ -140,27 +132,26 @@ Kegiatan
 </a>
 </li>
 
-<!-- Relawan -->
 <li>
 <a href="{{ url('/relawan') }}"
 class="relative
 {{ request()->is('relawan*') ? 'after:w-full' : 'after:w-0' }}
 after:absolute
-after:left-0
+after:left-02
 after:-bottom-1
 after:h-[1.5px]
 after:bg-white
 after:transition-all
 after:duration-300
 hover:after:w-full">
-Relawan
+Dokumentasi
 </a>
 </li>
 
 @if(session('role') === 'admin')
 <li>
-    <a href="#" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
-       Dashboard Admin
+    <a href="{{ url('/admin/dashboard') }}" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
+        Dashboard Admin
     </a>
 </li>
 @endif
@@ -168,10 +159,8 @@ Relawan
 </ul>
 </nav>
 
-<!-- Login Icon + Tooltip -->
 <div class="relative group">
   @if (session('id_user'))
-    <!-- JIKA SUDAH LOGIN (TAMPILKAN TOMBOL KELUAR) -->
     <a href="#" class="hover:text-red-400 transition-all duration-300">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -185,7 +174,6 @@ Relawan
     </div>
 
   @else
-    <!-- JIKA BELUM LOGIN (TAMPILKAN TOMBOL MASUK / DAFTAR) -->
     <a href="{{ url('/login') }}" class="hover:text-gray-300 transition-all duration-300">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.879 17.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -210,7 +198,7 @@ Relawan
         class="relative h-[600px] w-full flex items-center justify-start overflow-hidden"
       >
         <img
-          src="./foto/slide1.jpg"
+          src="./foto/kegiatan3.jpg"
           class="absolute inset-0 w-full h-full object-cover"
         />
         <div
@@ -223,21 +211,14 @@ Relawan
             >Program Kerja Bidang SOSIAL & PENDIDIKAN</span
           >
           <h1 class="text-6xl md:text-7xl font-bold mb-6 leading-tight">
-            Mencerdaskan Bangsa Melalui
-            <span class="italic font-light">Aksi Nyata.</span>
+            {{ $profil->vision ?? 'Mencerdaskan Bangsa Melalui Aksi Nyata.' }}
           </h1>
           <p
-            class="text-lg md:text-xl opacity-90 mb-8 font-light leading-relaxed"
+            class="text-lg md:text-xl opacity-90 mb-6 font-light leading-relaxed"
           >
-            Pendekatan interaktif untuk menutup celah pendidikan pasca-pandemi.
-            Kami menghadirkan pengalaman belajar bermakna bagi seluruh lapisan
-            masyarakat.
+            {{ $profil->mission ?? 'Pendekatan interaktif untuk menutup celah pendidikan pasca-pandemi. Kami menghadirkan pengalaman belajar bermakna bagi seluruh lapisan masyarakat.' }}
           </p>
-          <a
-            href="#gabung"
-            class="bg-white text-[#8B1E1E] px-10 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition shadow-lg"
-            >Gabung Jadi Relawan</a
-          >
+          
         </div>
       </section>
 
@@ -310,43 +291,22 @@ Relawan
             </div>
 
             <div
-              class="p-8 bg-white border-2 border-[#8B1E1E] rounded-[2rem] text-center card-hover transition duration-300 cursor-pointer group"
+              class="p-8 bg-white border-2 border-[#8B1E1E] rounded-[2rem] card-hover transition duration-300 flex flex-col justify-between"
             >
-              <div class="flex flex-col items-center justify-center h-full">
-                <div
-                  class="mb-3 p-3 bg-red-50 rounded-full group-hover:bg-[#8B1E1E] transition duration-300"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="w-8 h-8 text-[#8B1E1E] group-hover:text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                </div>
-                <h4 class="text-2xl font-bold mb-1 text-gray-900">
-                  Timeline Kegiatan
+              <div>
+                <h4 class="text-lg font-bold text-gray-900 mb-2 leading-snug">
+                  Metodologi Pengajaran
                 </h4>
-                <p
-                  class="text-sm text-[#8B1E1E] font-semibold uppercase tracking-wider mb-4"
-                >
-                  Program Kerja 2026
+                <p class="text-xs text-gray-500 leading-relaxed">
+                  Menyusun modul adaptif pasca-pandemi yang berfokus pada pendekatan kreatif, emosional, dan motorik agar anak-anak memperoleh pengalaman belajar bermakna.
                 </p>
-                <a
-                  href="jadwal-lengkap.html"
-                  class="text-xs bg-[#8B1E1E] text-white px-4 py-2 rounded-full hover:bg-red-800 transition shadow-md"
-                >
-                  Lihat Jadwal Lengkap
-                </a>
+              </div>
+              <div class="mt-4 pt-3 border-t border-gray-100 flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Kurikulum Berkelanjutan</span>
               </div>
             </div>
+
             <div
               class="col-span-2 p-10 bg-red-50 rounded-[2rem] border border-red-100"
             >
@@ -384,7 +344,7 @@ Relawan
                 </p>
                 <div class="flex items-center mt-6">
                     <a href="{{ url('/kegiatan?kategori=sd') }}" class="bg-[#8B1E1E] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition">
-                        Lihat Detail
+                        Lihat Dokumentasi
                     </a>
                 </div>
                 </div>
@@ -402,7 +362,7 @@ Relawan
                 </p>
                 <div class="flex items-center mt-6">
                     <a href="{{ url('/kegiatan?kategori=slb') }}" class="bg-[#8B1E1E] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition">
-                        Lihat Detail
+                        Lihat Dokumentasi
                     </a>
                 </div>
                 </div>
@@ -419,36 +379,69 @@ Relawan
                 </p>
                 <div class="flex items-center mt-6">
                     <a href="{{ url('/kegiatan?kategori=yayasan') }}" class="bg-[#8B1E1E] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition">
-                        Lihat Detail
+                        Lihat Dokumentasi
                     </a>
                 </div>
                 </div>
             </div>
-            </div>     
-            </section>
+          </div>     
+        </div>
+      </section>
+
+      <section class="py-24 bg-white px-8 md:px-24 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-red-50/50 rounded-full blur-3xl -z-10"></div>
+        <div class="absolute bottom-0 left-0 w-80 h-80 bg-gray-50 rounded-full blur-2xl -z-10"></div>
+        
+        <div class="max-w-5xl mx-auto bg-gradient-to-br from-gray-50 to-white border border-gray-100 rounded-[3rem] p-12 md:p-16 shadow-xl shadow-red-900/5 flex flex-col md:flex-row items-center justify-between gap-12">
+          <div class="max-w-xl">
+            <span class="text-xs font-bold text-[#8B1E1E] uppercase tracking-widest bg-red-50 px-4 py-2 rounded-full inline-block mb-4">Kolaborasi Kemitraan</span>
+            <h2 class="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Menjadi Mitra Perubahan</h2>
+            <p class="text-gray-600 text-base leading-relaxed">
+              Mari jalin kolaborasi strategis bersama UPN Mengajar dalam membuka akses pendidikan inklusif berkualitas. Kontribusi institusi, komunitas, maupun perusahaan Anda akan berdampak nyata bagi masa depan adik-adik kita.
+            </p>
+          </div>
+          <div class="w-full md:w-auto shrink-0">
+            <a
+              href="{{ url('/mitra') }}"
+              class="group flex items-center justify-center gap-3 bg-[#8B1E1E] text-white px-8 py-4 rounded-2xl font-bold text-sm tracking-wide hover:bg-red-800 transition duration-300 shadow-xl shadow-red-900/20 w-full md:w-auto"
+            >
+              DAFTAR MITRA SEKARANG
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
 
       <section
         id="gabung"
-        class="py-24 px-8 md:px-24 bg-white overflow-hidden relative"
+        class="pb-28 px-8 md:px-24 bg-white overflow-hidden relative"
       >
         <div
-          class="max-w-6xl mx-auto bg-[#8B1E1E] rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden"
+          class="max-w-6xl mx-auto bg-gradient-to-r from-[#8B1E1E] to-[#6e1515] rounded-[3.5rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl shadow-red-900/30"
         >
-          <div class="relative z-10">
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+          <div class="absolute -top-24 -right-24 w-72 h-72 bg-white/5 rounded-full blur-xl"></div>
+          <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-black/10 rounded-full blur-xl"></div>
+
+          <div class="relative z-10 max-w-3xl mx-auto">
+            <span class="text-xs text-white/60 font-bold uppercase tracking-widest mb-3 inline-block">Ambil Peranmu</span>
+            <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight leading-tight">
               Siap Menjadi Bagian dari Perubahan?
             </h2>
             <p
-              class="text-white/80 text-lg mb-10 max-w-2xl mx-auto leading-relaxed"
+              class="text-white/80 text-base md:text-lg mb-10 max-w-2xl mx-auto leading-relaxed"
             >
-              Mari berkontribusi nyata bagi pendidikan Indonesia. Jadilah
-              relawan penggerak bersama tim UPN Mengajar sekarang juga.
+              Mari salurkan kepedulian Anda menjadi tindakan nyata. Lihat proyek sosial terdekat dan jadilah relawan penggerak bersama tim UPN Mengajar sekarang juga.
             </p>
             <a
-              href="relawan.html"
-              class="bg-white text-[#8B1E1E] px-12 py-5 rounded-full font-black text-xl hover:scale-105 transition shadow-2xl uppercase tracking-wider inline-block"
+              href="{{ url('/kegiatan') }}"
+              class="group inline-flex items-center gap-3 bg-white text-[#8B1E1E] px-12 py-5 rounded-2xl font-extrabold text-lg hover:bg-gray-50 transition duration-300 shadow-2xl uppercase tracking-wider transform hover:-translate-y-0.5"
             >
-              Gabung Jadi Relawan
+              IKUTI KEGIATAN RELAWAN
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#8B1E1E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+              </svg>
             </a>
           </div>
         </div>
@@ -591,4 +584,3 @@ Relawan
   </script>
   </body>
 </html>
-
