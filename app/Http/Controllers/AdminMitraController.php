@@ -17,11 +17,32 @@ class AdminMitraController extends Controller
 
     // Fungsi SAKTI: Ini yang bertugas mengubah status jadi DISETUJUI di database
     public function setujui($id)
-    {
-        DB::table('mitra')->where('id_mitra', $id)->update([
-            'status_mitra' => 'DISETUJUI'
-        ]);
+{
+    DB::beginTransaction();
 
-        return back()->with('success', 'Status mitra berhasil disetujui!');
+    try {
+
+        DB::table('mitra')
+            ->where('id_mitra', $id)
+            ->update([
+                'status_mitra' => 'DISETUJUI'
+            ]);
+
+        DB::commit();
+
+        return back()->with(
+            'success',
+            'Status mitra berhasil disetujui!'
+        );
+
+    } catch (\Exception $e) {
+
+        DB::rollBack();
+
+        return back()->with(
+            'error',
+            'Terjadi kesalahan saat memperbarui status mitra.'
+        );
     }
+}
 }

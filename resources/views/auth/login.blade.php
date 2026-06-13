@@ -70,7 +70,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('login.proses') }}" method="POST" class="space-y-5">
+                <form action="{{ route('login') }}" method="POST" class="space-y-5">
                     @csrf {{-- Wajib di Laravel untuk keamanan token form --}}
                     
                     <div class="space-y-1.5">

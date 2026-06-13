@@ -59,6 +59,9 @@ Route::get('/kegiatan', function () {
     return view('publik.kegiatan', compact('kegiatanBuka', 'kegiatanBerjalan', 'kegiatanSelesai', 'kegiatanTutup'));
 });
 
+Route::get('/relawan', [KegiatanController::class, 'dokumentasi'])
+    ->name('relawan');
+
 // Detail Agenda Kegiatan untuk Publik
 Route::get('/agenda/{id}', [KegiatanPublikController::class, 'showDetailPublik'])->name('agenda.detail');
 
@@ -70,12 +73,8 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.proses');
 Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
 
-// =========================================================================
 // ==================== ROUTE REGISTRASI RELAWAN & MITRA ===================
-// =========================================================================
-Route::get('/relawan', function () {
-    return view('publik.relawan'); 
-})->name('relawan');
+
 
 Route::get('/formulir-mitra', function () {
     return view('publik.formulir_mitra'); // <-- Sesuaikan 'publik.formulir_mitra' dengan lokasi file blade formulir mitra Anda
