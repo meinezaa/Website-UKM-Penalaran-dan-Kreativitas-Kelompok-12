@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AuthController; 
 use App\Http\Controllers\KegiatanPublikController;
 use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\UkmController;
 
 // ==================== ROUTE PUBLIK ====================
 
@@ -29,17 +30,13 @@ Route::get('/tentang', function () {
     return view('layouts.tentang'); 
 });
 
-Route::get('/ukm', function () { 
-    return view('layouts.ukm'); 
-});
+Route::get('/ukm', [UkmController::class, 'index'])->name('ukm');
 
 Route::get('/upnmengajar', function () { 
     return view('layouts.upnmengajar'); 
 });
 
-Route::get('/tim', function () { 
-    return view('layouts.tim'); 
-});
+Route::get('/tim', [UkmController::class, 'Tim']);
 
 // Menampilkan halaman kegiatan publik beserta statusnya
 Route::get('/kegiatan', function () {
@@ -116,6 +113,84 @@ Route::group([], function () {
         return view('admin.kelola_kegiatan', compact('kegiatan'));
     })->name('admin.kegiatan.index');
 
+    // [BARU] 1b. Form Tambah Kegiatan (GET)
+    Route::get('/admin/tambah-kegiatan', function () {
+        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
+        return view('admin.tambah_kegiatan'); // Pastikan kamu punya file resources/views/admin/tambah_kegiatan.blade.php
+    })->name('admin.kegiatan.create');
+
+    // [BARU] 1c. Proses Simpan Data Kegiatan Baru (POST)
+    Route::post('/admin/tambah-kegiatan', function (Request $request) {
+        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
+        
+        // 1. Proses Upload Foto Poster Kegiatan ke Storage Laravel
+        $namaFoto = 'default.jpg';
+        if ($request->hasFile('foto_kegiatan')) {
+            $file = $request->file('foto_kegiatan');
+            $namaFoto = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/kegiatan', $namaFoto);
+            $namaFoto = 'kegiatan/' . $namaFoto;
+        }
+
+        // 2. Jalankan Database Transaction murni Laravel
+        DB::beginTransaction();
+
+        try {
+            // QUERY 1: Simpan Data ke tabel 'kegiatan'
+            $idKegiatanBaru = DB::table('kegiatan')->insertGetId([
+                'id_user'             => session('id_user'),
+                'foto_kegiatan'       => $namaFoto,
+                'nama_kegiatan'       => $request->nama_kegiatan,
+                'kategori'            => $request->kategori,
+                'tanggal_pelaksanaan' => $request->tanggal_pelaksanaan,
+                'jam_kegiatan'        => $request->jam_kegiatan,
+                'batas_registrasi'    => $request->batas_registrasi,
+                'lokasi'              => $request->lokasi,
+                'alamat_lengkap'      => $request->alamat_lengkap,
+                'detail_aktivitas'    => $request->detail_aktivitas,
+                'deskripsi_detail'    => $request->deskripsi_detail,
+                
+                // MENGGUNAKAN STRTOUPPER AGAR SINKRON DENGAN ENUM 'BUKA' DI DATABASE
+                'status_kegiatan'     => strtoupper($request->status_kegiatan ?? 'BUKA')
+            ]);
+
+            // List divisi sesuai dengan input form native-mu
+            $divisiList = [
+                'sekretaris' => 'Sekretaris', 'bendahara' => 'Bendahara', 
+                'acara' => 'Acara', 'humas' => 'Humas', 
+                'perkap' => 'Perkap', 
+                'pendamping' => 'Pendamping', // <--- Dipotong agar tidak kepanjangan di database
+                'pdd' => 'PDD', 'sponsorship' => 'Sponsorship'
+            ];
+
+            // QUERY 2: Looping simpan kuota per divisi ke tabel 'divisi_kegiatan'
+            foreach ($divisiList as $key => $label) {
+                $kuotaInput = $request->input('kuota_' . $key);
+                $kuota = !empty($kuotaInput) ? (int)$kuotaInput : 0;
+                $jobdesc = $request->input('jobdesc_' . $key) ?? '';
+
+                if ($kuota > 0) {
+                    DB::table('divisi_kegiatan')->insert([
+                        'id_kegiatan' => $idKegiatanBaru,
+                        'nama_divisi' => $label,
+                        'kuota'       => $kuota,
+                        'jobdesc'     => $jobdesc,
+                    ]);
+                }
+            }
+
+            // Jika semua query berhasil tanpa error, komit ke database
+            DB::commit();
+
+            return redirect()->route('admin.kegiatan.index')->with('sukses', 'Kegiatan baru berhasil ditambahkan!');
+
+        } catch (\Exception $e) {
+            // Jika ada satu saja yang gagal, batalkan semua (rollback)
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'Gagal menambahkan kegiatan: ' . $e->getMessage());
+        }
+    })->name('admin.kegiatan.store');
+
     // 2. Detail Lengkap Kegiatan berdasarkan ID - DIUBAH JUGA AGAR SERAGAM
     Route::get('/admin/kelola-kegiatan/{id}', function ($id) {
         if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
@@ -161,51 +236,23 @@ Route::group([], function () {
             ->update([
                 'nama_kegiatan'       => $request->nama_kegiatan,
                 'kategori'            => $request->kategori,
-                'pendaftaran_dibuka'  => $request->pendaftaran_dibuka,
-                'batas_registrasi'    => $request->batas_registrasi,
-                'pengumuman_seleksi'  => $request->pengumuman_seleksi,
                 'tanggal_pelaksanaan' => $request->tanggal_pelaksanaan,
-                'divisi_dibutuhkan'   => $request->divisi_dibutuhkan,
-                'lokasi'              => $request->lokasi,
                 'jam_kegiatan'        => $request->jam_kegiatan,
+                'batas_registrasi'    => $request->batas_registrasi,
+                'lokasi'              => $request->lokasi,
                 'alamat_lengkap'      => $request->alamat_lengkap,
-                'deskripsi_detail'    => $request->deskripsi_detail,
                 'detail_aktivitas'    => $request->detail_aktivitas,
-                'status_kegiatan'     => $request->status_kegiatan,
-                'foto_kegiatan'       => $namaFoto
+                'deskripsi_detail'    => $request->deskripsi_detail,
+                'foto_kegiatan'       => $namaFoto,
+                
+                // UBAH BARIS INI: Gunakan strtolower agar cocok dengan ENUM huruf kecil di database
+                'status_kegiatan'     => strtolower($request->status_kegiatan ?? 'buka')
             ]);
 
         return redirect('/admin/kelola-kegiatan')->with('pesan', 'Data agenda kegiatan sukses diperbarui!');
     });
 
     // 6. Kelola Relawan (Tampil Data Lengkap + Search & Filter)
-    $kelolaRelawanHandler = function (Request $request) {
-        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
-        $search = $request->input('search');
-        $divisi = $request->input('divisi');
-
-        $query = DB::table('pendaftaran_relawan as p')
-                    ->join('users as u', 'p.id_user', '=', 'u.id_user')
-                    ->join('kegiatan as k', 'p.id_kegiatan', '=', 'k.id_kegiatan')
-                    ->select('p.*', 'u.nama_lengkap', 'u.email', 'k.nama_kegiatan');
-
-        if (!empty($search)) {
-            $query->where(function($q) use ($search) {
-                $q->where('u.nama_lengkap', 'LIKE', "%{$search}%")
-                  ->orWhere('p.asal_prodi', 'LIKE', "%{$search}%")
-                  ->orWhere('k.nama_kegiatan', 'LIKE', "%{$search}%"); 
-            });
-        }
-
-        if (!empty($divisi) && $divisi !== 'semua') {
-            $query->where('p.pilihan_divisi_1', $divisi);
-        }
-
-        $relawan = $query->orderBy('p.id_pendaftaran', 'DESC')->get();
-        return view('admin.kelola_relawan', compact('relawan'));
-    };
-
-// 6. Kelola Relawan (Tampil Data Lengkap + Search & Filter)
     Route::get('/admin/kelola-relawan', function (Request $request) {
         if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
         $search = $request->input('search');
@@ -231,6 +278,15 @@ Route::group([], function () {
         $relawan = $query->orderBy('p.id_pendaftaran', 'DESC')->get();
         return view('admin.kelola_relawan', compact('relawan'));
     })->name('admin.relawan.index');
+
+    // ==================== PERBAIKAN ERROR 404 URL MANDIRI ====================
+    // Menangkap link mentah /relawan di sidebar agar langsung membuang error 404
+    Route::get('/relawan', function () {
+        if (session('role') === 'admin') {
+            return redirect()->route('admin.relawan.index');
+        }
+        return redirect('/kegiatan'); 
+    });
 
     // Tambahkan alias rute /admin/data-relawan agar link di sidebar-mu tidak eror 404
     Route::get('/admin/data-relawan', function (Request $request) {

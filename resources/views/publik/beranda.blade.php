@@ -190,7 +190,7 @@ class="w-16 scale-125">
       </a>
 
       <a href="{{ url('/upnmengajar') }}"
-      class="border-2 border-white text-white font-semibold px-10 py-3 rounded-full hover:bg-white hover:text-red-700">
+      class="bg-white text-red-700 px-6 py-3 rounded-full border border-white hover:bg-transparent hover:text-white transition">
       Tentang Program
       </a>
 
@@ -201,7 +201,7 @@ class="w-16 scale-125">
 
  <div class="absolute right-24 top-[64%] -translate-y-1/2 z-20">
   <button onclick="openVideo()" 
-  class="bg-white w-20 h-20 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition">
+  class="bg-white w-20 h-20 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition focus:outline-none">
 
     <svg xmlns="http://www.w3.org/2000/svg"
       class="w-14 h-14 pr-2 text-red-600 ml-1"
@@ -220,23 +220,23 @@ class="fixed inset-0 bg-black/70 flex items-center justify-center opacity-0 poin
   <div id="videoBox"
   class="relative w-[800px] max-w-[90%] scale-90 transition-all duration-300">
 
-    <!-- tombol close -->
     <button onclick="closeVideo()"
-    class="absolute -top-10 right-0 text-white text-3xl">
+    class="absolute -top-10 right-0 text-white text-3xl hover:text-red-500 transition">
       ✕
     </button>
 
     <iframe
       id="videoFrame"
-      class="w-full h-[450px] rounded-lg"
-      src="https://www.youtube.com/embed/bxPMBFV0df8"
+      class="w-full h-[450px] rounded-lg shadow-2xl"
+      src=""
       frameborder="0"
+      allow="autoplay"
       allowfullscreen>
     </iframe>
 
   </div>
-
 </div>
+
 
 <!-- Statistik Program -->
 <section class="relative -mt-20 z-20 px-6 md:px-8 lg:px-20">
@@ -724,28 +724,42 @@ counters.forEach(counter => {
 </script>
 
 <script>
+  // Taruh link Google Drive kamu di sini (Pastikan belakangnya berakhiran /preview)
+  const googleDriveUrl = "https://drive.google.com/file/d/1ODxlBBu6DGl6a-_yLPOzuCovqiC9uSmy/preview";
 
-function openVideo() {
-  const modal = document.getElementById("videoModal");
-  const box = document.getElementById("videoBox");
+  const modal = document.getElementById('videoModal');
+  const box = document.getElementById('videoBox');
+  const frame = document.getElementById('videoFrame');
 
-  modal.classList.remove("opacity-0","pointer-events-none");
-  box.classList.remove("translate-y-10");
+  function openVideo() {
+    frame.setAttribute('src', googleDriveUrl); // Pasang video Drive
+    
+    // Munculkan modal dengan transisi halus Tailwind
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+    modal.classList.add('opacity-100');
+    
+    box.classList.remove('scale-90');
+    box.classList.add('scale-100');
+  }
 
-  document.getElementById("videoFrame").src =
-  "https://www.youtube.com/embed/bxPMBFV0df8";
-}
+  function closeVideo() {
+    // Sembunyikan modal kembali
+    modal.classList.remove('opacity-100');
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    
+    box.classList.remove('scale-100');
+    box.classList.add('scale-90');
+    
+    // Kosongkan src iframe agar video Google Drive langsung MATI & tidak bersuara di latar belakang
+    frame.setAttribute('src', '');
+  }
 
-function closeVideo() {
-  const modal = document.getElementById("videoModal");
-  const box = document.getElementById("videoBox");
-
-  modal.classList.add("opacity-0","pointer-events-none");
-  box.classList.add("translate-y-10");
-
-  document.getElementById("videoFrame").src = "";
-}
-
+  // Tambahan: Tutup modal otomatis jika user klik area hitam di luar video box
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+      closeVideo();
+    }
+  });
 </script>
 
 <script>

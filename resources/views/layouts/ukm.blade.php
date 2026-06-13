@@ -15,7 +15,7 @@
 
 <body class="font-[Poppins] bg-gray-50">
 
-    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
+    <header class="fixed top-0 left-0 w-full z-50 bg-black/20 backdrop-blur-sm transition-all duration-300">
         <div class="flex items-center justify-between px-6 py-0.5 text-white">
 
             <div class="flex items-center">
@@ -26,7 +26,7 @@
 
             <div class="flex items-center gap-12">
                 <nav>
-                    <ul class="flex gap-12 font-poppins font-semibold">
+                    <ul class="flex gap-12 font-semibold">
                         <li>
                             <a href="{{ url('/') }}" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] {{ request()->is('/') ? 'after:w-full' : 'after:w-0' }} after:bg-white after:transition-all after:duration-300 hover:after:w-full">
                                 Home
@@ -182,42 +182,45 @@
             <p id="roleTitle" class="text-lg text-gray-600 font-semibold mb-8">Ketua Umum</p>
 
             <div id="cardContainer" class="mb-4">
-                <div class="card-role">
-                    <div class="flex justify-center flex-wrap gap-6">
-                        @foreach($bph_ketua as $k)
-                        <div class="bg-white rounded-2xl shadow p-6 w-60 hover:shadow-xl transition">
-                            <img src="{{ asset('foto/'.$k->photo) }}" class="rounded-full mx-auto mb-4 w-32 h-32 object-cover">
-                            <h4>{{ $k->name }}</h4>
-                            <p class="text-sm text-gray-500">{{ $k->major_year }}</p>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                <div class="card-role hidden">
-                    <div class="flex gap-6 justify-center flex-wrap">
-                        @foreach($bph_sekre as $s)
-                        <div class="bg-white rounded-2xl shadow p-6 w-60 hover:shadow-xl transition">
-                            <img src="{{ asset('foto/'.$s->photo) }}" class="rounded-full mx-auto mb-4 w-32 h-32 object-cover">
-                            <h4>{{ $s->name }}</h4>
-                            <p class="text-sm text-gray-500">{{ $s->major_year }}</p>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                <div class="card-role hidden">
-                    <div class="flex gap-6 justify-center flex-wrap">
-                        @foreach($bph_bendahara as $b)
-                        <div class="bg-white rounded-2xl shadow p-6 w-60 hover:shadow-xl transition">
-                            <img src="{{ asset('foto/'.$b->photo) }}" class="rounded-full mx-auto mb-4 w-32 h-32 object-cover">
-                            <h4>{{ $b->name }}</h4>
-                            <p class="text-sm text-gray-500">{{ $b->major_year }}</p>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
+    
+    <div class="card-role">
+        <div class="flex justify-center flex-wrap gap-6">
+            @foreach($bph_ketua as $k)
+            <div class="bg-white rounded-2xl shadow p-6 w-60 hover:shadow-xl transition">
+                <img src="{{ asset('foto/' . $k->photo) }}" class="rounded-full mx-auto mb-4 w-32 h-32 object-cover">
+                <h4 class="font-bold text-lg text-center text-gray-800">{{ $k->name }}</h4>
+                <p class="text-sm text-center text-gray-500">{{ $k->major_year }}</p>
             </div>
+            @endforeach
+        </div>
+    </div>
+
+    <div class="card-role hidden">
+        <div class="flex gap-6 justify-center flex-wrap">
+            @foreach($bph_sekre as $s)
+            <div class="bg-white rounded-2xl shadow p-6 w-60 hover:shadow-xl transition">
+                <img src="{{ asset('foto/' . $s->photo) }}" class="rounded-full mx-auto mb-4 w-32 h-32 object-cover">
+                <h4 class="font-bold text-lg text-center text-gray-800">{{ $s->name }}</h4>
+                <p class="text-sm text-center text-gray-400 font-medium">{{ $s->role }}</p> <p class="text-xs text-center text-gray-500 mt-1">{{ $s->major_year }}</p>
+            </div>
+            @endforeach
+        </div>
+    </div>
+
+    <div class="card-role hidden">
+        <div class="flex gap-6 justify-center flex-wrap">
+            @foreach($bph_bendahara as $b)
+            <div class="bg-white rounded-2xl shadow p-6 w-60 hover:shadow-xl transition">
+                <img src="{{ asset('foto/' . $b->photo) }}" class="rounded-full mx-auto mb-4 w-32 h-32 object-cover">
+                <h4 class="font-bold text-lg text-center text-gray-800">{{ $b->name }}</h4>
+                <p class="text-sm text-center text-gray-400 font-medium">{{ $b->role }}</p> <p class="text-xs text-center text-gray-500 mt-1">{{ $b->major_year }}</p>
+            </div>
+            @endforeach
+        </div>
+    </div>
+
+</div>
+
 
             <div class="flex justify-center gap-10 mt-6">
                 <button onclick="prevSlide()" class="text-3xl text-[#8B1E1E] hover:scale-125 transition">←</button>
@@ -265,7 +268,7 @@
                                 {{ $division->icon ?? '💡' }} Program Kerja
                             </span>
                             <ul class="text-xs text-gray-700 space-y-2">
-                                @foreach($division->programs as $program)
+                                @foreach($division->programs()->get() as $program)
                                 <li class="flex items-start gap-2">
                                     <span class="text-[#8B1E1E] font-semibold">»</span>
                                     <span>{{ $program->name }}</span>
@@ -343,8 +346,10 @@
         window.addEventListener("scroll", function () {
             if (window.scrollY > 50) {
                 header.classList.add("bg-red-900", "shadow-lg");
+                header.classList.remove("bg-black/20", "backdrop-blur-sm");
             } else {
                 header.classList.remove("bg-red-900", "shadow-lg");
+                header.classList.add("bg-black/20", "backdrop-blur-sm");
             }
         });
 
