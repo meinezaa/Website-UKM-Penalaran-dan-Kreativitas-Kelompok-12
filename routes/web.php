@@ -20,27 +20,8 @@ use App\Models\Program;
 
 // ==================== ROUTE PUBLIK ====================
 
-<<<<<<< HEAD
-Route::get('/', function () {
-
-    $jumlahRelawan = DB::table('pendaftaran_relawan')->count();
-
-    $jumlahSekolah = DB::table('kegiatan')
-        ->distinct('lokasi')
-        ->count('lokasi');
-
-    $jumlahSiswaTerlibat = 0;
-
-    return view('publik.beranda', compact(
-        'jumlahRelawan',
-        'jumlahSekolah',
-        'jumlahSiswaTerlibat'
-    ));
-});
-=======
 Route::get('/', [KegiatanController::class, 'beranda'])->name('beranda');
 Route::get('/beranda', [KegiatanController::class, 'beranda']);
->>>>>>> edc5a8a65686b80dcea45f80e13548fb0142bb3d
 
 // Halaman Utama UKM (Menampilkan Sosmed, Visi, Misi, BPH, Divisi & Proker)
 Route::get('/ukm', function() {
@@ -103,29 +84,20 @@ Route::get('/formulir-mitra', function () {
 Route::post('/agenda/{id}/daftar-relawan', [KegiatanPublikController::class, 'submitRelawan'])->name('relawan.daftar');
 Route::post('/mitra/daftar', [KegiatanPublikController::class, 'submitMitra'])->name('mitra.daftar');
 
-Route::get('/logout', [AuthController::class, 'logout'])
-    ->name('logout');
 
 
-<<<<<<< HEAD
 // ==================== ROUTE ADMIN (MIDDLEWARE AUTH) ====================
 
 Route::get('/admin/dashboard',
     [AdminDashboardController::class, 'index'])
     ->name('admin.dashboard');
 
-Route::delete('/admin/kegiatan/{id}',
-    [AdminDashboardController::class, 'destroyKegiatan'])
-    ->name('admin.kegiatan.destroy');
 
 // route admin lainnya...
-=======
 // ==================== ROUTE ADMIN (MENGGUNAKAN GRUP STANDARD SESSION KELOMPOK) ====================
 Route::group([], function () {
     
     // Dashboard Utama Admin
-    Route::get('/admin/dashboard_admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
->>>>>>> edc5a8a65686b80dcea45f80e13548fb0142bb3d
     
     // 1. Kelola Kegiatan (Tampil Data)
     Route::get('/admin/kelola-kegiatan', function () {
@@ -303,9 +275,6 @@ Route::group([], function () {
         return redirect('/admin/kelola-relawan')->with('pesan', 'Data CSV berhasil di-impor!');
     })->name('admin.relawan.impor');
 
-<<<<<<< HEAD
-Route::get('/tim', [TimController::class, 'index']);
-=======
     // ------------------ KELOLA DOKUMENTASI ------------------
     Route::get('/admin/kelola-dokumentasi', function () {
     if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
@@ -516,4 +485,3 @@ Route::get('/tim', [TimController::class, 'index']);
     })->name('admin.kelola_tim.destroy');
 
 });
->>>>>>> edc5a8a65686b80dcea45f80e13548fb0142bb3d
