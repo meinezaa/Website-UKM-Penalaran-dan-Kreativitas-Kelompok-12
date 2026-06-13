@@ -279,14 +279,6 @@ Route::group([], function () {
 
     // ------------------ KELOLA DOKUMENTASI ------------------
     Route::get('/admin/kelola-dokumentasi', function () {
-<<<<<<< Updated upstream
-    if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
-    
-    // KUNCI PERBAIKAN: Ubah nama tabel menjadi 'dokumentasi_kegiatan'
-    $dokumentasi = DB::table('dokumentasi_kegiatan')->orderBy('id_dokumentasi', 'DESC')->get(); 
-    
-    return view('admin.kelola_dokumentasi', compact('dokumentasi'));
-=======
 
     if (!session('id_user') || session('role') !== 'admin') {
         return redirect('/login');
@@ -303,42 +295,8 @@ Route::group([], function () {
 
     return view('admin.kelola_dokumentasi', compact('dokumentasi'));
 
->>>>>>> Stashed changes
 })->name('admin.dokumentasi');
 
-    Route::get('/admin/tambah-dokumentasi', function () {
-
-    if (!session('id_user') || session('role') !== 'admin') {
-        return redirect('/login');
-    }
-
-    $kegiatan = DB::table('kegiatan')
-        ->orderBy('nama_kegiatan')
-        ->get();
-
-    return view(
-        'admin.tambah_dokumentasi',
-        compact('kegiatan')
-    );
-
-})->name('admin.dokumentasi.tambah');
-
-    Route::post('/admin/tambah-dokumentasi', function (Request $request) {
-<<<<<<< Updated upstream
-        if (!session('id_user') || session('role') !== 'admin') { return redirect('/login'); }
-        $pathFoto = null;
-        if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            $namaFoto = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('public/dokumentasi', $namaFoto);
-            $pathFoto = 'dokumentasi/' . $namaFoto;
-        }
-        DB::table('dokumentasi')->insert([
-            'judul' => $request->judul, 'deskripsi' => $request->deskripsi, 'foto' => $pathFoto, 'created_at' => now(), 'updated_at' => now()
-        ]);
-        return redirect('/admin/kelola-dokumentasi')->with('pesan', 'Dokumentasi berhasil diunggah!');
-    })->name('admin.dokumentasi.store');
-=======
 
     if (!session('id_user') || session('role') !== 'admin') {
         return redirect('/login');
@@ -372,7 +330,6 @@ Route::group([], function () {
             ->with('pesan', 'Dokumentasi berhasil diunggah!');
 
 })->name('admin.dokumentasi.store');
->>>>>>> Stashed changes
 
     // ------------------ KELOLA MITRA ------------------
     Route::get('/admin/kelola-mitra', function (Request $request) {
@@ -568,4 +525,5 @@ Route::group([], function () {
         return redirect()->back()->with('pesan', 'Anggota tim dihapus!');
     })->name('admin.kelola_tim.destroy');
 
-});
+
+
