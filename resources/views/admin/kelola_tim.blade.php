@@ -78,6 +78,17 @@
         </a>
     </nav>
 
+    @if ($errors->any())
+            <div class="p-3 mb-4 text-xs text-red-800 rounded-xl bg-red-50 border border-red-100 space-y-1">
+                <p class="font-bold">Gagal menyimpan karena:</p>
+                <ul class="list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
     <div class="pt-6 border-t border-gray-100">
         <form action="/logout" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin keluar?')">
             @csrf
@@ -87,6 +98,7 @@
         </form>
     </div>
 </aside>
+
 <main class="flex-1 ml-72 p-8">
     <header class="flex justify-between items-center mb-6">
         <div>
@@ -141,12 +153,12 @@
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex items-center justify-center gap-2">
-                            <button onclick="bukaModalEdit({{ json_encode($item) }})" class="p-2 bg-gray-50 text-gray-600 hover:bg-gray-100 rounded-lg transition-all">
+                            <button onclick="bukaModalEdit({{ json_encode($item) }})" class="p-2 bg-gray-50 text-gray-600 hover:bg-gray-100 rounded-lg transition-all cursor-pointer">
                                 <span class="material-symbols-outlined text-sm">edit</span>
                             </button>
                             <form action="/admin/kelola-tim/{{ $item->id }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus anggota ini?')">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="p-2 bg-red-50 text-primary hover:bg-red-100 rounded-lg transition-all">
+                                <button type="submit" class="p-2 bg-red-50 text-primary hover:bg-red-100 rounded-lg transition-all cursor-pointer">
                                     <span class="material-symbols-outlined text-sm">delete</span>
                                 </button>
                             </form>
@@ -208,8 +220,8 @@
                 <input type="number" name="urutan" value="0" min="0" class="w-full text-sm rounded-xl border-gray-200 focus:ring-primary focus:border-primary">
             </div>
             <div class="flex gap-3 pt-2">
-                <button type="submit" class="flex-1 bg-primary text-white font-bold py-2.5 rounded-xl text-sm">Simpan</button>
-                <button type="button" onclick="toggleModal('modal-tambah')" class="flex-1 bg-gray-100 text-gray-600 font-bold py-2.5 rounded-xl text-sm">Batal</button>
+                <button type="submit" class="flex-1 bg-primary text-white font-bold py-2.5 rounded-xl text-sm cursor-pointer">Simpan</button>
+                <button type="button" onclick="toggleModal('modal-tambah')" class="flex-1 bg-gray-100 text-gray-600 font-bold py-2.5 rounded-xl text-sm cursor-pointer">Batal</button>
             </div>
         </form>
     </div>
@@ -218,6 +230,7 @@
 <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-xl p-6 relative">
         <h3 class="font-headline font-bold text-lg text-gray-900 mb-4">Ubah Data Anggota</h3>
+        
         <form id="form-edit" method="POST" enctype="multipart/form-data" class="space-y-4">
             @csrf @method('PUT')
             <div>
@@ -260,8 +273,8 @@
                 <input type="number" name="urutan" id="edit-urutan" min="0" class="w-full text-sm rounded-xl border-gray-200 focus:ring-primary focus:border-primary">
             </div>
             <div class="flex gap-3 pt-2">
-                <button type="submit" class="flex-1 bg-primary text-white font-bold py-2.5 rounded-xl text-sm">Update</button>
-                <button type="button" onclick="toggleModal('modal-edit')" class="flex-1 bg-gray-100 text-gray-600 font-bold py-2.5 rounded-xl text-sm">Batal</button>
+                <button type="submit" class="flex-1 bg-primary text-white font-bold py-2.5 rounded-xl text-sm cursor-pointer">Update</button>
+                <button type="button" onclick="toggleModal('modal-edit')" class="flex-1 bg-gray-100 text-gray-600 font-bold py-2.5 rounded-xl text-sm cursor-pointer">Batal</button>
             </div>
         </form>
     </div>
@@ -273,8 +286,11 @@
         modal.classList.toggle('hidden');
     }
 
+    // 🌟 REVISI 2: Pengisian URL action yang absolut dan aman dari cache browser
     function bukaModalEdit(data) {
-        document.getElementById('form-edit').action = '/admin/kelola-tim/' + data.id;
+        const formElement = document.getElementById('form-edit');
+        formElement.action = window.location.protocol + '//' + window.location.host + '/admin/kelola-tim/' + data.id;
+        
         document.getElementById('edit-nama').value = data.nama;
         document.getElementById('edit-kategori').value = data.kategori;
         document.getElementById('edit-jabatan').value = data.jabatan;

@@ -560,4 +560,5 @@ Route::group([], function () {
     Route::post('/admin/kelola-tim', [TimController::class, 'store'])->name('admin.kelola_tim.store');
     Route::delete('/admin/kelola-tim/{id}', [TimController::class, 'destroy'])->name('admin.kelola_tim.destroy');
 
+    Route::put('/admin/kelola-tim/{id}', [TimController::class, 'update'])->name('admin.kelola_tim.update');
 });

@@ -164,14 +164,30 @@
             @foreach($bph_teams as $team)
                 <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 pb-14 flex flex-col items-center text-center relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:scale-105">
                     
-                    <img src="{{ asset('foto/' . basename($team->foto)) }}" 
+                    @php
+                        $namaFileBph = basename($team->foto);
+                        
+                        if ($team->foto && file_exists(public_path('foto_tim/' . $namaFileBph))) {
+                            $srcFotoBph = asset('foto_tim/' . $namaFileBph);
+                        } elseif ($team->foto && file_exists(public_path('foto/' . $namaFileBph))) {
+                            $srcFotoBph = asset('foto/' . $namaFileBph);
+                        } else {
+                            $srcFotoBph = 'https://ui-avatars.com/api/?name=' . urlencode($team->nama) . '&background=8B1E1E&color=fff&size=256';
+                        }
+                    @endphp
+
+                    <img src="{{ $srcFotoBph }}" 
                          alt="{{ $team->nama }}" 
                          class="w-64 h-64 rounded-2xl object-cover object-center border-4 border-gray-100 shadow-md bg-gray-100 mx-auto"
                          onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($team->nama) }}&background=8B1E1E&color=fff&size=256';">
                     
                     <div class="mt-6 flex flex-col justify-center">
-                        <h3 class="font-bold text-xl text-gray-800 px-2 line-clamp-2 min-h-[3.5rem] flex items-center justify-center">{{ $team->nama }}</h3>
-                        <p class="mt-1 text-[#8B1E1E] text-sm font-semibold uppercase tracking-wider">{{ $team->jabatan }}</p>
+                        <h3 class="font-bold text-xl text-gray-800 px-2 line-clamp-2 min-h-[3.5rem] flex items-center justify-center">
+                            {{ $team->nama }}
+                        </h3>
+                        <p class="mt-1 text-[#8B1E1E] text-sm font-semibold uppercase tracking-wider">
+                            {{ ltrim($team->jabatan, '.') }}
+                        </p>
                     </div>
                     
                     <div class="absolute bottom-0 left-0 w-full h-[5px] bg-[#8B1E1E]"></div>
@@ -191,22 +207,14 @@
                 <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 pb-12 flex flex-col items-center text-center justify-between min-h-[320px] relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:scale-105">
                     
                     @php
-                        $namaFile = basename($staf->foto);
-                        $urlFoto = asset('foto/' . $namaFile);
-                        $pathFoto = public_path('foto/' . $namaFile);
+                        $namaFileStaf = basename($staf->foto);
 
-                        if ($staf->nama == 'Andi Pratama' && (!file_exists($pathFoto) || is_dir($pathFoto))) {
-                            $filesCari = glob(public_path('foto/*Andi*'));
-                            if(empty($filesCari)) {
-                                $filesCari = glob(public_path('foto/*andi*'));
-                            }
-                            if(empty($filesCari)) {
-                                $filesCari = glob(public_path('foto/*WhatsApp*'));
-                            }
-
-                            if (!empty($filesCari)) {
-                                $urlFoto = asset('foto/' . basename($filesCari[0]));
-                            }
+                        if ($staf->foto && file_exists(public_path('foto_tim/' . $namaFileStaf))) {
+                            $urlFoto = asset('foto_tim/' . $namaFileStaf);
+                        } elseif ($staf->foto && file_exists(public_path('foto/' . $namaFileStaf))) {
+                            $urlFoto = asset('foto/' . $namaFileStaf);
+                        } else {
+                            $urlFoto = 'https://ui-avatars.com/api/?name=' . urlencode($staf->nama) . '&background=8B1E1E&color=fff&size=256';
                         }
                     @endphp
                     
@@ -216,8 +224,12 @@
                          onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($staf->nama) }}&background=8B1E1E&color=fff&size=256';">
                     
                     <div class="mt-4 flex-grow flex flex-col justify-center w-full">
-                        <h3 class="font-bold text-lg text-gray-800 line-clamp-2 px-1 min-h-[3rem] flex items-center justify-center">{{ $staf->nama }}</h3>
-                        <p class="text-[#8B1E1E] text-sm font-medium mt-1">{{ $staf->jabatan }}</p>
+                        <h3 class="font-bold text-lg text-gray-800 line-clamp-2 px-1 min-h-[3rem] flex items-center justify-center">
+                            {{ $staf->nama }}
+                        </h3>
+                        <p class="text-[#8B1E1E] text-sm font-medium mt-1">
+                            {{ ltrim($staf->jabatan, '.') }}
+                        </p>
                     </div>
                     
                     <div class="absolute bottom-0 left-0 w-full h-1.5 bg-[#8B1E1E]"></div>

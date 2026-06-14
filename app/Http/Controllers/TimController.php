@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Team; // Menggunakan nama model asli kamu
+use App\Models\Team; // Menggunakan nama model asli Anda
 use Illuminate\Support\Facades\File;
 
 class TimController extends Controller
@@ -18,25 +18,32 @@ class TimController extends Controller
     // Memproses simpan anggota baru
     public function store(Request $request)
     {
+        // 1. Validasi data diperlonggar agar tidak memicu muatan server macet
         $request->validate([
             'nama'     => 'required|string|max:255',
             'jabatan'  => 'required|string|max:255',
-            'kategori' => 'required|string|in:bph,staf_ahli', // Validasi tipe kategori database kamu
-            'foto'     => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'kategori' => 'required|string', 
+            'foto'     => 'nullable|image|max:10240', // Diubah ke 10MB agar jepretan kamera HP asli langsung lolos
             'urutan'   => 'nullable|integer',
         ]);
 
+        // 2. Pemrosesan file foto dengan nama enkripsi acak yang aman
         $namaFoto = null;
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
-            $namaFoto = time() . '_' . $file->getClientOriginalName();
+            
+            // Menggunakan kombinasi waktu dan ID unik agar nama file bersih total dari spasi/karakter aneh
+            $namaFoto = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            
+            // Pindahkan file ke folder public/foto_tim
             $file->move(public_path('foto_tim'), $namaFoto);
         }
 
+        // 3. Simpan data ke database menggunakan Model Team
         Team::create([
             'nama'      => $request->nama,
             'jabatan'   => $request->jabatan,
-            'kategori'  => $request->kategori, // Menyimpan nilai 'bph' atau 'staf_ahli'
+            'kategori'  => $request->kategori, 
             'foto'      => $namaFoto,
             'instagram' => $request->instagram,
             'email'     => $request->email,
@@ -44,7 +51,8 @@ class TimController extends Controller
             'urutan'    => $request->urutan ?? 0,
         ]);
 
-        return redirect()->back()->with('pesan', 'Anggota tim baru berhasil ditambahkan!');
+        // 4. Redirect kembali menggunakan URL absolut internal
+        return redirect('/admin/kelola-tim')->with('pesan', 'Anggota tim baru berhasil ditambahkan!');
     }
 
     // Memproses edit data anggota tim
@@ -53,21 +61,25 @@ class TimController extends Controller
         $request->validate([
             'nama'     => 'required|string|max:255',
             'jabatan'  => 'required|string|max:255',
-            'kategori' => 'required|string|in:bph,staf_ahli',
-            'foto'     => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'kategori' => 'required|string',
+            'foto'     => 'nullable|image|max:10240',
             'urutan'   => 'nullable|integer',
         ]);
 
         $anggota = Team::findOrFail($id);
 
         if ($request->hasFile('foto')) {
+            // Hapus foto lama dari penyimpanan jika file tersebut ada
             if ($anggota->foto && File::exists(public_path('foto_tim/' . $anggota->foto))) {
                 File::delete(public_path('foto_tim/' . $anggota->foto));
             }
 
             $file = $request->file('foto');
-            $namaFoto = time() . '_' . $file->getClientOriginalName();
+            
+            // Amankan penamaan file edit baru
+            $namaFoto = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('foto_tim'), $namaFoto);
+            
             $anggota->foto = $namaFoto;
         }
 
@@ -80,9 +92,9 @@ class TimController extends Controller
         $anggota->urutan    = $request->urutan ?? 0;
         $anggota->save();
 
-        return redirect()->back()->with('pesan', 'Data anggota tim berhasil diperbarui!');
+        return redirect('/admin/kelola-tim')->with('pesan', 'Data anggota tim berhasil diperbarui!');
     }
-
+    
     // Menghapus anggota tim
     public function destroy($id)
     {
@@ -93,6 +105,6 @@ class TimController extends Controller
         }
 
         $anggota->delete();
-        return redirect()->back()->with('pesan', 'Anggota tim berhasil dihapus!');
+        return redirect('/admin/kelola-tim')->with('pesan', 'Anggota tim berhasil dihapus!');
     }
 }
