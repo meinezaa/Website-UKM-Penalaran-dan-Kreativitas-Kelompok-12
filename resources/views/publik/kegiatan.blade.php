@@ -138,7 +138,6 @@
 
                         <li>
                             <a href="{{ url('/relawan') }}" class="relative {{ request()->is('relawan*') ? 'after:w-0' : 'after:w-0' }} after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">
-
                                 Dokumentasi
                             </a>
                         </li>
@@ -209,15 +208,20 @@
             
             {{-- DATA FILTER: REGISTRASI DIBUKA --}}
             @foreach($kegiatanBuka as $keg)
-                <div class="card-kegiatan" data-status="buka">
+                @php
+                    $statusAsli = strtolower($keg->status_kegiatan);
+                    $statusFilter = ($statusAsli == 'aktif' || $statusAsli == 'buka') ? 'buka' : $statusAsli;
+                    $namaFile = basename($keg->foto_kegiatan);
+                @endphp
+                <div class="card-kegiatan" data-status="{{ $statusFilter }}">
                     <div class="img-container">
-                        <img src="{{ asset('foto/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}">
+                        <img src="{{ asset('storage/foto/' . $namaFile) }}" alt="{{ $keg->nama_kegiatan }}" onerror="if (this.src.includes('storage/foto/')) { this.src='{{ asset('foto/' . $namaFile) }}'; } else { this.onerror=null; this.src='https://placehold.co/600x400/f3f3f3/a3a3a3?text=No+Image'; }">
                         <span class="badge-status bg-buka">BUKA</span>
                     </div>
                     <div class="card-body">
                         <h3 class="card-title" title="{{ $keg->nama_kegiatan }}">{{ $keg->nama_kegiatan }}</h3>
                         <div class="card-dates">
-                            <div class="date-item">⏱️ <span><strong>Registrasi:</strong> s.d. {{ \Carbon\Carbon::parse($keg->batas_registrasi)->translatedFormat('d M Y') }}</span></div>
+                            <div class="date-item">⏱️ <span><strong>Registrasi:</strong> s.d. {{ $keg->batas_registrasi ? \Carbon\Carbon::parse($keg->batas_registrasi)->translatedFormat('d M Y') : '-' }}</span></div>
                             <div class="date-item">📅 <span><strong>Pelaksanaan:</strong> {{ \Carbon\Carbon::parse($keg->tanggal_pelaksanaan ?? $keg->batas_registrasi)->translatedFormat('d M Y') }}</span></div>
                         </div>
                         <div class="meta-space-category">
@@ -234,9 +238,14 @@
 
             {{-- DATA FILTER: SEDANG BERLANGSUNG --}}
             @foreach($kegiatanBerjalan as $keg)
-                <div class="card-kegiatan" data-status="berjalan">
+                @php
+                    $statusAsli = strtolower($keg->status_kegiatan);
+                    $statusFilter = ($statusAsli == 'proses' || $statusAsli == 'berjalan') ? 'berjalan' : $statusAsli;
+                    $namaFile = basename($keg->foto_kegiatan);
+                @endphp
+                <div class="card-kegiatan" data-status="{{ $statusFilter }}">
                     <div class="img-container">
-                        <img src="{{ asset('foto/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}">
+                        <img src="{{ asset('storage/foto/' . $namaFile) }}" alt="{{ $keg->nama_kegiatan }}" onerror="if (this.src.includes('storage/foto/')) { this.src='{{ asset('foto/' . $namaFile) }}'; } else { this.onerror=null; this.src='https://placehold.co/600x400/f3f3f3/a3a3a3?text=No+Image'; }">
                         <span class="badge-status bg-berjalan">AKTIF</span>
                     </div>
                     <div class="card-body">
@@ -259,9 +268,13 @@
 
             {{-- DATA FILTER: SUDAH SELESAI --}}
             @foreach($kegiatanSelesai as $keg)
-                <div class="card-kegiatan" data-status="selesai">
+                @php
+                    $statusFilter = strtolower($keg->status_kegiatan);
+                    $namaFile = basename($keg->foto_kegiatan);
+                @endphp
+                <div class="card-kegiatan" data-status="{{ $statusFilter }}">
                     <div class="img-container">
-                        <img src="{{ asset('foto/' . $keg->foto_kegiatan) }}" alt="{{ $keg->nama_kegiatan }}">
+                        <img src="{{ asset('storage/foto/' . $namaFile) }}" alt="{{ $keg->nama_kegiatan }}" onerror="if (this.src.includes('storage/foto/')) { this.src='{{ asset('foto/' . $namaFile) }}'; } else { this.onerror=null; this.src='https://placehold.co/600x400/f3f3f3/a3a3a3?text=No+Image'; }">
                         <span class="badge-status bg-selesai">SELESAI</span>
                     </div>
                     <div class="card-body">
@@ -384,7 +397,8 @@
             let visibleCount = 0;
 
             buttons.forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`btn-${status}`).classList.add('active');
+            const targetBtn = document.getElementById(`btn-${status}`);
+            if(targetBtn) targetBtn.classList.add('active');
 
             updateSlidingBg(false);
 
@@ -406,7 +420,6 @@
             }
         }
 
-        // Panggil filterKegiatan('semua') di awal agar inisialisasi javascript menyinkronkan seluruh card
         window.addEventListener('DOMContentLoaded', () => { 
             updateSlidingBg(true); 
             filterKegiatan('semua');
@@ -422,9 +435,9 @@
             title: 'Pendaftaran Berhasil!',
             text: 'Data Anda telah tersimpan. Silakan bergabung ke grup WhatsApp untuk mendapatkan pembaruan informasi selanjutnya.',
             icon: 'success',
-            iconColor: '#ef4444', // Warna merah menyesuaikan tema UPN
+            iconColor: '#ef4444', 
             showCancelButton: true,
-            confirmButtonColor: '#25D366', // Warna hijau khas WhatsApp
+            confirmButtonColor: '#25D366', 
             cancelButtonColor: '#d33',
             confirmButtonText: '🟢 Gabung Grup WA',
             cancelButtonText: 'Tutup',
@@ -436,7 +449,6 @@
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                // Membuka link Grup WhatsApp di tab baru jika tombol diklik
                 window.open("{{ session('link_wa') }}", '_blank');
             }
         });

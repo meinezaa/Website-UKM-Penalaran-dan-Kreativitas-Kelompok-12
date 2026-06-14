@@ -14,31 +14,16 @@ class KegiatanPublikController extends Controller
      */
     public function index()
     {
-        // Mengunci tanggal hari ini berdasarkan waktu berjalan sistem (Tahun 2026)
-        $today = Carbon::today()->format('Y-m-d');
+        // Menyederhanakan query filter berdasarkan string status agar sinkron dengan data dari dashboard admin
+        
+        // 1. REGISTRASI DIBUKA (Mengakomodasi status 'aktif' atau 'buka')
+        $kegiatanBuka = Kegiatan::whereIn('status_kegiatan', ['aktif', 'buka', 'Aktif', 'Buka'])->get();
 
-        // 1. REGISTRASI DIBUKA (Untuk Tab 'Registrasi Dibuka')
-        $kegiatanBuka = Kegiatan::where(function($query) use ($today) {
-                                    $query->whereDate('batas_registrasi', '>=', $today)
-                                          ->orWhereNull('batas_registrasi');
-                                })
-                                ->where(function($query) use ($today) {
-                                    $query->whereDate('tanggal_pelaksanaan', '>=', $today)
-                                          ->orWhereNull('tanggal_pelaksanaan');
-                                })
-                                ->get();
+        // 2. SEDANG BERLANGSUNG (Mengakomodasi status 'berjalan' atau 'proses')
+        $kegiatanBerjalan = Kegiatan::whereIn('status_kegiatan', ['berjalan', 'proses', 'Berjalan', 'Proses'])->get();
 
-        // 2. SEDANG BERLANGSUNG (Untuk Tab 'Sedang Berlangsung')
-        $kegiatanBerjalan = Kegiatan::whereDate('batas_registrasi', '<', $today)
-                                    ->whereDate('tanggal_pelaksanaan', '>=', $today)
-                                    ->get();
-
-        // 3. SUDAH SELESAI (Untuk Tab 'Sudah Selesai')
-        $kegiatanSelesai = Kegiatan::where(function($query) use ($today) {
-                                    $query->whereDate('tanggal_pelaksanaan', '<', $today)
-                                          ->orWhere('status_kegiatan', 'selesai');
-                                })
-                                ->get();
+        // 3. SUDAH SELESAI (Mengakomodasi status 'selesai')
+        $kegiatanSelesai = Kegiatan::whereIn('status_kegiatan', ['selesai', 'Selesai'])->get();
 
         // 4. SEMUA DATA KEGIATAN (Khusus Untuk Tab Utama 'Semua Kegiatan')
         $semuaKegiatan = Kegiatan::all();
@@ -99,7 +84,7 @@ class KegiatanPublikController extends Controller
     {
         $request->validate([
             'id_kegiatan'       => 'required',
-            'nama_lengkap'      => 'required|string|max:255', // <-- Tambahkan validasi nama lengkap jika ada di form HTML
+            'nama_lengkap'      => 'required|string|max:255',
             'no_hp'             => 'required|numeric',
             'email'             => 'required|email',
             'umur'              => 'required|numeric',
@@ -127,28 +112,23 @@ class KegiatanPublikController extends Controller
 
         // MENYESUAIKAN 100% DENGAN STRUKTUR DATABASE BARU
         DB::table('pendaftaran_relawan')->insert([
-    'id_user'             => session('id_user') ?? 1,
-    
-    // =========================================================================
-    // PERBAIKAN UTAMA: Gunakan variabel $id dari Route URL, bukan dari request form
-    // =========================================================================
-    'id_kegiatan'         => $id, 
-    
-    'nama_lengkap'        => $request->nama_lengkap ?? $request->asal_prodi, 
-    'no_hp'               => $request->no_hp,
-    'umur'                => $request->umur,
-    'jenis_kelamin'       => $request->jenis_kelamin,
-    'asal_prodi'          => $request->asal_prodi,
-    'pilihan_divisi_1'    => $request->pilihan_divisi_1,
-    'pilihan_divisi_2'    => $request->pilihan_divisi_2, 
-    'portofolio'          => $request->portofolio,
-    'pengalaman_keahlian' => $request->deskripsi, 
-    'metode_pembayaran'   => $metodePembayaran,   
-    'bukti_pembayaran'    => $namaFileBukti,
-    'status_seleksi'      => 'Proses',            
-    'created_at'          => now(), // Ini akan otomatis mencatat waktu Juni 2026 sesuai device-mu
-    'updated_at'          => now()
-]);
+            'id_user'             => session('id_user') ?? 1,
+            'id_kegiatan'         => $request->id_kegiatan,
+            'nama_lengkap'        => $request->nama_lengkap ?? 'Tanpa Nama', 
+            'no_hp'               => $request->no_hp,
+            'umur'                => $request->umur,
+            'jenis_kelamin'       => $request->jenis_kelamin,
+            'asal_prodi'          => $request->asal_prodi,
+            'pilihan_divisi_1'    => $request->pilihan_divisi_1,
+            'pilihan_divisi_2'    => $request->pilihan_divisi_2, 
+            'portofolio'          => $request->portofolio,
+            'pengalaman_keahlian' => $request->deskripsi, 
+            'metode_pembayaran'   => $metodePembayaran,   
+            'bukti_pembayaran'    => $namaFileBukti,
+            'status_seleksi'      => 'Proses',            
+            'created_at'          => now(),
+            'updated_at'          => now()
+        ]);
 
         // Ambil data kegiatan untuk mendapatkan link WhatsApp grup tujuan secara dinamis
         $kegiatan = Kegiatan::where('id_kegiatan', $id)->first();
@@ -159,3 +139,4 @@ class KegiatanPublikController extends Controller
             'link_wa'       => $linkWhatsapp
         ]);
     }
+}

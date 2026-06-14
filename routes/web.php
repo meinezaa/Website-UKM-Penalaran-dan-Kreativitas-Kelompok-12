@@ -76,15 +76,10 @@ Route::get('/upnmengajar', function () {
 // Menampilkan Halaman Tim via UkmController
 Route::get('/tim', [UkmController::class, 'Tim'])->name('tim.index');
 
-// Menampilkan Halaman Kegiatan Publik Beserta Statusnya
-Route::get('/kegiatan', function () {
-    $kegiatanBuka = DB::table('kegiatan')->where('status_kegiatan', 'BUKA')->get();
-    $kegiatanBerjalan = DB::table('kegiatan')->where('status_kegiatan', 'BERJALAN')->get();
-    $kegiatanSelesai = DB::table('kegiatan')->where('status_kegiatan', 'SELESAI')->get();
-    $kegiatanTutup = DB::table('kegiatan')->where('status_kegiatan', 'TUTUP')->get();
-
-    return view('publik.kegiatan', compact('kegiatanBuka', 'kegiatanBerjalan', 'kegiatanSelesai', 'kegiatanTutup'));
-});
+// ==================== REVISI BAGIAN KEGIATAN PUBLIK ====================
+// Mengarahkan ke KegiatanPublikController agar data terproses dengan benar ke view publik
+Route::get('/kegiatan', [KegiatanPublikController::class, 'index'])->name('kegiatan.index');
+// =======================================================================
 
 // Route Utama Halaman Galeri Artikel/Dokumentasi Publik
 Route::get('/relawan', function () {
