@@ -34,12 +34,12 @@ class Kegiatan extends Model
         'detail_aktivitas',
     ];
 
-    // 4. Tambahkan ini! Mengubah string tanggal dari DB otomatis menjadi Objek Date/Carbon
+    // 4. PERBAIKAN: Memaksa casting date menggunakan format standar MySQL (Y-m-d) agar tidak hilang saat save
     protected $casts = [
-        'tanggal_pelaksanaan' => 'date',
-        'batas_registrasi'    => 'date',
-        'pendaftaran_dibuka'  => 'date',
-        'pengumuman_seleksi'  => 'date',
+        'tanggal_pelaksanaan' => 'date:Y-m-d',
+        'batas_registrasi'    => 'date:Y-m-d',
+        'pendaftaran_dibuka'  => 'date:Y-m-d',
+        'pengumuman_seleksi'  => 'date:Y-m-d',
     ];
     
     /**
@@ -64,7 +64,7 @@ class Kegiatan extends Model
         return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
 
-    // Relasi ke tabel dokumentasi_kegiatan
+    // Relasi ke tabel dokumentasi_kegiatan 
     public function dokumentasi()
     {
         return $this->hasMany(DokumentasiKegiatan::class, 'id_kegiatan', 'id_kegiatan');

@@ -71,48 +71,50 @@
                 @endif
 
                 <form action="{{ route('login') }}" method="POST" class="space-y-5">
-                    @csrf {{-- Wajib di Laravel untuk keamanan token form --}}
-                    
-                    <div class="space-y-1.5">
-                        <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant ml-1" for="email">Alamat Email</label>
-                        <div class="relative group">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
-                                <span class="material-symbols-outlined text-lg">mail</span>
-                            </div>
-                            <input type="email" name="email" id="email" required 
-                                value="{{ old('email') }}"
-                                class="block w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/5 focus:border-primary focus:bg-white transition-all text-sm outline-none" 
-                                placeholder="alamatemail@gmail.com">
-                        </div>
-                    </div>
+    @csrf {{-- Wajib di Laravel untuk keamanan token form --}}
+    
+    <div class="space-y-1.5">
+        <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant ml-1" for="email">Alamat Email</label>
+        <div class="relative group">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
+                <span class="material-symbols-outlined text-lg">mail</span>
+            </div>
+            <input type="email" name="email" id="email" required 
+                value="{{ old('email') }}"
+                autocomplete="username"
+                class="block w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/5 focus:border-primary focus:bg-white transition-all text-sm outline-none" 
+                placeholder="alamatemail@gmail.com">
+        </div>
+    </div>
 
-                    <div class="space-y-1.5">
-                        <div class="flex justify-between items-center px-1">
-                            <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant" for="password">Kata Sandi</label>
-                            <a href="#" class="text-[10px] font-bold text-primary hover:underline">Lupa Password?</a>
-                        </div>
-                        <div class="relative group">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
-                                <span class="material-symbols-outlined text-lg">key</span>
-                            </div>
-                            <input type="password" name="password" id="password" required
-                                class="block w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/5 focus:border-primary focus:bg-white transition-all text-sm outline-none" 
-                                placeholder="••••••••">
-                        </div>
-                    </div>
+    <div class="space-y-1.5">
+        <div class="flex justify-between items-center px-1">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant" for="password">Kata Sandi</label>
+            <a href="#" class="text-[10px] font-bold text-primary hover:underline">Lupa Password?</a>
+        </div>
+        <div class="relative group">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
+                <span class="material-symbols-outlined text-lg">key</span>
+            </div>
+            <input type="password" name="password" id="password" required
+                autocomplete="current-password"
+                class="block w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/5 focus:border-primary focus:bg-white transition-all text-sm outline-none" 
+                placeholder="••••••••">
+        </div>
+    </div>
 
-                    <div class="flex items-center px-1">
-                        <label class="flex items-center gap-2 cursor-pointer group">
-                            <input type="checkbox" name="remember" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary/20 transition-all" {{ old('remember') ? 'checked' : '' }}>
-                            <span class="text-xs font-medium text-gray-500 group-hover:text-primary transition-colors">Ingat login saya</span>
-                        </label>
-                    </div>
+    <div class="flex items-center px-1">
+        <label class="flex items-center gap-2 cursor-pointer group">
+            <input type="checkbox" name="remember" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary/20 transition-all" {{ old('remember') ? 'checked' : '' }}>
+            <span class="text-xs font-medium text-gray-500 group-hover:text-primary transition-colors">Ingat login saya</span>
+        </label>
+    </div>
 
-                    <button type="submit" class="w-full bg-primary hover:bg-red-700 text-white font-headline font-bold py-4 rounded-2xl shadow-xl shadow-red-100 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-2 text-sm uppercase tracking-widest">
-                        Masuk Ke Akun
-                        <span class="material-symbols-outlined text-lg">login</span>
-                    </button>
-                </form>
+    <button type="submit" class="w-full bg-primary hover:bg-red-700 text-white font-headline font-bold py-4 rounded-2xl shadow-xl shadow-red-100 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-2 text-sm uppercase tracking-widest">
+        Masuk Ke Akun
+        <span class="material-symbols-outlined text-lg">login</span>
+    </button>
+</form>
 
                 <div class="mt-10 pt-8 border-t border-gray-50 text-center">
                     <p class="text-xs text-on-surface-variant font-medium">

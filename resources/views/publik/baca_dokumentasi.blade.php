@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dokumentasi - UPN Mengajar</title>
+    <title>{{ $dokumentasi->judul_foto }} - UPN Mengajar</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,7 +12,6 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="../dist/output.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -28,7 +27,7 @@
   </head>
 
   <body class="bg-gray-50 font-poppins">
-   <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
+   <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-red-900 shadow-lg">
 <div class="flex items-center justify-between px-6 py-0.5 text-white">
 
 <div class="flex items-center">
@@ -187,148 +186,84 @@ Dokumentasi
 </div>
 </header>
 
+<main class="pt-32 pb-24 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-6">
+        
+        {{-- Tombol Kembali --}}
+        <div class="mb-6">
+            <a href="{{ route('relawan') }}" class="inline-flex items-center text-[#8B1E1E] text-sm font-bold hover:text-red-700 gap-2 group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Kembali ke Galeri</span>
+            </a>
+        </div>
 
-<main class="pt-0 bg-gray-50">
+        {{-- Konten Utama Berita --}}
+        <article class="bg-white rounded-3xl p-8 md:p-12 shadow-[0_4px_25px_-5px_rgba(0,0,0,0.05)] border border-gray-100">
+            
+            {{-- Nama Kegiatan --}}
+            <span class="inline-block px-4 py-1.5 bg-red-50 text-[#8B1E1E] rounded-xl text-xs font-bold tracking-wide uppercase mb-4">
+                {{ $dokumentasi->nama_kegiatan }}
+            </span>
 
-    {{-- HERO --}}
-    <section class="bg-gradient-to-br from-white via-red-50 to-red-100">
-        <div class="max-w-7xl mx-auto px-6 py-20">
+            {{-- Judul Utama --}}
+            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-950 leading-tight mb-4">
+                {{ $dokumentasi->judul_foto }}
+            </h1>
 
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-
-                <div>
-                    <span class="px-5 py-2 bg-red-100 text-[#8B1E1E] rounded-full text-sm font-semibold">
-                        DOKUMENTASI KEGIATAN
-                    </span>
-
-                    <h1 class="mt-6 text-5xl font-bold text-[#8B1E1E] leading-tight">
-                        Dokumentasi Relawan
-                        <br>
-                        UPN Mengajar
-                    </h1>
-
-                    <p class="mt-6 text-gray-600 text-lg leading-relaxed">
-                        Momen-momen inspiratif yang tercipta dari semangat
-                        berbagi ilmu dan kepedulian sosial di berbagai sekolah
-                        dan komunitas.
-                    </p>
-
-                    <a href="/kegiatan"
-                       class="inline-flex items-center mt-8 bg-[#8B1E1E] text-white px-8 py-4 rounded-full font-semibold hover:bg-red-900 transition">
-                       Lihat Kegiatan Aktif
-                    </a>
-                </div>
-
-                <div>
-                    <img src="{{ asset('foto/kegiatan5.jpg') }}"
-                         class="rounded-3xl shadow-xl w-full object-cover h-[350px]" alt="Banner Dokumentasi">
-                </div>
-
+            {{-- Meta Data: Tanggal --}}
+            <div class="flex items-center gap-2 text-gray-400 text-sm font-medium mb-8 pb-6 border-b border-gray-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>Diterbitkan pada: {{ date('d M Y', strtotime($dokumentasi->created_at ?? now())) }}</span>
             </div>
 
-        </div>
-    </section>
+            {{-- Pemrosesan Array Foto --}}
+            @php
+                $arrayFoto = $dokumentasi->foto ? explode(',', $dokumentasi->foto) : [];
+                $fotoUtama = count($arrayFoto) > 0 ? $arrayFoto[0] : null;
+            @endphp
 
-
-    {{-- DOKUMENTASI ALBUM BERITA --}}
-    <section class="max-w-7xl mx-auto px-6 py-20">
-
-        {{-- GRID DESIGN UPDATE: Menggunakan Gap Seimbang dan Grid Proporsional --}}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
-
-            @forelse($dokumentasi as $item)
-                @php
-                    $arrayFoto = $item->foto ? explode(',', $item->foto) : [];
-                    $totalFoto = count($arrayFoto);
-                    $coverUtama = $totalFoto > 0 ? $arrayFoto[0] : null;
-                @endphp
-
-                <div class="group bg-white rounded-2xl border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col h-full overflow-hidden">
-                    
-                    {{-- Bagian Media/Foto Sampul dengan Efek Zoom In Sinematik --}}
-                    <div class="relative aspect-[16/10] w-full overflow-hidden bg-gray-100">
-                        @if($coverUtama)
-                            <img src="/foto/{{ basename($coverUtama) }}"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" alt="{{ $item->judul_foto }}">
-                            
-                            {{-- Gradien Lembut di Atas Gambar (Overlay) --}}
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-black/10 opacity-80"></div>
-
-                            {{-- Floating Badge Nama Kegiatan di Pojok Kiri --}}
-                            <span class="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-gray-900 px-3 py-1.5 rounded-xl text-[11px] font-bold shadow-sm tracking-wide uppercase">
-                                {{ $item->nama_kegiatan }}
-                            </span>
-
-                            {{-- Indikator Jumlah Foto Berbentuk Kamera --}}
-                            <div class="absolute bottom-3 right-4 bg-black/60 backdrop-blur-sm text-white px-2.5 py-1 rounded-lg text-[11px] font-semibold flex items-center gap-1.5">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                <span>{{ $totalFoto }} Foto</span>
-                            </div>
-                        @else
-                            <div class="w-full h-full flex flex-col items-center justify-center text-gray-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                <span class="text-xs mt-1 font-medium">Belum ada foto</span>
-                            </div>
-                        @endif
-                    </div>
-
-                    {{-- Bagian Isi Konten Teks & Keterangan --}}
-                    <div class="p-6 flex flex-col justify-between flex-grow">
-                        <div>
-                            {{-- Meta Data: Tanggal Terbit Berita --}}
-                            <div class="flex items-center gap-1.5 text-gray-400 text-xs font-semibold mb-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                <span>{{ date('d M Y', strtotime($item->created_at ?? now())) }}</span>
-                            </div>
-
-                            {{-- Judul Utama Berita --}}
-                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-red-700 transition-colors duration-200 leading-snug mb-3 line-clamp-1" title="{{ $item->judul_foto }}">
-                                {{ $item->judul_foto }}
-                            </h3>
-
-                            {{-- Narasi Potongan Deskripsi Singkat --}}
-                            <p class="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-2">
-                                {{ $item->deskripsi }}
-                            </p>
-                        </div>
-
-                        {{-- Tombol Link Akses Aksi Utama (Telah Diperbaiki Ke /relawan/) --}}
-                        <div class="pt-4 border-t border-gray-50">
-                            <a href="/relawan/{{ $item->id_dokumentasi }}" 
-                               class="inline-flex items-center text-[#8B1E1E] text-sm font-bold hover:text-red-700 gap-1.5 group/btn">
-                                <span>Buka Album Berita</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-
+            {{-- Area Foto Sampul Utama --}}
+            @if($fotoUtama)
+                <div class="rounded-2xl overflow-hidden aspect-[16/9] bg-gray-100 shadow-inner mb-8">
+                    <img src="/foto/{{ basename($fotoUtama) }}" class="w-full h-full object-cover" alt="Foto Utama {{ $dokumentasi->judul_foto }}">
                 </div>
-            @empty
-                <div class="col-span-full py-20 text-center bg-white rounded-3xl border border-dashed border-gray-200 shadow-sm max-w-xl mx-auto w-full">
-                    <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto text-gray-400 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5M5 19v-4m14 4v-4m0 0V8a2 2 0 00-2-2h-3l-2-2H9a2 2 0 00-2 2v2" />
+            @endif
+
+            {{-- Isi Narasi/Deskripsi Cerita --}}
+            <div class="text-gray-700 text-base md:text-lg leading-relaxed whitespace-pre-line mb-12">
+                {{ $dokumentasi->deskripsi }}
+            </div>
+
+            {{-- Grid Lampiran Foto Tambahan --}}
+            @if(count($arrayFoto) > 1)
+                <div class="pt-8 border-t border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#8B1E1E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
+                        <span>Dokumentasi Tambahan Album</span>
+                    </h3>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        @foreach($arrayFoto as $index => $subFoto)
+                            {{-- Lewati foto pertama karena sudah dijadikan banner utama --}}
+                            @if($index > 0)
+                                <div class="rounded-xl overflow-hidden aspect-square bg-gray-50 border border-gray-100 group relative shadow-sm">
+                                    <img src="/foto/{{ basename($subFoto) }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Dokumentasi {{ $index }}">
+                                    <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                </div>
+                            @endif
+                        @endforeach
                     </div>
-                    <h3 class="text-lg font-bold text-gray-800">Belum Ada Album Berita</h3>
-                    <p class="text-gray-400 mt-1.5 text-sm max-w-xs mx-auto">
-                        Belum ada arsip album dokumentasi cerita relawan yang diterbitkan untuk saat ini.
-                    </p>
                 </div>
-            @endforelse
+            @endif
 
-        </div>
-
-    </section>
-
+        </article>
+    </div>
 </main>
 
     <footer class="w-full bg-[#8B1E1E] text-white pt-16">
@@ -453,20 +388,5 @@ Dokumentasi
         </p>
       </div>
     </footer>
-
-    <script>
-      const header = document.querySelector("header");
-
-      window.addEventListener("scroll", function () {
-        if (window.scrollY > 50) {
-          header.classList.add(
-            "bg-red-900",
-            "shadow-lg",
-          );
-        } else {
-          header.classList.remove("bg-red-900", "shadow-lg");
-        }
-      });
-    </script>
   </body>
 </html>

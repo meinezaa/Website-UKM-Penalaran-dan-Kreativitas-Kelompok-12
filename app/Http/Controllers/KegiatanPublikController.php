@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use App\Models\Kegiatan;
 use Carbon\Carbon;
@@ -17,7 +18,6 @@ class KegiatanPublikController extends Controller
         $today = Carbon::today()->format('Y-m-d');
 
         // 1. REGISTRASI DIBUKA (Untuk Tab 'Registrasi Dibuka')
-        // Batas registrasi masih hari ini atau di masa depan (>= today) ATAU belum diisi (null)
         $kegiatanBuka = Kegiatan::where(function($query) use ($today) {
                                     $query->whereDate('batas_registrasi', '>=', $today)
                                           ->orWhereNull('batas_registrasi');
@@ -29,13 +29,11 @@ class KegiatanPublikController extends Controller
                                 ->get();
 
         // 2. SEDANG BERLANGSUNG (Untuk Tab 'Sedang Berlangsung')
-        // Batas registrasi sudah lewat, TAPI tanggal pelaksanaan masih hari ini atau masa depan
         $kegiatanBerjalan = Kegiatan::whereDate('batas_registrasi', '<', $today)
                                     ->whereDate('tanggal_pelaksanaan', '>=', $today)
                                     ->get();
 
         // 3. SUDAH SELESAI (Untuk Tab 'Sudah Selesai')
-        // Tanggal pelaksanaan sudah terlewati (< today) ATAU kolom status_kegiatan memang bernilai 'selesai'
         $kegiatanSelesai = Kegiatan::where(function($query) use ($today) {
                                     $query->whereDate('tanggal_pelaksanaan', '<', $today)
                                           ->orWhere('status_kegiatan', 'selesai');
@@ -43,10 +41,8 @@ class KegiatanPublikController extends Controller
                                 ->get();
 
         // 4. SEMUA DATA KEGIATAN (Khusus Untuk Tab Utama 'Semua Kegiatan')
-        // Mengambil total seluruh baris data yang ada di database tanpa filter tanggal
         $semuaKegiatan = Kegiatan::all();
 
-        // Mengirimkan keempat variabel ke view 'publik.kegiatan'
         return view('publik.kegiatan', compact('kegiatanBuka', 'kegiatanBerjalan', 'kegiatanSelesai', 'semuaKegiatan'));
     }
 
@@ -55,15 +51,12 @@ class KegiatanPublikController extends Controller
      */
     public function showDetailPublik($id)
     {
-        // 1. Cari data kegiatan berdasarkan id_kegiatan
         $kegiatan = Kegiatan::where('id_kegiatan', $id)->first();
 
-        // Jika data tidak ditemukan, kembalikan ke halaman daftar dengan pesan peringatan
         if (!$kegiatan) {
             return redirect('/kegiatan')->with('pesan', 'Maaf, data kegiatan tidak ditemukan!');
         }
 
-        // 2. Hitung status secara real-time untuk kebutuhan visual di halaman detail (Supaya sinkron)
         $today = Carbon::today();
         $batasRegistrasi = $kegiatan->batas_registrasi ? Carbon::parse($kegiatan->batas_registrasi) : null;
         $tanggalPelaksanaan = $kegiatan->tanggal_pelaksanaan ? Carbon::parse($kegiatan->tanggal_pelaksanaan) : null;
@@ -76,23 +69,93 @@ class KegiatanPublikController extends Controller
             $kegiatan->status_kegiatan = 'selesai';
         }
 
-        // 3. Oper data kegiatan ke view 'publik.detail_kegiatan'
         return view('publik.detail_kegiatan', compact('kegiatan'));
     }
-    public function submitMitra(Request $request)
-{
-    DB::table('mitra')->insert([
-        'nama_instansi' => $request->nama_instansi,
-        'nama_penanggung_jawab' => $request->nama_penanggung_jawab,
-        'email_instansi' => $request->email_instansi,
-        'no_hp' => $request->no_hp,
-        'jenis_kemitraan' => $request->jenis_kemitraan,
-        'pesan_kolaborasi' => $request->pesan_kolaborasi,
-        'status_mitra' => 'MENUNGGU',
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
 
-    return back()->with('sukses', 'Pengajuan kemitraan berhasil dikirim.');
-}
-}
+    /**
+     * Handle proses submit formulir kemitraan
+     */
+    public function submitMitra(Request $request)
+    {
+        DB::table('mitra')->insert([
+            'nama_instansi' => $request->nama_instansi,
+            'nama_penanggung_jawab' => $request->nama_penanggung_jawab,
+            'email_instansi' => $request->email_instansi,
+            'no_hp' => $request->no_hp,
+            'jenis_kemitraan' => $request->jenis_kemitraan,
+            'pesan_kolaborasi' => $request->pesan_kolaborasi,
+            'status_mitra' => 'MENUNGGU',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return back()->with('sukses', 'Pengajuan kemitraan berhasil dikirim.');
+    }
+
+    /**
+     * Handle proses submit formulir pendaftaran relawan
+     */
+    public function submitRelawan(Request $request, $id)
+    {
+        $request->validate([
+            'id_kegiatan'       => 'required',
+            'nama_lengkap'      => 'required|string|max:255', // <-- Tambahkan validasi nama lengkap jika ada di form HTML
+            'no_hp'             => 'required|numeric',
+            'email'             => 'required|email',
+            'umur'              => 'required|numeric',
+            'jenis_kelamin'     => 'required',
+            'asal_prodi'        => 'required',
+            'pilihan_divisi_1'  => 'required',
+            'pilihan_divisi_2'  => 'required',
+            'metode_pembayaran' => 'required',
+            'bukti_pembayaran'  => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'persetujuan'       => 'required',
+        ]);
+
+        // --- PROTEKSI ENUM METODE PEMBAYARAN ---
+        $metodePembayaran = $request->metode_pembayaran;
+        if ($metodePembayaran === 'transfer bni') {
+            $metodePembayaran = 'bni';
+        }
+
+        $namaFileBukti = null;
+        if ($request->hasFile('bukti_pembayaran')) {
+            $file = $request->file('bukti_pembayaran');
+            $namaFileBukti = 'bukti_relawan_' . $id . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('foto'), $namaFileBukti);
+        }
+
+        // MENYESUAIKAN 100% DENGAN STRUKTUR DATABASE BARU
+        DB::table('pendaftaran_relawan')->insert([
+    'id_user'             => session('id_user') ?? 1,
+    
+    // =========================================================================
+    // PERBAIKAN UTAMA: Gunakan variabel $id dari Route URL, bukan dari request form
+    // =========================================================================
+    'id_kegiatan'         => $id, 
+    
+    'nama_lengkap'        => $request->nama_lengkap ?? $request->asal_prodi, 
+    'no_hp'               => $request->no_hp,
+    'umur'                => $request->umur,
+    'jenis_kelamin'       => $request->jenis_kelamin,
+    'asal_prodi'          => $request->asal_prodi,
+    'pilihan_divisi_1'    => $request->pilihan_divisi_1,
+    'pilihan_divisi_2'    => $request->pilihan_divisi_2, 
+    'portofolio'          => $request->portofolio,
+    'pengalaman_keahlian' => $request->deskripsi, 
+    'metode_pembayaran'   => $metodePembayaran,   
+    'bukti_pembayaran'    => $namaFileBukti,
+    'status_seleksi'      => 'Proses',            
+    'created_at'          => now(), // Ini akan otomatis mencatat waktu Juni 2026 sesuai device-mu
+    'updated_at'          => now()
+]);
+
+        // Ambil data kegiatan untuk mendapatkan link WhatsApp grup tujuan secara dinamis
+        $kegiatan = Kegiatan::where('id_kegiatan', $id)->first();
+        $linkWhatsapp = ($kegiatan && $kegiatan->link_grup_wa) ? $kegiatan->link_grup_wa : 'https://chat.whatsapp.com/ContohGrupDefault';
+
+        return redirect('/kegiatan')->with([
+            'sukses_daftar' => true,
+            'link_wa'       => $linkWhatsapp
+        ]);
+    }

@@ -9,10 +9,20 @@ class Team extends Model
 {
     use HasFactory;
 
-    // Menentukan nama tabel di database secara eksplisit
+    /**
+     * Menentukan nama tabel di database secara eksplisit.
+     * Tabel 'teams' ini sesuai dengan yang ada di phpMyAdmin kamu.
+     *
+     * @var string
+     */
     protected $table = 'teams';
 
-    // Menentukan kolom mana saja yang boleh diisi (Mass Assignment)
+    /**
+     * Menentukan kolom mana saja yang boleh diisi secara massal (Mass Assignment).
+     * Semua kolom ini sudah disesuaikan dengan struktur tabel di database kamu.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'nama',
         'jabatan',
@@ -23,7 +33,4 @@ class Team extends Model
         'linkedin',
         'urutan'
     ];
-
-    // Menentukan kolom yang tidak boleh diisi secara massal untuk keamanan
-    protected $guarded = ['id'];
 }

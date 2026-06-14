@@ -125,29 +125,40 @@
         </div>
 
         <div class="bg-surface-container-lowest border border-gray-100 rounded-2xl p-6 shadow-sm space-y-5">
-            <h2 class="text-xs font-black text-gray-400 uppercase tracking-widest border-b pb-3 flex items-center gap-2 font-headline">
-                <span class="material-symbols-outlined text-primary text-lg">calendar_month</span> Penjadwalan & Alur Linimasa
-            </h2>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">1. Pendaftaran Buka</label>
-                    <input type="date" name="pendaftaran_dibuka" value="{{ $kegiatan->pendaftaran_dibuka }}" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 outline-none focus:border-primary">
-                </div>
-                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">2. Batas Registrasi</label>
-                    <input type="date" name="batas_registrasi" value="{{ $kegiatan->batas_registrasi }}" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 outline-none focus:border-primary">
-                </div>
-                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">3. Hari Pengumuman</label>
-                    <input type="date" name="pengumuman_seleksi" value="{{ $kegiatan->pengumuman_seleksi }}" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 outline-none focus:border-primary">
-                </div>
-                <div class="bg-surface-container-low p-3 rounded-xl border border-gray-100">
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5 font-headline">4. Pelaksanaan H-H</label>
-                    <input type="date" name="tanggal_pelaksanaan" value="{{ $kegiatan->tanggal_pelaksanaan ?? '' }}" class="w-full px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-700 outline-none focus:border-primary">
-                </div>
-            </div>
+    <h2 class="text-xs font-black text-gray-400 uppercase tracking-widest border-b pb-3 flex items-center gap-2 font-headline">
+        <span class="material-symbols-outlined text-primary text-lg">calendar_month</span> Penjadwalan & Alur Linimasa
+    </h2>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 relative z-20">
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">1. Pendaftaran Buka</label>
+            <input type="date" name="pembukaan_registrasi" 
+                   value="{{ old('pembukaan_registrasi', $kegiatan->pendaftaran_dibuka ? \Carbon\Carbon::parse($kegiatan->pendaftaran_dibuka)->format('Y-m-d') : '') }}" 
+                   class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 outline-none focus:border-primary relative z-30 cursor-pointer">
         </div>
+
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 relative z-20">
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">2. Batas Registrasi</label>
+            <input type="date" name="batas_registrasi" 
+                   value="{{ old('batas_registrasi', $kegiatan->batas_registrasi ? \Carbon\Carbon::parse($kegiatan->batas_registrasi)->format('Y-m-d') : '') }}" 
+                   class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 outline-none focus:border-primary relative z-30 cursor-pointer">
+        </div>
+
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 relative z-20">
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">3. Hari Pengumuman</label>
+            <input type="date" name="pengumuman_seleksi" 
+                   value="{{ old('pengumuman_seleksi', $kegiatan->pengumuman_seleksi ? \Carbon\Carbon::parse($kegiatan->pengumuman_seleksi)->format('Y-m-d') : '') }}" 
+                   class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 outline-none focus:border-primary relative z-30 cursor-pointer">
+        </div>
+
+        <div class="bg-surface-container-low p-3 rounded-xl border border-gray-100 relative z-20">
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5 font-headline">4. Pelaksanaan H-H</label>
+            <input type="date" name="tanggal_pelaksanaan" 
+                   value="{{ old('tanggal_pelaksanaan', $kegiatan->tanggal_pelaksanaan ? \Carbon\Carbon::parse($kegiatan->tanggal_pelaksanaan)->format('Y-m-d') : '') }}" 
+                   class="w-full px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-700 outline-none focus:border-primary relative z-30 cursor-pointer">
+        </div>
+    </div>
+</div>
 
         <div class="bg-surface-container-lowest border border-gray-100 rounded-2xl p-6 shadow-sm space-y-4">
             <div class="flex items-center justify-between border-b pb-3">
@@ -240,6 +251,92 @@
         </div>
 
     </form>
+    <div class="mt-12 bg-surface-container-lowest border border-gray-100 rounded-2xl p-6 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b pb-3">
+            <h2 class="text-xs font-black text-gray-400 uppercase tracking-widest flex items-center gap-2 font-headline">
+                <span class="material-symbols-outlined text-primary text-lg">group_add</span> Calon Relawan Terdaftar
+            </h2>
+            <span class="text-[10px] bg-red-50 text-primary px-2 py-0.5 rounded font-bold font-headline">
+                Total Pendaftar: {{ isset($calonRelawan) ? $calonRelawan->count() : 0 }}
+            </span>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-body">
+                <thead>
+                    <tr class="text-gray-400 uppercase tracking-wider border-b border-gray-100 font-headline text-[10px]">
+                        <th class="pb-3 pl-2">Nama Lengkap</th>
+                        <th class="pb-3">Program Studi</th>
+                        <th class="pb-3">Pilihan Divisi 1</th>
+                        <th class="pb-3">Status Seleksi</th>
+                        <th class="pb-3 text-center">Aksi Berkas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($calonRelawan as $key => $relawan)
+    <tr class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
+        <td class="px-6 py-4 text-xs text-gray-600 font-medium">{{ $key + 1 }}</td>
+        
+        <td class="px-6 py-4 text-xs text-gray-800 font-bold font-headline">
+            {{ $relawan->asal_prodi ?? 'Tanpa Nama' }}
+        </td>
+        
+        <td class="px-6 py-4 text-xs text-gray-600 font-medium">
+            -
+        </td>
+        
+        <td class="px-6 py-4 text-xs text-gray-600 font-medium">
+            <span class="px-2.5 py-1 bg-primary/10 text-primary rounded-full font-bold text-[10px] uppercase">
+                {{ $relawan->pilihan_divisi_1 ?? 'Umum' }}
+            </span>
+        </td>
+        
+        <td class="px-6 py-4 text-xs font-bold text-amber-500 font-headline uppercase">
+            {{ $relawan->status_seleksi ?? 'Proses' }}
+        </td>
+        
+        <td class="px-6 py-4 text-xs">
+            @if(!empty($relawan->bukti_pembayaran))
+                <a href="{{ asset('foto/' . $relawan->bukti_pembayaran) }}" target="_blank" class="text-primary hover:underline font-bold font-headline">
+                    Lihat Bukti
+                </a>
+            @else
+                <span class="text-gray-400">Tidak ada berkas</span>
+            @endif
+        </td>
+    </tr>
+@empty
+    <tr>
+        <td colspan="6" class="px-6 py-10 text-center">
+            <div class="flex flex-col items-center justify-center gap-2">
+                <p class="text-xs font-medium text-gray-400">Belum ada relawan yang mendaftar pada kegiatan ini.</p>
+            </div>
+        </td>
+    </tr>
+@endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+    ```
+
+---
+
+### Catatan Penting Tambahan
+
+Pastikan kamu juga sudah mengubah fungsi `edit` di file `KegiatanController.php` kamu sebelumnya agar variabel `$calonRelawan` ikut terkirim ke view ini:
+
+```php
+public function edit($id)
+{
+    $kegiatan = Kegiatan::findOrFail($id);
+    $divisi = DivisiKegiatan::where('id_kegiatan', $id)->get();
+
+    // Query penarik data relawan pendukung tabel di atas
+    $calonRelawan = DB::table('pendaftaran_relawan')->where('id_kegiatan', $id)->get();
+
+    return view('admin.edit_kegiatan', compact('kegiatan', 'divisi', 'calonRelawan'));
+}
 </main>
 
 </body>

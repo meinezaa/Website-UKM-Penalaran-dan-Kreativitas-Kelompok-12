@@ -5,18 +5,34 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Routing\Controller as BaseController; 
+// 1. WAJIB DIIMPORT: Panggil facade Cookie bawaan Laravel
+use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends BaseController
 {
     // 1. MENAMPILKAN HALAMAN LOGIN
     public function showLogin()
     {
-        // Jika session manual id_user terdeteksi ada, arahkan langsung ke beranda
+        // Kondisi A: Jika session login utama masih aktif, langsung arahkan ke beranda
         if (session('id_user')) {
-            if (session('role') === 'admin') {
-                return redirect()->route('admin.dashboard');
+            return $this->redirectByRole(session('role'));
+        }
+        
+        // Kondisi B: JIKA COOKIE 'remember_user_id' TERDETEKSI (Fitur Remember Me Kerja)
+        if (Cookie::has('remember_user_id')) {
+            $userId = Cookie::get('remember_user_id'); // Ambil ID User dari Cookie browser
+            $user = User::find($userId);
+
+            if ($user) {
+                // Buat ulang Session otomatis menggunakan sisa data dari Cookie
+                session([
+                    'id_user'      => $user->id_user,
+                    'role'         => $user->role,
+                    'nama_lengkap' => $user->nama_lengkap
+                ]);
+
+                return $this->redirectByRole($user->role);
             }
-            return redirect('/');
         }
         
         return view('auth.login'); 
@@ -34,26 +50,27 @@ class AuthController extends BaseController
             'password.required' => 'Kata sandi wajib diisi!',
         ]);
 
-        // Cari user murni lewat model
         $user = User::where('email', $request->email)->first();
 
-        // Pencocokan string angka polos langsung (tanpa fungsi Hash bawaan)
-
-        
-        // KUNCI PERBAIKAN: Pencocokan string polos langsung menggunakan === (Tanpa Hash::check Bcrypt)
+        // Pencocokan string polos langsung menggunakan === (Sesuai database-mu)
         if ($user && $request->password === $user->password) {
             
-            // Kunci status login ke dalam data session web
+            // Set Session Login Utama
             $request->session()->put('id_user', $user->id_user);
             $request->session()->put('role', $user->role);
             $request->session()->put('nama_lengkap', $user->nama_lengkap);
-            
             $request->session()->regenerate();
 
-            if ($user->role === 'admin') {
-                return redirect()->route('admin.dashboard');
+            // =========================================================================
+            // TAMBAHAN FITUR: PROSES PEMBUATAN COOKIE REMEMBER ME
+            // =========================================================================
+            if ($request->has('remember')) {
+                // Membuat cookie bernama 'remember_user_id' untuk menyimpan ID user.
+                // Angka 1440 artinya cookie akan aktif selama 24 Jam penuh di browser.
+                Cookie::queue('remember_user_id', $user->id_user, 1440);
             }
-            return redirect('/');
+
+            return $this->redirectByRole($user->role);
         }
 
         return back()->withErrors([
@@ -90,7 +107,6 @@ class AuthController extends BaseController
         ]);
 
         try {
-            // KUNCI PERBAIKAN: Menyimpan password angka polos murni langsung ke database
             $user = User::create([
                 'nama_lengkap' => $request->nama_lengkap,
                 'email' => $request->email,
@@ -98,11 +114,9 @@ class AuthController extends BaseController
                 'role' => 'user', 
             ]);
 
-            // Otomatis inject session login langsung setelah mendaftar
             $request->session()->put('id_user', $user->id_user);
             $request->session()->put('role', $user->role);
             $request->session()->put('nama_lengkap', $user->nama_lengkap);
-            
             $request->session()->regenerate();
 
             return redirect('/')->with('success', 'Akun berhasil dibuat dan otomatis masuk!');
@@ -115,11 +129,25 @@ class AuthController extends BaseController
     // 5. PROSES AKSI LOGOUT
     public function logout(Request $request)
     {
-        // Bersihkan seluruh data session manual pemicu login
+        // Hapus data session login
         $request->session()->forget(['id_user', 'role', 'nama_lengkap']);
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
+        // =========================================================================
+        // TAMBAHAN FITUR: Hancurkan cookie remember me saat logout klik
+        // =========================================================================
+        Cookie::queue(Cookie::forget('remember_user_id'));
+
         return redirect('/')->with('success', 'Anda berhasil keluar sistem!');
+    }
+
+    // Fungsi pembantu (Helper) untuk mempersingkat pengalihan halaman berdasarkan role
+    private function redirectByRole($role)
+    {
+        if ($role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+        return redirect('/');
     }
 }

@@ -413,5 +413,35 @@
         });
         window.addEventListener('resize', () => { updateSlidingBg(false); });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if(session('sukses_daftar'))
+    <script>
+        Swal.fire({
+            title: 'Pendaftaran Berhasil!',
+            text: 'Data Anda telah tersimpan. Silakan bergabung ke grup WhatsApp untuk mendapatkan pembaruan informasi selanjutnya.',
+            icon: 'success',
+            iconColor: '#ef4444', // Warna merah menyesuaikan tema UPN
+            showCancelButton: true,
+            confirmButtonColor: '#25D366', // Warna hijau khas WhatsApp
+            cancelButtonColor: '#d33',
+            confirmButtonText: '🟢 Gabung Grup WA',
+            cancelButtonText: 'Tutup',
+            allowOutsideClick: false,
+            customClass: {
+                popup: 'rounded-[2rem]',
+                confirmButton: 'rounded-xl font-bold uppercase tracking-wider text-xs px-6 py-3',
+                cancelButton: 'rounded-xl font-bold uppercase tracking-wider text-xs px-6 py-3'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Membuka link Grup WhatsApp di tab baru jika tombol diklik
+                window.open("{{ session('link_wa') }}", '_blank');
+            }
+        });
+    </script>
+    @endif
+    
 </body>
 </html>

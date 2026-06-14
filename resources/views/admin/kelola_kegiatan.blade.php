@@ -127,10 +127,10 @@
                     
                     <div class="h-44 w-full bg-surface-container-low relative overflow-hidden rounded-xl flex-shrink-0 border border-gray-100">
                         @if(!empty($row->foto_kegiatan))
-                            <img src="{{ asset('storage/' . $row->foto_kegiatan) }}" 
-                                 alt="Foto {{ $row->nama_kegiatan }}" 
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-xl"
-                                 onerror="this.onerror=null; this.src='https://placehold.co/600x400/f3f3f3/a3a3a3?text=No+Image';">
+                            <img src="{{ asset('foto/' . $row->foto_kegiatan) }}" 
+                                alt="Foto {{ $row->nama_kegiatan }}" 
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-xl"
+                                onerror="this.onerror=null; this.src='https://placehold.co/600x400/f3f3f3/a3a3a3?text=No+Image';">
                         @else
                             <div class="w-full h-full flex flex-col items-center justify-center text-gray-300 gap-1.5">
                                 <span class="material-symbols-outlined text-4xl text-gray-200">landscape</span>

@@ -59,7 +59,7 @@
                             </ul>
                         </li>
                         <li><a href="{{ url('/kegiatan') }}" class="relative after:w-full after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300">Kegiatan</a></li>
-                        <li><a href="{{ url('/formulir') }}" class="relative after:w-0 after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">Relawan</a></li>
+                        <li><a href="{{ route('relawan') }}" class="relative after:w-0 after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:bg-white after:transition-all after:duration-300 hover:after:w-full">Relawan</a></li>
                         @if(session('role') === 'admin')
                         <li><a href="{{ route('admin.dashboard') }}" class="relative after:absolute after:left-0 after:-bottom-1 after:h-[1.5px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">Dashboard Admin</a></li>
                         @endif
@@ -67,7 +67,7 @@
                 </nav>
                 <div class="relative group">
                     @if (session('id_user'))
-                        <a href="#" class="hover:text-red-400 transition-all duration-300"><svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg></a>
+                        <a href="{{ url('/logout') }}" class="hover:text-red-400 transition-all duration-300"><svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg></a>
                     @else
                         <a href="{{ url('/login') }}" class="hover:text-gray-300 transition-all duration-300"><svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.879 17.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg></a>
                     @endif
@@ -178,7 +178,7 @@
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                     <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider m-0 mb-3">⚡ Gerbang Pendaftaran Relawan</h4>
                     
-                    @if($kegiatan->status_kegiatan !== 'buka')
+                    @if(strtolower($kegiatan->status_kegiatan) !== 'buka')
                         <div class="p-3 bg-red-50 text-red-900 border border-red-200 rounded-lg text-xs leading-relaxed font-medium">
                             🔒 <strong>Pendaftaran Ditutup</strong><br>Mohon maaf, sistem telah mengunci pengisian formulir karena periode agenda ini sudah terlewati.
                         </div>
@@ -196,7 +196,10 @@
                             <div class="p-3 bg-emerald-50 text-emerald-900 border border-emerald-200 rounded-lg text-xs leading-relaxed">
                                 Sesi Relawan Aktif. Anda dapat langsung mengirimkan berkas data pendaftaran untuk program kerja ini.
                             </div>
-                            <a href="{{ url('/formulir?kegiatan=' . $kegiatan->id_kegiatan) }}" class="block w-full py-2.5 text-center text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors shadow-sm">
+                            
+                            <a href="{{ route('relawan.formulir', $kegiatan->id_kegiatan) }}"
+                               style="background-color: #10b981 !important; color: white !important; display: block; width: 100%; padding-top: 10px; padding-bottom: 10px; text-align: center; font-size: 12px; font-weight: bold; border-radius: 8px; text-decoration: none; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);"
+                               class="hover:opacity-90 transition-opacity">
                                 Ajukan Formulir Relawan Sekarang ✨
                             </a>
                         </div>
@@ -218,7 +221,7 @@
                     <li><a href="{{ url('/') }}" class="hover:underline">Home</a></li>
                     <li><a href="{{ url('/ukm') }}" class="hover:underline">Tentang</a></li>
                     <li><a href="{{ url('/kegiatan') }}" class="hover:underline">Kegiatan</a></li>
-                    <li><a href="{{ url('/formulir') }}" class="hover:underline">Relawan</a></li>
+                    <li><a href="{{ route('relawan') }}" class="hover:underline">Relawan</a></li>
                 </ul>
             </div>
             <div class="text-center md:border-r md:border-red-300 md:px-10">

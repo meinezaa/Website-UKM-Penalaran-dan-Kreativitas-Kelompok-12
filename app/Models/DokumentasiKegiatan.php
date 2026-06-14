@@ -19,6 +19,14 @@ class DokumentasiKegiatan extends Model
         'deskripsi'
     ];
 
+    /**
+     * [TAMBAHAN] Otomatis mengubah string koma di DB menjadi Array PHP saat dipanggil.
+     * Begitu juga sebaliknya saat melakukan insert/update data.
+     */
+    protected $casts = [
+        'foto' => 'array',
+    ];
+
     // Relasi ke kegiatan
     public function kegiatan()
     {

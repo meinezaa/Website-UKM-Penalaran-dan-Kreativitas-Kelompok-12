@@ -106,7 +106,7 @@
         </div>
         @endif
 
-        <form action="{{ route('admin.kegiatan.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8" novalidate>
+        <form action="{{ route('admin.kegiatan.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
             @csrf 
             
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">
@@ -146,42 +146,47 @@
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">
-                <div class="flex items-center gap-2 text-primary border-b pb-2 border-gray-100">
-                    <span class="material-symbols-outlined text-[20px]">location_on</span>
-                    <h3 class="font-headline font-bold text-sm uppercase tracking-wider">2. Waktu & Lokasi</h3>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Tanggal Pelaksanaan</label>
-                        <input type="date" name="tanggal_pelaksanaan" value="{{ old('tanggal_pelaksanaan') }}" required class="w-full text-sm rounded-xl border-gray-200 focus:border-primary focus:ring-primary">
-                    </div>
-                    <div>
-                        <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Jam Kegiatan</label>
-                        <input type="text" name="jam_kegiatan" value="{{ old('jam_kegiatan') }}" required placeholder="08.00 - 12.00 WIB" class="w-full text-sm rounded-xl border-gray-200 focus:border-primary focus:ring-primary">
-                    </div>
-                    <div>
-                        <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Batas Penutupan Registrasi</label>
-                        <input type="date" name="batas_registrasi" value="{{ old('batas_registrasi') }}" required class="w-full text-sm rounded-xl border-gray-200 focus:border-primary focus:ring-primary">
-                    </div>
-                    <div class="md:col-span-3">
-                        <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Nama Tempat / Lokasi (Gedung/Sekolah)</label>
-                        <input type="text" name="lokasi" value="{{ old('lokasi') }}" required placeholder="Contoh: SD Medokan Ayu 1" class="w-full text-sm rounded-xl border-gray-200 focus:border-primary focus:ring-primary">
-                    </div>
-                    <div class="md:col-span-3">
-                        <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Alamat Lengkap</label>
-                        <textarea name="alamat_lengkap" rows="2" required placeholder="Jl. Raya Medokan Sawah No.7, Kec. Rungkut..." class="w-full text-sm rounded-xl border-gray-200 focus:border-primary focus:ring-primary">{{ old('alamat_lengkap') }}</textarea>
-                    </div>
-                </div>
-            </div>
+           <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">
+    <div class="flex items-center gap-2 text-primary border-b pb-2 border-gray-100">
+        <span class="material-symbols-outlined text-[20px]">location_on</span>
+        <h3 class="font-headline font-bold text-sm uppercase tracking-wider">2. Waktu & Lokasi</h3>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="relative z-20">
+            <label for="tanggal_pelaksanaan" class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Tanggal Pelaksanaan</label>
+            <input type="date" id="tanggal_pelaksanaan" name="tanggal_pelaksanaan" value="{{ old('tanggal_pelaksanaan') }}" required 
+                   class="w-full text-sm rounded-xl border-gray-200 focus:border-primary focus:ring-primary bg-white relative z-30 cursor-pointer">
+        </div>
 
-            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">
-                <div class="flex items-center gap-2 text-primary border-b pb-2 border-gray-100">
-                    <span class="material-symbols-outlined text-[20px]">description</span>
-                    <h3 class="font-headline font-bold text-sm uppercase tracking-wider">3. Deskripsi & Aktivitas</h3>
-                </div>
-                
+        <div>
+            <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Jam Kegiatan</label>
+            <input type="text" name="jam_kegiatan" value="{{ old('jam_kegiatan') }}" required placeholder="08.00 - 12.00 WIB" class="w-full text-sm rounded-xl border-gray-200 focus:border-primary focus:ring-primary">
+        </div>
+
+        <div class="relative z-20">
+            <label for="pembukaan_registrasi" class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Pembukaan Registrasi</label>
+            <input type="date" id="pembukaan_registrasi" name="pembukaan_registrasi" value="{{ old('pembukaan_registrasi') }}" required 
+                   class="w-full text-sm rounded-xl border-gray-200 focus:border-primary focus:ring-primary bg-white relative z-30 cursor-pointer">
+        </div>
+
+        <div class="relative z-20">
+            <label for="batas_registrasi" class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Penutupan Registrasi</label>
+            <input type="date" id="batas_registrasi" name="batas_registrasi" value="{{ old('batas_registrasi') }}" required 
+                   class="w-full text-sm rounded-xl border-gray-200 focus:border-primary focus:ring-primary bg-white relative z-30 cursor-pointer">
+        </div>
+
+        <div class="md:col-span-4">
+            <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Nama Tempat / Lokasi (Gedung/Sekolah)</label>
+            <input type="text" name="lokasi" value="{{ old('lokasi') }}" required placeholder="Contoh: SD Medokan Ayu 1" class="w-full text-sm rounded-xl border-gray-200 focus:border-primary focus:ring-primary">
+        </div>
+        
+        <div class="md:col-span-4">
+            <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Alamat Lengkap</label>
+            <textarea name="alamat_lengkap" rows="2" required placeholder="Jl. Raya Medokan Sawah No.7, Kec. Rungkut..." class="w-full text-sm rounded-xl border-gray-200 focus:border-primary focus:ring-primary">{{ old('alamat_lengkap') }}</textarea>
+        </div>
+    </div>
+</div>     
                 <div class="space-y-4">
                     <div>
                         <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Detail Aktivitas Utama (Poin-poin singkat)</label>
@@ -263,6 +268,21 @@
                 confirmButtonColor: '#bb0016'
             });
             return; 
+        }
+
+        // Validasi logika tanggal registrasi
+        const tglBuka = new Date(document.querySelector('input[name="pembukaan_registrasi"]').value);
+        const tglTutup = new Date(document.querySelector('input[name="batas_registrasi"]').value);
+
+        if (tglBuka > tglTutup) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Kesalahan Tanggal!',
+                text: 'Tanggal Pembukaan Registrasi tidak boleh melewati Tanggal Penutupan Registrasi.',
+                confirmButtonColor: '#bb0016'
+            });
+            return;
         }
 
         let totalKuota = 0;

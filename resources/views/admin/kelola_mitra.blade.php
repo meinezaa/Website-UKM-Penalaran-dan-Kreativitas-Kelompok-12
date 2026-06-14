@@ -56,9 +56,11 @@
         <a href="/admin/kelola-kegiatan" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm transition-all {{ Request::is('admin/kelola-kegiatan*') || Request::is('admin/edit-kegiatan*') ? 'bg-primary text-white shadow-md shadow-red-200' : 'text-gray-600 hover:bg-surface-container-low' }}">
             <span class="material-symbols-outlined text-[20px]">assignment</span> Kegiatan
         </a>
-        <a href="/admin/kelola-dokumentasi" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm transition-all {{ Request::is('admin/kelola-dokumentasi*') ? 'bg-primary text-white shadow-md shadow-red-200' : 'text-gray-600 hover:bg-surface-container-low' }}">
+        
+        <a href="/admin/kelola-dokumentasi" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm transition-all {{ Request::is('admin/kelola-dokumentasi*') || Request::is('admin/tambah-dokumentasi*') ? 'bg-primary text-white shadow-md shadow-red-200' : 'text-gray-600 hover:bg-surface-container-low' }}">
             <span class="material-symbols-outlined text-[20px]">image</span> Kelola Dokumentasi
         </a>
+        
         <a href="/admin/kelola-mitra" class="flex items-center gap-3 px-4 py-3 rounded-lg font-body font-medium text-sm transition-all {{ Request::is('admin/kelola-mitra*') ? 'bg-primary text-white shadow-md shadow-red-200' : 'text-gray-600 hover:bg-surface-container-low' }}">
             <span class="material-symbols-outlined text-[20px]">handshake</span> Data Kemitraan
         </a>

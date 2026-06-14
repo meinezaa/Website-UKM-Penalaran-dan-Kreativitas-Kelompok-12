@@ -99,7 +99,7 @@
         
         <div>
             @php
-                $status = strtoupper($relawan->status_seleksi ?? 'PENDING');
+                $status = strtoupper($relawan->status_seleksi ?? 'PROSES');
                 $color = "bg-yellow-50 text-yellow-600 border-yellow-100";
                 if($status == 'DITERIMA') $color = "bg-green-50 text-green-600 border-green-100";
                 if($status == 'DITOLAK') $color = "bg-red-50 text-red-600 border-red-100";
@@ -122,10 +122,10 @@
             <div class="col-span-1 space-y-6">
                 <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center flex flex-col items-center">
                     <div class="w-20 h-20 rounded-2xl bg-red-50 text-primary flex items-center justify-center font-headline font-black text-2xl border border-red-100 mb-4 shadow-sm shadow-red-50">
-                        {{ strtoupper(substr($relawan->nama_lengkap, 0, 1)) }}
+                        {{ strtoupper(substr($relawan->nama_lengkap ?? 'R', 0, 1)) }}
                     </div>
-                    <h3 class="font-headline font-bold text-on-surface text-lg leading-snug">{{ $relawan->nama_lengkap }}</h3>
-                    <p class="text-xs text-gray-400 font-medium mt-1 truncate w-full">{{ $relawan->email }}</p>
+                    <h3 class="font-headline font-bold text-on-surface text-lg leading-snug">{{ $relawan->nama_lengkap ?? 'Nama Relawan' }}</h3>
+                    <p class="text-xs text-gray-400 font-medium mt-1 truncate w-full">{{ $relawan->email ?? '-' }}</p>
                     
                     <div class="w-full border-t border-dashed border-gray-100 my-5"></div>
                     
@@ -170,15 +170,15 @@
                         <h4 class="font-headline font-bold text-sm uppercase tracking-wider">Agenda Kegiatan yang Diikuti</h4>
                     </div>
                     <div class="bg-surface p-4 rounded-xl border border-gray-100">
-                        <h2 class="font-headline font-bold text-base text-on-surface">{{ $relawan->kegiatan->nama_kegiatan }}</h2>
+                        <h2 class="font-headline font-bold text-base text-on-surface">{{ $relawan->kegiatan->nama_kegiatan ?? 'Nama Agenda Kegiatan' }}</h2>
                         <div class="grid grid-cols-2 gap-4 mt-3 text-xs text-gray-500 font-medium">
                             <div class="flex items-center gap-1.5">
                                 <span class="material-symbols-outlined text-base text-gray-400">location_on</span>
-                                <span>{{ $relawan->kegiatan->lokasi }}</span>
+                                <span>{{ $relawan->kegiatan->lokasi ?? '-' }}</span>
                             </div>
                             <div class="flex items-center gap-1.5">
                                 <span class="material-symbols-outlined text-base text-gray-400">calendar_today</span>
-                                <span>{{ \Carbon\Carbon::parse($relawan->kegiatan->tanggal_pelaksanaan)->isoFormat('D MMMM YYYY') }}</span>
+                                <span>{{ isset($relawan->kegiatan->tanggal_pelaksanaan) ? \Carbon\Carbon::parse($relawan->kegiatan->tanggal_pelaksanaan)->isoFormat('D MMMM YYYY') : '-' }}</span>
                             </div>
                         </div>
                     </div>
@@ -203,11 +203,10 @@
                         <h4 class="font-headline font-bold text-xs text-gray-400 uppercase tracking-wider mb-2">Alasan & Motivasi Bergabung</h4>
                         <div class="bg-surface p-5 rounded-xl border border-gray-100 text-sm text-gray-700 leading-relaxed font-medium">
                             @php
-                                // Mengubah objek stdClass ke bentuk array agar pengecekan dinamis berjalan sempurna
                                 $dataRelawanArray = get_object_vars($relawan);
-                                
-                                // Deteksi otomatis isi kolom text pendaftaran yang tersedia di database
-                                $teksAlasan = $dataRelawanArray['alasan_bergabung'] 
+                                // REVISI UTAMA: Mengutamakan kolom 'pengalaman_keahlian' sesuai dengan gambar database aslimu
+                                $teksAlasan = $dataRelawanArray['pengalaman_keahlian'] 
+                                              ?? $dataRelawanArray['alasan_bergabung'] 
                                               ?? $dataRelawanArray['alasan'] 
                                               ?? $dataRelawanArray['motivasi'] 
                                               ?? 'Tidak ada alasan tertulis yang dicantumkan.';
@@ -215,11 +214,116 @@
                             {!! nl2br(e($teksAlasan)) !!}
                         </div>
                     </div>
+
+                    <div class="border-t border-gray-100 pt-6">
+                        <div class="flex items-center gap-2 text-primary mb-4">
+                            <span class="material-symbols-outlined text-[20px]">payments</span>
+                            <h4 class="font-headline font-bold text-sm uppercase tracking-wider">Informasi Transaksi & Administrasi</h4>
+                        </div>
+                        
+                        <div class="grid grid-cols-3 gap-6">
+                            <div class="col-span-1 space-y-4">
+                                <div class="bg-surface p-4 rounded-xl border border-gray-100">
+                                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Metode Pembayaran</span>
+                                    <span class="text-sm font-bold text-gray-800 block mt-1">
+                                        {{ $relawan->metode_pembayaran ?? 'Transfer Bank' }}
+                                    </span>
+                                </div>
+                                <div class="bg-surface p-4 rounded-xl border border-gray-100">
+                                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Status Berkas</span>
+                                    @if(!empty($relawan->bukti_pembayaran) && $relawan->bukti_pembayaran !== 'tidak_ada.png')
+                                        <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100 inline-block mt-2">
+                                            Sudah Mengunggah
+                                        </span>
+                                    @else
+                                        <span class="text-xs font-semibold text-red-700 bg-red-50 px-2 py-0.5 rounded border border-red-100 inline-block mt-2">
+                                            Belum Mengunggah
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="col-span-2">
+                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Lampiran Bukti Transfer</span>
+                                
+                                @if(!empty($relawan->bukti_pembayaran) && $relawan->bukti_pembayaran !== 'tidak_ada.png')
+                                    <div class="relative bg-surface rounded-xl border border-gray-200 p-2 overflow-hidden group cursor-pointer" onclick="openModal()">
+                                        <img src="{{ asset('foto/' . $relawan->bukti_pembayaran) }}" 
+                                             alt="Bukti Pembayaran" 
+                                             class="w-full max-h-60 object-contain rounded-lg bg-white shadow-inner transition-transform duration-300 group-hover:scale-[1.01]">
+                                        
+                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-200 rounded-xl">
+                                            <button type="button" class="bg-white text-gray-900 font-bold text-xs py-2 px-4 rounded-xl shadow flex items-center gap-1.5 hover:bg-gray-100 transition-colors">
+                                                <span class="material-symbols-outlined text-sm">zoom_in</span> Lihat Ukuran Penuh
+                                            </button>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="w-full h-40 flex flex-col items-center justify-center text-gray-400 bg-gray-50 border border-dashed border-gray-200 rounded-xl">
+                                        <span class="material-symbols-outlined text-3xl text-gray-300">image_not_supported</span>
+                                        <p class="text-xs font-medium mt-2">Bukti transaksi tidak ditemukan / Kosong</p>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </main>
+
+@if(!empty($relawan->bukti_pembayaran) && $relawan->bukti_pembayaran !== 'tidak_ada.png')
+<div id="imageModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="closeModal()">
+    <div class="relative max-w-4xl max-h-[85vh] p-2 bg-white rounded-2xl shadow-2xl m-4 flex flex-col scale-95 transform transition-transform duration-300" onclick="event.stopPropagation()">
+        
+        <div class="flex items-center justify-between px-4 py-2.5 border-b border-gray-100">
+            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider font-headline">Lampiran Bukti Transaksi</span>
+            <button onclick="closeModal()" class="text-gray-400 hover:text-black transition-colors p-1 rounded-lg hover:bg-gray-100 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+        </div>
+
+        <div class="p-2 overflow-auto bg-gray-50 rounded-b-xl flex justify-center items-center">
+            <img src="{{ asset('foto/' . $relawan->bukti_pembayaran) }}" 
+                 alt="Bukti Pembayaran Besar" 
+                 class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-sm">
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal() {
+        const modal = document.getElementById('imageModal');
+        const modalBox = modal.querySelector('div');
+        
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        
+        setTimeout(() => {
+            modal.classList.remove('opacity-0');
+            modalBox.classList.remove('scale-95');
+        }, 10);
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    function closeModal() {
+        const modal = document.getElementById('imageModal');
+        const modalBox = modal.querySelector('div');
+        
+        modal.add('opacity-0');
+        modalBox.classList.add('scale-95');
+        
+        setTimeout(() => {
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }, 300);
+    }
+</script>
+@endif
 
 </body>
 </html>

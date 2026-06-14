@@ -104,10 +104,14 @@
             </form>
 
             <div class="col-span-2 sm:col-span-1 flex items-center gap-3 w-full">
-                <a href="{{ route('admin.relawan.pdf') }}" class="flex-1 bg-primary text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-red-700 transition-all shadow-md shadow-red-100 whitespace-nowrap justify-center">
+                <a href="#" 
+                   onclick="this.href='{{ route('admin.relawan.pdf') }}?search=' + encodeURIComponent(document.getElementsByName('search')[0].value) + '&divisi=' + document.getElementsByName('divisi')[0].value"
+                   class="flex-1 bg-primary text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-red-700 transition-all shadow-md shadow-red-100 whitespace-nowrap justify-center">
                     <span class="material-symbols-outlined text-sm">picture_as_pdf</span> Cetak PDF
                 </a>
-                <a href="{{ route('admin.relawan.ekspor') }}" class="flex-1 bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-emerald-700 transition-all shadow-md shadow-emerald-100 whitespace-nowrap justify-center">
+                <a href="#" 
+                   onclick="this.href='{{ route('admin.relawan.ekspor') }}?search=' + encodeURIComponent(document.getElementsByName('search')[0].value) + '&divisi=' + document.getElementsByName('divisi')[0].value"
+                   class="flex-1 bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-emerald-700 transition-all shadow-md shadow-emerald-100 whitespace-nowrap justify-center">
                     <span class="material-symbols-outlined text-sm">download</span> Ekspor Excel
                 </a>
             </div>
@@ -204,8 +208,7 @@
                             
                             <form action="{{ route('admin.relawan.destroy', $row->id_pendaftaran) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data pendaftar ini?')">
                                 @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-gray-400 hover:text-red-600 p-1.5 rounded-lg transition-colors cursor-pointer" title="Hapus Data">
+                                @method('DELETE') <button type="submit" class="text-gray-400 hover:text-red-600 p-1.5 rounded-lg transition-colors cursor-pointer" title="Hapus Data">
                                     <span class="material-symbols-outlined text-lg">delete</span>
                                 </button>
                             </form>
